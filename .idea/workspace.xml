@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="" />
+    <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/WebhookChatLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/WebhookChatLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/ClientType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/ClientType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/DiscordClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/WebhookClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/WebhookClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/ConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/ConfigLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/WebhookChatLoggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/WebhookChatLoggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/client/DiscordClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/client/DiscordClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,18 +29,54 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2KgaUW4jf1FwksfSzIDJYqzDX2d" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager">
+    <configuration name="WebhookChatLogger [build]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

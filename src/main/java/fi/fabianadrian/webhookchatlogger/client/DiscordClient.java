@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhookchatlogger.client.discord;
+package fi.fabianadrian.webhookchatlogger.client;
 
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;

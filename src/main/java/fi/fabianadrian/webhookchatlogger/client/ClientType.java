@@ -1,2 +1,5 @@
-package fi.fabianadrian.webhookchatlogger.client;public enum ClientType {
+package fi.fabianadrian.webhookchatlogger.client;
+
+public enum ClientType {
+    DISCORD
 }
