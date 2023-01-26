@@ -24,7 +24,7 @@ public final class WebhookChatLogger extends JavaPlugin {
             return;
         }
 
-        this.webhookClient = new DiscordClient(webhookUrl, this.configManager.discordConfig());
+        this.webhookClient = new DiscordClient(this, webhookUrl);
 
         registerListeners();
     }
