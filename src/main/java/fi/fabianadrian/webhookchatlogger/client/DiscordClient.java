@@ -1,11 +1,9 @@
 package fi.fabianadrian.webhookchatlogger.client;
 
-import club.minnced.discord.webhook.WebhookClientBuilder;
 import club.minnced.discord.webhook.exception.HttpException;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import fi.fabianadrian.webhookchatlogger.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.client.WebhookClient;
 import fi.fabianadrian.webhookchatlogger.config.client.DiscordClientConfig;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
