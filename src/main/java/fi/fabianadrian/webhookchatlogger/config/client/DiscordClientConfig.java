@@ -4,12 +4,12 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public class DiscordClientConfig {
-    private EmbedStyle embedStyle = EmbedStyle.PRETTY;
+    private MessageStyle messageStyle = MessageStyle.MESSAGE;
 
-    public EmbedStyle embedStyle() {
-        return this.embedStyle;
+    public MessageStyle messageStyle() {
+        return this.messageStyle;
     }
-    public enum EmbedStyle {
-        PRETTY, COMPACT
+    public enum MessageStyle {
+        EMBED_PRETTY, EMBED_COMPACT, MESSAGE
     }
 }

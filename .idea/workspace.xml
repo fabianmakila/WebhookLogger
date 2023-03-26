@@ -7,6 +7,9 @@
     <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="Cleanup leftover imports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/DiscordClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/client/DiscordClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/client/DiscordClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "fi.fabianadrian"
-version = "1.1.0"
+version = "1.2.0"
 description = "A simple plugin that forwards chat messages to a webhook."
 
 repositories {
@@ -15,10 +15,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
     implementation("club.minnced:discord-webhooks:0.8.2")
     implementation("org.spongepowered:configurate-hocon:4.1.2")
+    implementation("dev.vankka:mcdiscordreserializer:4.3.0")
 }
 
 indra {
@@ -30,7 +31,8 @@ tasks {
         minimize()
         sequenceOf(
             "club.minnced.discord.webhook",
-            "org.spongepowered.configurate"
+            "org.spongepowered.configurate",
+            "dev.vankka.mcdiscordreserializer.discord"
         ).forEach { pkg ->
             relocate(pkg, "${group}.${rootProject.name.toLowerCase()}.lib.$pkg")
         }

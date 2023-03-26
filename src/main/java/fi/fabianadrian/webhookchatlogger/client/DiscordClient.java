@@ -3,10 +3,10 @@ package fi.fabianadrian.webhookchatlogger.client;
 import club.minnced.discord.webhook.exception.HttpException;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import fi.fabianadrian.webhookchatlogger.WebhookChatLogger;
 import fi.fabianadrian.webhookchatlogger.config.client.DiscordClientConfig;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +15,8 @@ public class DiscordClient implements WebhookClient {
     private final club.minnced.discord.webhook.WebhookClient client;
     private final DiscordClientConfig config;
     private long lastErrorTimestamp;
+    private final DiscordSerializer serializer;
+    private static final String CHAT_FORMAT = "**%s > ** %s";
 
     public DiscordClient(WebhookChatLogger plugin, String webhookUrl) {
         this.client = club.minnced.discord.webhook.WebhookClient.withUrl(webhookUrl);
@@ -37,28 +39,31 @@ public class DiscordClient implements WebhookClient {
             }
         });
 
+        this.serializer = new DiscordSerializer();
+
         this.config = plugin.configManager().discordConfig();
     }
 
     @Override
     public void sendMessage(Player author, Component message) {
-        String messageAsPlainText = PlainTextComponentSerializer.plainText().serialize(message);
+        String serializedMessage = this.serializer.serialize(message);
 
-        WebhookEmbed embed;
-        switch (this.config.embedStyle()) {
-            case PRETTY -> {
+        switch (this.config.messageStyle()) {
+            case EMBED_PRETTY -> {
                 String iconUrl = "https://crafthead.net/avatar/" + author.getUniqueId();
                 String nameMcUrl = "https://namemc.com/profile/" + author.getUniqueId();
-                embed = new WebhookEmbedBuilder()
+                WebhookEmbed embed = new WebhookEmbedBuilder()
                         .setAuthor(new WebhookEmbed.EmbedAuthor(author.getName(), iconUrl, nameMcUrl))
-                        .setDescription(messageAsPlainText).build();
+                        .setDescription(serializedMessage).build();
+                this.client.send(embed);
             }
-            case COMPACT -> {
-                String description = String.format("**%s > ** %s", author.getName(), messageAsPlainText);
-                embed = new WebhookEmbedBuilder().setDescription(description).build();
+            case EMBED_COMPACT -> {
+                String description = String.format(CHAT_FORMAT, author.getName(), serializedMessage);
+                WebhookEmbed embed = new WebhookEmbedBuilder().setDescription(description).build();
+                this.client.send(embed);
             }
+            case MESSAGE -> this.client.send(String.format(CHAT_FORMAT, author.getName(), serializedMessage));
             default -> throw new IllegalStateException("Unknown embed style!");
         }
-        this.client.send(embed);
     }
 }
