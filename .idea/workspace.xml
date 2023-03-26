@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="Add MessageStyle.MESSAGE for DiscordClient">
-      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" afterDir="false" />
+    <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="Optimize imports">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679854747574</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Optimize imports">
+      <created>1679854790358</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1679854790358</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -118,6 +128,7 @@
     <MESSAGE value="Better error handling" />
     <MESSAGE value="Cleanup leftover imports" />
     <MESSAGE value="Add MessageStyle.MESSAGE for DiscordClient" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add MessageStyle.MESSAGE for DiscordClient" />
+    <MESSAGE value="Optimize imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimize imports" />
   </component>
 </project>
