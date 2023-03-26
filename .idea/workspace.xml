@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="Cleanup leftover imports">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/client/DiscordClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/client/DiscordClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/config/client/DiscordClientConfig.java" afterDir="false" />
+    <list default="true" id="64b8b5b5-6e95-4f35-8b08-dff9ca127773" name="Changes" comment="Add MessageStyle.MESSAGE for DiscordClient">
       <change beforePath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fi/fabianadrian/webhookchatlogger/listener/ChatListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -106,7 +102,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674748242692</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add MessageStyle.MESSAGE for DiscordClient">
+      <created>1679854747574</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1679854747574</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -114,6 +117,7 @@
     <MESSAGE value="Minor improvements" />
     <MESSAGE value="Better error handling" />
     <MESSAGE value="Cleanup leftover imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup leftover imports" />
+    <MESSAGE value="Add MessageStyle.MESSAGE for DiscordClient" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add MessageStyle.MESSAGE for DiscordClient" />
   </component>
 </project>
