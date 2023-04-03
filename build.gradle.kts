@@ -17,7 +17,9 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
-    implementation("club.minnced:discord-webhooks:0.8.2")
+    implementation("club.minnced:discord-webhooks:0.8.2") {
+        exclude("org.slf4j")
+    }
     implementation("org.spongepowered:configurate-hocon:4.1.2")
     implementation("dev.vankka:mcdiscordreserializer:4.3.0")
 }
@@ -27,18 +29,14 @@ indra {
 }
 
 tasks {
-    shadowJar {
-        minimize()
-        sequenceOf(
-            "club.minnced.discord.webhook",
-            "org.spongepowered.configurate",
-            "dev.vankka.mcdiscordreserializer.discord"
-        ).forEach { pkg ->
-            relocate(pkg, "${group}.${rootProject.name.toLowerCase()}.lib.$pkg")
-        }
-    }
     build {
         dependsOn(shadowJar)
+    }
+
+    shadowJar {
+        minimize()
+        isEnableRelocation = true
+        relocationPrefix = "fi.fabianadrian.webhookchatlogger.dependency"
     }
 }
 
