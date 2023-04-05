@@ -1,6 +1,7 @@
 package fi.fabianadrian.webhookchatlogger.config;
 
 import fi.fabianadrian.webhookchatlogger.client.ClientType;
+import fi.fabianadrian.webhookchatlogger.config.client.DiscordClientConfig;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 
@@ -13,6 +14,8 @@ public class WebhookChatLoggerConfig {
 
     private boolean logCancelledMessages = false;
 
+    private DiscordClientConfig discordClient = new DiscordClientConfig();
+
     public String url() {
         return this.url;
     }
@@ -23,5 +26,9 @@ public class WebhookChatLoggerConfig {
 
     public boolean logCancelledMessages() {
         return this.logCancelledMessages;
+    }
+
+    public DiscordClientConfig discordClientConfig() {
+        return this.discordClient;
     }
 }

@@ -41,7 +41,7 @@ public class DiscordClient implements WebhookClient {
 
         this.serializer = new DiscordSerializer();
 
-        this.config = plugin.configManager().discordConfig();
+        this.config = plugin.configManager().mainConfig().discordClientConfig();
     }
 
     @Override
