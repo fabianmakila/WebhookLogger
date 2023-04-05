@@ -16,7 +16,6 @@ public class DiscordClient implements WebhookClient {
     private final DiscordClientConfig config;
     private long lastErrorTimestamp;
     private final DiscordSerializer serializer;
-    private static final String CHAT_FORMAT = "**%s > ** %s";
 
     public DiscordClient(WebhookChatLogger plugin, String webhookUrl) {
         this.client = club.minnced.discord.webhook.WebhookClient.withUrl(webhookUrl);
@@ -58,11 +57,11 @@ public class DiscordClient implements WebhookClient {
                 this.client.send(embed);
             }
             case EMBED_COMPACT -> {
-                String description = String.format(CHAT_FORMAT, author.getName(), serializedMessage);
+                String description = String.format(this.config.chatFormat(), author.getName(), serializedMessage);
                 WebhookEmbed embed = new WebhookEmbedBuilder().setDescription(description).build();
                 this.client.send(embed);
             }
-            case MESSAGE -> this.client.send(String.format(CHAT_FORMAT, author.getName(), serializedMessage));
+            case MESSAGE -> this.client.send(String.format(this.config.chatFormat(), author.getName(), serializedMessage));
             default -> throw new IllegalStateException("Unknown embed style!");
         }
     }
