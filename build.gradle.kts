@@ -21,7 +21,9 @@ dependencies {
         exclude("org.slf4j")
     }
     implementation("org.spongepowered:configurate-hocon:4.1.2")
-    implementation("dev.vankka:mcdiscordreserializer:4.3.0")
+    implementation("dev.vankka:mcdiscordreserializer:4.3.0") {
+        exclude("net.kyori")
+    }
 }
 
 indra {
