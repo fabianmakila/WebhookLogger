@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "fi.fabianadrian"
-version = "1.2.0"
+version = "1.2.1-SNAPSHOT"
 description = "A simple plugin that forwards chat messages to a webhook."
 
 repositories {
