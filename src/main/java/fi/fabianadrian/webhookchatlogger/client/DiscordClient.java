@@ -45,6 +45,10 @@ public class DiscordClient implements WebhookClient {
 
     @Override
     public void sendMessage(Player author, Component message) {
+        if (this.client.isShutdown()) {
+            return;
+        }
+
         String serializedMessage = this.serializer.serialize(message);
 
         switch (this.config.messageStyle()) {
