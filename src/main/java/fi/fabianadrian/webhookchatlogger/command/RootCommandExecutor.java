@@ -6,13 +6,17 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class WebhookChatLoggerCommand implements CommandExecutor {
+import java.util.List;
+
+public class RootCommandExecutor implements CommandExecutor, TabExecutor {
 
     private final WebhookChatLogger plugin;
 
-    public WebhookChatLoggerCommand(WebhookChatLogger plugin) {
+    public RootCommandExecutor(WebhookChatLogger plugin) {
         this.plugin = plugin;
     }
 
@@ -29,5 +33,10 @@ public class WebhookChatLoggerCommand implements CommandExecutor {
         }
 
         return false;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        return List.of("reload");
     }
 }
