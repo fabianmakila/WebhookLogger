@@ -34,6 +34,7 @@ public final class WebhookChatLogger extends JavaPlugin {
     }
 
     public void reload() {
+        this.configManager.loadConfigs();
         initializeWebhook();
     }
 
@@ -42,6 +43,10 @@ public final class WebhookChatLogger extends JavaPlugin {
         if (webhookUrl.isBlank()) {
             this.getLogger().warning("Webhook url is not configured yet! Configure the url and reload the plugin using /wcl reload.");
             return;
+        }
+
+        if (this.webhookClient != null) {
+            this.webhookClient.close();
         }
 
         this.webhookClient = new DiscordClient(this, webhookUrl);
