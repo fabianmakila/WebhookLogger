@@ -1,6 +1,8 @@
 package fi.fabianadrian.webhookchatlogger.command;
 
 import fi.fabianadrian.webhookchatlogger.WebhookChatLogger;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,6 +24,7 @@ public class WebhookChatLoggerCommand implements CommandExecutor {
 
         if ("reload".equalsIgnoreCase(args[0])) {
             this.plugin.reload();
+            sender.sendMessage(Component.text("Reload complete!", NamedTextColor.GREEN));
             return true;
         }
 
