@@ -26,6 +26,13 @@ public final class WebhookChatLogger extends JavaPlugin {
         registerListeners();
     }
 
+    @Override
+    public void onDisable() {
+        if (this.webhookClient != null) {
+            this.webhookClient.close();
+        }
+    }
+
     public ConfigManager configManager() {
         return this.configManager;
     }
