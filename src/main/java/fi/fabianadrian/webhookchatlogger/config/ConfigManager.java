@@ -1,7 +1,6 @@
 package fi.fabianadrian.webhookchatlogger.config;
 
 import fi.fabianadrian.webhookchatlogger.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.config.client.DiscordClientConfig;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.nio.file.Path;
