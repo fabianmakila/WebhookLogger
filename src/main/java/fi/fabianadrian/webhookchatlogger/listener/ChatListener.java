@@ -7,17 +7,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public final class ChatListener implements Listener {
-    private final WebhookClient webhookClient;
-    private boolean logCancelledMessages;
+    private final WebhookChatLogger plugin;
 
-    public ChatListener(WebhookChatLogger webhookChatLogger) {
-        this.webhookClient = webhookChatLogger.webhookClient();
-        this.logCancelledMessages = webhookChatLogger.configManager().mainConfig().logCancelledMessages();
+    public ChatListener(WebhookChatLogger plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (!logCancelledMessages && event.isCancelled()) return;
-        this.webhookClient.sendMessage(event.getPlayer(), event.message());
+        final boolean logCancelledMessages = this.plugin.configManager().mainConfig().logCancelledMessages();
+        final WebhookClient client = this.plugin.webhookClient();
+
+        if (client == null || !logCancelledMessages && event.isCancelled()) {
+            return;
+        }
+
+        this.plugin.webhookClient().sendMessage(event.getPlayer(), event.message());
     }
 }

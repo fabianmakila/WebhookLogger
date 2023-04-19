@@ -65,4 +65,9 @@ public class DiscordClient implements WebhookClient {
             default -> throw new IllegalStateException("Unknown embed style!");
         }
     }
+
+    @Override
+    public void close() {
+        this.client.close();
+    }
 }
