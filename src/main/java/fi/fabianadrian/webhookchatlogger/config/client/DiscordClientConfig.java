@@ -6,14 +6,14 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 public class DiscordClientConfig {
     private MessageStyle messageStyle = MessageStyle.MESSAGE;
 
-    private String chatFormat = "**%1$s > ** %2$s";
+    private String messageFormat = "**%1$s > ** %2$s";
 
     public MessageStyle messageStyle() {
         return this.messageStyle;
     }
 
-    public String chatFormat() {
-        return this.chatFormat;
+    public String messageFormat() {
+        return this.messageFormat;
     }
 
     public enum MessageStyle {

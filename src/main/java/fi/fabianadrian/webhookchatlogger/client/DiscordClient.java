@@ -57,11 +57,11 @@ public class DiscordClient implements WebhookClient {
                 this.client.send(embed);
             }
             case EMBED_COMPACT -> {
-                String description = String.format(this.config.chatFormat(), author.getName(), serializedMessage);
+                String description = String.format(this.config.messageFormat(), author.getName(), serializedMessage);
                 WebhookEmbed embed = new WebhookEmbedBuilder().setDescription(description).build();
                 this.client.send(embed);
             }
-            case MESSAGE -> this.client.send(String.format(this.config.chatFormat(), author.getName(), serializedMessage));
+            case MESSAGE -> this.client.send(String.format(this.config.messageFormat(), author.getName(), serializedMessage));
             default -> throw new IllegalStateException("Unknown embed style!");
         }
     }
