@@ -2,6 +2,7 @@ package fi.fabianadrian.webhookchatlogger;
 
 import fi.fabianadrian.webhookchatlogger.client.DiscordClient;
 import fi.fabianadrian.webhookchatlogger.client.WebhookClient;
+import fi.fabianadrian.webhookchatlogger.command.WebhookChatLoggerCommand;
 import fi.fabianadrian.webhookchatlogger.config.ConfigManager;
 import fi.fabianadrian.webhookchatlogger.listener.ChatListener;
 import org.bukkit.plugin.PluginManager;
@@ -26,6 +27,7 @@ public final class WebhookChatLogger extends JavaPlugin {
 
         this.webhookClient = new DiscordClient(this, webhookUrl);
 
+        registerCommands();
         registerListeners();
     }
 
@@ -35,6 +37,14 @@ public final class WebhookChatLogger extends JavaPlugin {
 
     public WebhookClient webhookClient() {
         return this.webhookClient;
+    }
+
+    public void reload() {
+
+    }
+
+    private void registerCommands() {
+        getCommand("webhookchatlogger").setExecutor(new WebhookChatLoggerCommand(this));
     }
 
     private void registerListeners() {
