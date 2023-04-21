@@ -15,7 +15,7 @@ public final class ChatListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        final boolean logCancelledMessages = this.plugin.configManager().mainConfig().logCancelledMessages();
+        final boolean logCancelledMessages = this.plugin.config().logCancelledMessages();
         final WebhookClient client = this.plugin.webhookClient();
 
         if (client == null || !logCancelledMessages && event.isCancelled()) {

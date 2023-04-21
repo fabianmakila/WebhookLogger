@@ -5,7 +5,7 @@ import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import fi.fabianadrian.webhookchatlogger.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.config.client.DiscordClientConfig;
+import fi.fabianadrian.webhookchatlogger.config.WebhookChatLoggerConfig;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 public class DiscordClient implements WebhookClient {
     private final club.minnced.discord.webhook.WebhookClient client;
-    private final DiscordClientConfig config;
-    private long lastErrorTimestamp;
+    private final WebhookChatLoggerConfig.DiscordClientConfig config;
     private final DiscordSerializer serializer;
+    private long lastErrorTimestamp;
 
     public DiscordClient(WebhookChatLogger plugin, String webhookUrl) {
         this.client = club.minnced.discord.webhook.WebhookClient.withUrl(webhookUrl);
@@ -32,15 +32,16 @@ public class DiscordClient implements WebhookClient {
             }
 
             this.lastErrorTimestamp = currentTime;
-            switch (ex.getCode()) {
-                case 429 -> plugin.getSLF4JLogger().warn("Discord's webhook rate limit reached. Message sending will be delayed.");
-                default -> plugin.getSLF4JLogger().warn("Unhandled HttpException: ", ex);
+            if (ex.getCode() == 429) {
+                plugin.getSLF4JLogger().warn("Discord's webhook rate limit reached. Message sending will be delayed.");
+            } else {
+                plugin.getSLF4JLogger().warn("Unhandled HttpException: ", ex);
             }
         });
 
         this.serializer = new DiscordSerializer();
 
-        this.config = plugin.configManager().mainConfig().discordClientConfig();
+        this.config = plugin.config().discordClientConfig();
     }
 
     @Override
@@ -56,8 +57,8 @@ public class DiscordClient implements WebhookClient {
                 String iconUrl = "https://crafthead.net/avatar/" + author.getUniqueId();
                 String nameMcUrl = "https://namemc.com/profile/" + author.getUniqueId();
                 WebhookEmbed embed = new WebhookEmbedBuilder()
-                        .setAuthor(new WebhookEmbed.EmbedAuthor(author.getName(), iconUrl, nameMcUrl))
-                        .setDescription(serializedMessage).build();
+                    .setAuthor(new WebhookEmbed.EmbedAuthor(author.getName(), iconUrl, nameMcUrl))
+                    .setDescription(serializedMessage).build();
                 this.client.send(embed);
             }
             case EMBED_COMPACT -> {
@@ -65,7 +66,8 @@ public class DiscordClient implements WebhookClient {
                 WebhookEmbed embed = new WebhookEmbedBuilder().setDescription(description).build();
                 this.client.send(embed);
             }
-            case MESSAGE -> this.client.send(String.format(this.config.messageFormat(), author.getName(), serializedMessage));
+            case MESSAGE ->
+                this.client.send(String.format(this.config.messageFormat(), author.getName(), serializedMessage));
             default -> throw new IllegalStateException("Unknown embed style!");
         }
     }

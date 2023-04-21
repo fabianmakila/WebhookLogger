@@ -1,34 +1,28 @@
 package fi.fabianadrian.webhookchatlogger.config;
 
 import fi.fabianadrian.webhookchatlogger.client.ClientType;
-import fi.fabianadrian.webhookchatlogger.config.client.DiscordClientConfig;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
+import space.arim.dazzleconf.annote.ConfDefault;
 
-@ConfigSerializable
-public class WebhookChatLoggerConfig {
-    @Comment("The webhook url where chat messages will be forwarded.")
-    private String url = "";
 
-    private ClientType webhookClient = ClientType.DISCORD;
+public interface WebhookChatLoggerConfig {
+    String url();
 
-    private boolean logCancelledMessages = false;
+    @ConfDefault.DefaultString("DISCORD")
+    ClientType webhookType();
 
-    private DiscordClientConfig discordClient = new DiscordClientConfig();
+    boolean logCancelledMessages();
 
-    public String url() {
-        return this.url;
-    }
+    DiscordClientConfig discordClientConfig();
 
-    public ClientType webhookType() {
-        return this.webhookClient;
-    }
+    interface DiscordClientConfig {
+        @ConfDefault.DefaultString("MESSAGE")
+        MessageStyle messageStyle();
 
-    public boolean logCancelledMessages() {
-        return this.logCancelledMessages;
-    }
+        @ConfDefault.DefaultString("**%1$s > ** %2$s")
+        String messageFormat();
 
-    public DiscordClientConfig discordClientConfig() {
-        return this.discordClient;
+        enum MessageStyle {
+            EMBED_PRETTY, EMBED_COMPACT, MESSAGE
+        }
     }
 }

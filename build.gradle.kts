@@ -20,7 +20,9 @@ dependencies {
     implementation("club.minnced:discord-webhooks:0.8.2") {
         exclude("org.slf4j")
     }
-    implementation("org.spongepowered:configurate-hocon:4.1.2")
+    implementation("space.arim.dazzleconf:dazzleconf-ext-snakeyaml:1.3.0-M1") {
+        exclude("org.yaml")
+    }
     implementation("dev.vankka:mcdiscordreserializer:4.3.0") {
         exclude("net.kyori")
     }
