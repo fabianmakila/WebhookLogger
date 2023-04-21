@@ -31,7 +31,7 @@ public final class ConfigManager<C> {
             .build();
         ConfigurationFactory<C> configFactory = SnakeYamlConfigurationFactory.create(
             configClass,
-            ConfigurationOptions.defaults(), // change this if desired
+            ConfigurationOptions.defaults(),
             yamlOptions);
         return new ConfigManager<>(new ConfigurationHelper<>(configFolder, fileName, configFactory), logger);
     }
