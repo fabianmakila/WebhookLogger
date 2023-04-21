@@ -18,7 +18,12 @@ public final class WebhookChatLogger extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.configManager = ConfigManager.create(getDataFolder().toPath(), "config.yml", WebhookChatLoggerConfig.class);
+        this.configManager = ConfigManager.create(
+            getDataFolder().toPath(),
+            "config.yml",
+            WebhookChatLoggerConfig.class,
+            getSLF4JLogger()
+        );
         this.configManager.reload();
 
         initializeWebhook();
