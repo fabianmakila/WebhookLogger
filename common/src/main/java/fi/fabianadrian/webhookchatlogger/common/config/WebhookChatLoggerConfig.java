@@ -1,6 +1,6 @@
-package fi.fabianadrian.webhookchatlogger.config;
+package fi.fabianadrian.webhookchatlogger.common.config;
 
-import fi.fabianadrian.webhookchatlogger.client.ClientType;
+import fi.fabianadrian.webhookchatlogger.common.client.ClientType;
 import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.annote.ConfKey;
