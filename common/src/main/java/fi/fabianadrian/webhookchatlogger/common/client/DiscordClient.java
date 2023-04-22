@@ -1,13 +1,12 @@
-package fi.fabianadrian.webhookchatlogger.client;
+package fi.fabianadrian.webhookchatlogger.common.client;
 
 import club.minnced.discord.webhook.exception.HttpException;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
-import fi.fabianadrian.webhookchatlogger.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.config.WebhookChatLoggerConfig;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
+import fi.fabianadrian.webhookchatlogger.common.Message;
+import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhookchatlogger.common.config.WebhookChatLoggerConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,12 +16,12 @@ public class DiscordClient implements WebhookClient {
     private final DiscordSerializer serializer;
     private long lastErrorTimestamp;
 
-    public DiscordClient(WebhookChatLogger plugin, String webhookUrl) {
+    public DiscordClient(WebhookChatLogger wcl, String webhookUrl) {
         this.client = club.minnced.discord.webhook.WebhookClient.withUrl(webhookUrl);
         this.client.setErrorHandler((client, message, throwable) -> {
             // Log every non http exception
             if (!(throwable instanceof HttpException ex)) {
-                plugin.getSLF4JLogger().error("Encountered an error: ", throwable);
+                wcl.logger().error("Encountered an error: ", throwable);
                 return;
             }
 
@@ -33,41 +32,41 @@ public class DiscordClient implements WebhookClient {
 
             this.lastErrorTimestamp = currentTime;
             if (ex.getCode() == 429) {
-                plugin.getSLF4JLogger().warn("Discord's webhook rate limit reached. Message sending will be delayed.");
+                wcl.logger().warn("Discord's webhook rate limit reached. Message sending will be delayed.");
             } else {
-                plugin.getSLF4JLogger().warn("Unhandled HttpException: ", ex);
+                wcl.logger().warn("Unhandled HttpException: ", ex);
             }
         });
 
         this.serializer = new DiscordSerializer();
 
-        this.config = plugin.config().discordClientConfig();
+        this.config = wcl.config().discordClientConfig();
     }
 
     @Override
-    public void sendMessage(Player author, Component message) {
+    public void log(Message message) {
         if (this.client.isShutdown()) {
             return;
         }
 
-        String serializedMessage = this.serializer.serialize(message);
+        String serializedMessage = this.serializer.serialize(message.content());
 
         switch (this.config.messageStyle()) {
             case EMBED_PRETTY -> {
-                String iconUrl = "https://crafthead.net/avatar/" + author.getUniqueId();
-                String nameMcUrl = "https://namemc.com/profile/" + author.getUniqueId();
+                String iconUrl = "https://crafthead.net/avatar/" + message.authorUUID();
+                String nameMcUrl = "https://namemc.com/profile/" + message.authorUUID();
                 WebhookEmbed embed = new WebhookEmbedBuilder()
-                    .setAuthor(new WebhookEmbed.EmbedAuthor(author.getName(), iconUrl, nameMcUrl))
+                    .setAuthor(new WebhookEmbed.EmbedAuthor(message.authorName(), iconUrl, nameMcUrl))
                     .setDescription(serializedMessage).build();
                 this.client.send(embed);
             }
             case EMBED_COMPACT -> {
-                String description = String.format(this.config.messageFormat(), author.getName(), serializedMessage);
+                String description = String.format(this.config.messageFormat(), message.authorName(), serializedMessage);
                 WebhookEmbed embed = new WebhookEmbedBuilder().setDescription(description).build();
                 this.client.send(embed);
             }
             case MESSAGE ->
-                this.client.send(String.format(this.config.messageFormat(), author.getName(), serializedMessage));
+                this.client.send(String.format(this.config.messageFormat(), message.authorName(), serializedMessage));
             default -> throw new IllegalStateException("Unknown embed style!");
         }
     }

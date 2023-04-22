@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhookchatlogger.config;
+package fi.fabianadrian.webhookchatlogger.common.config;
 
 import org.slf4j.Logger;
 import space.arim.dazzleconf.ConfigurationFactory;
@@ -27,7 +27,7 @@ public final class ConfigManager<C> {
     public static <C> ConfigManager<C> create(Path configFolder, String fileName, Class<C> configClass, Logger logger) {
         // SnakeYaml example
         SnakeYamlOptions yamlOptions = new SnakeYamlOptions.Builder()
-            .commentMode(CommentMode.fullComments()) // Enables writing YAML comments
+            .commentMode(CommentMode.alternativeWriter()) // Enables writing YAML comments
             .build();
         ConfigurationFactory<C> configFactory = SnakeYamlConfigurationFactory.create(
             configClass,
