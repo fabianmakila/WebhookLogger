@@ -1,5 +1,6 @@
-package fi.fabianadrian.webhookchatlogger.listener;
+package fi.fabianadrian.webhookchatlogger.paper.listener;
 
+import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPlugin;
 import fi.fabianadrian.webhookchatlogger.common.Message;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import fi.fabianadrian.webhookchatlogger.common.client.WebhookClient;
@@ -11,8 +12,8 @@ import org.bukkit.event.Listener;
 public final class ChatListener implements Listener {
     private final WebhookChatLogger wcl;
 
-    public ChatListener(WebhookChatLogger wcl) {
-        this.wcl = wcl;
+    public ChatListener(WebhookChatLoggerPlugin plugin) {
+        this.wcl = plugin.wcl();
     }
 
     @EventHandler

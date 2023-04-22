@@ -1,6 +1,7 @@
-package fi.fabianadrian.webhookchatlogger.command;
+package fi.fabianadrian.webhookchatlogger.paper.command;
 
-import fi.fabianadrian.webhookchatlogger.PaperPlatform;
+import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPlugin;
+import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -14,10 +15,10 @@ import java.util.List;
 
 public class RootCommandExecutor implements CommandExecutor, TabExecutor {
 
-    private final PaperPlatform plugin;
+    private final WebhookChatLogger wcl;
 
-    public RootCommandExecutor(PaperPlatform plugin) {
-        this.plugin = plugin;
+    public RootCommandExecutor(WebhookChatLoggerPlugin plugin) {
+        this.wcl = plugin.wcl();
     }
 
     @Override
@@ -27,7 +28,7 @@ public class RootCommandExecutor implements CommandExecutor, TabExecutor {
         }
 
         if ("reload".equalsIgnoreCase(args[0])) {
-            this.plugin.reload();
+            this.wcl.reload();
             sender.sendMessage(Component.text("Reload complete!", NamedTextColor.GREEN));
             return true;
         }

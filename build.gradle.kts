@@ -1,5 +1,5 @@
 plugins {
-    id("net.kyori.indra") version "3.0.1"
+    alias(libs.plugins.indra)
     java
 }
 

@@ -1,15 +1,15 @@
-package fi.fabianadrian.webhookchatlogger;
+package fi.fabianadrian.webhookchatlogger.paper;
 
-import fi.fabianadrian.webhookchatlogger.command.RootCommandExecutor;
+import fi.fabianadrian.webhookchatlogger.paper.command.RootCommandExecutor;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.listener.ChatListener;
+import fi.fabianadrian.webhookchatlogger.paper.listener.ChatListener;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.stream.Stream;
 
-public final class PaperPlatform extends JavaPlugin {
+public final class WebhookChatLoggerPlugin extends JavaPlugin {
 
     private WebhookChatLogger wcl;
 
