@@ -15,7 +15,7 @@ dependencies {
     }
 
     // Libraries
-    implementation(libs.dazzleconfig) {
+    implementation(libs.dazzleconf) {
         exclude("org.yaml")
     }
     implementation(libs.mcdiscordreserializer) {
