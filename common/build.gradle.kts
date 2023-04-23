@@ -25,6 +25,7 @@ dependencies {
     // These are provided by the platforms
     compileOnly(libs.adventure)
     compileOnly(libs.slf4j)
+    compileOnly(libs.snakeyaml)
 }
 
 indra {
