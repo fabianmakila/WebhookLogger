@@ -14,5 +14,6 @@ snakeyaml = { module = "org.yaml:snakeyaml", version = "1.33"}
 
 [plugins]
 indra = { id = "net.kyori.indra", version = "3.0.1" }
+minotaur = { id = "com.modrinth.minotaur", version = "2.7.5"}
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 pluginYml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.5.3" }
