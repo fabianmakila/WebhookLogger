@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.indra)
+    alias(libs.plugins.minotaur)
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginYml)
     java
@@ -38,6 +39,7 @@ tasks {
         }
         destinationDirectory.set(file("${rootProject.rootDir}/dist"))
         archiveBaseName.set(rootProject.name + "-Paper")
+        archiveAppendix.set("")
     }
 }
 
@@ -59,4 +61,16 @@ bukkit {
             description = "Allows you to run the reload command"
         }
     }
+}
+
+modrinth {
+    token.set(System.getenv("MODRINTH_TOKEN"))
+    projectId.set("yOG0TUXA")
+    uploadFile.set(tasks.shadowJar)
+    gameVersions.addAll(
+        listOf(
+            "1.17", "1.17.1", "1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4"
+        )
+    )
+    loaders.add("paper") // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
 }
