@@ -1,3 +1,5 @@
+![WebhookChatLogger banner](/assets/webhookchatlogger-banner.png)
+
 # WebhookChatLogger
 A Minecraft plugin for sending chat messages to a webhook.
 
