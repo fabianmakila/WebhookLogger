@@ -1,12 +1,9 @@
 rootProject.name = "WebhookChatLogger"
 
-include("common")
-
 sequenceOf(
+    "common",
     "paper"
-).forEach { module ->
-    include(":platform:$module")
-}
+).forEach { include(it) }
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
