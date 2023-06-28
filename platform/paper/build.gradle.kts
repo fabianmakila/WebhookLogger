@@ -12,7 +12,7 @@ description = rootProject.description
 
 dependencies {
     implementation(project(":common"))
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
     implementation(libs.bstats.bukkit)
 }
