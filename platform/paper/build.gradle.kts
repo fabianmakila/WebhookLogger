@@ -29,11 +29,12 @@ tasks {
         minimize()
         sequenceOf(
             "club.minnced",
+            "dev.vankka",
             "kotlin",
             "okhttp3",
             "okio",
+            "org.bstats",
             "org.json",
-            "dev.vankka",
             "space.arim"
         ).forEach { pkg ->
             relocate(pkg, "fi.fabianadrian.webhookchatlogger.dependency.$pkg")
