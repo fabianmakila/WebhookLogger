@@ -3,6 +3,7 @@ package fi.fabianadrian.webhookchatlogger.paper;
 import fi.fabianadrian.webhookchatlogger.paper.command.RootCommandExecutor;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import fi.fabianadrian.webhookchatlogger.paper.listener.ChatListener;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +23,9 @@ public final class WebhookChatLoggerPlugin extends JavaPlugin {
 
         registerCommands();
         registerListeners();
+
+        // bStats
+        new Metrics(this, 18436);
     }
 
     @Override

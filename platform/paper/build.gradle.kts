@@ -11,9 +11,10 @@ version = rootProject.version
 description = rootProject.description
 
 dependencies {
+    implementation(project(":common"))
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
-    implementation(project(":common"))
+    implementation(libs.bstats.bukkit)
 }
 
 indra {

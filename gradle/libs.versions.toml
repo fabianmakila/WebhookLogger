@@ -1,4 +1,9 @@
+[versions]
+bstats = "3.0.2"
+
 [libraries]
+bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+
 # Platforms
 platform-paper = { module = "io.papermc.paper:paper-api", version = "1.19.4-R0.1-SNAPSHOT" }
 
