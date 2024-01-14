@@ -12,7 +12,7 @@ description = rootProject.description
 
 dependencies {
     implementation(project(":common"))
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly(libs.platform.paper)
 
     implementation(libs.bstats.bukkit)
 }
@@ -28,11 +28,8 @@ tasks {
     shadowJar {
         minimize()
         sequenceOf(
-            "club.minnced",
-            "dev.vankka",
-            "kotlin",
-            "okhttp3",
-            "okio",
+            "io.github.4adrian3d",
+            "com.google.code.gson",
             "org.bstats",
             "org.json",
             "space.arim"
@@ -63,16 +60,4 @@ bukkit {
             description = "Allows you to run the reload command"
         }
     }
-}
-
-modrinth {
-    token.set(System.getenv("MODRINTH_TOKEN"))
-    projectId.set("yOG0TUXA")
-    uploadFile.set(tasks.shadowJar)
-    gameVersions.addAll(
-        listOf(
-            "1.17", "1.17.1", "1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4", "1.20", "1.20.1"
-        )
-    )
-    loaders.add("paper") // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
 }
