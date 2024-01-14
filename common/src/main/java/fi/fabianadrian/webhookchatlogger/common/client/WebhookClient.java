@@ -6,5 +6,7 @@ public interface WebhookClient {
 
     void log(Message message);
 
-    void close();
+    void reload();
+
+    void shutdown();
 }
