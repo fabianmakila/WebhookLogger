@@ -41,4 +41,8 @@ public class WebhookChatLogger {
 	public Logger logger() {
 		return this.logger;
 	}
+
+	public ClientManager clientManager() {
+		return this.clientManager;
+	}
 }

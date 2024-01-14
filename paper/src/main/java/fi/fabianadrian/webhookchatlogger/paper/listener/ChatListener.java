@@ -19,9 +19,8 @@ public final class ChatListener implements Listener {
     @EventHandler
     public void onChat(AsyncChatEvent event) {
         final boolean logCancelledMessages = this.wcl.config().logCancelledMessages();
-        final WebhookClient client = this.wcl.webhookClient();
 
-        if (client == null || !logCancelledMessages && event.isCancelled()) {
+        if (!logCancelledMessages && event.isCancelled()) {
             return;
         }
 
@@ -32,6 +31,6 @@ public final class ChatListener implements Listener {
             event.message()
         );
 
-        this.wcl.webhookClient().log(message);
+        this.wcl.clientManager().log(message);
     }
 }

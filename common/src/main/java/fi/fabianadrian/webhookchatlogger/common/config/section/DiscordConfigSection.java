@@ -11,13 +11,6 @@ public interface DiscordConfigSection {
 	@ConfDefault.DefaultString("")
 	String token();
 
-	@ConfDefault.DefaultString("MESSAGE")
-	@ConfComments({
-			"Possible values:",
-			"EMBED_COMPACT, EMBED_PRETTY, MESSAGE"
-	})
-	MessageStyle messageStyle();
-
 	@ConfDefault.DefaultString("**%1$s > ** %2$s")
 	@ConfComments({
 			"Placeholders:",
@@ -28,8 +21,4 @@ public interface DiscordConfigSection {
 
 	@ConfDefault.DefaultInteger(5)
 	int sendRate();
-
-	enum MessageStyle {
-		EMBED, EMBED_PRETTY, NORMAL
-	}
 }
