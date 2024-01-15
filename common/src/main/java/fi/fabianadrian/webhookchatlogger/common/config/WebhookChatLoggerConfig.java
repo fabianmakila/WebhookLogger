@@ -8,14 +8,12 @@ import space.arim.dazzleconf.annote.SubSection;
 
 
 public interface WebhookChatLoggerConfig {
-    @ConfDefault.DefaultString("<author_name>: <message>")
+    @ConfDefault.DefaultString("[<timestamp>] <author_name>: <message>")
     @ConfComments({
             "Which format logged messages will use. Supports MiniMessage.",
             "Keep in mind that not all webhooks support all features e.g. colors.",
             "Available placeholders:",
-            "<author_name> - Author's name",
-            "<author_display_name> - Author's display name",
-            "<message> - Message message"
+            "<author_name>, <author_display_name>, <message>, <timestamp>"
     })
     String messageFormat();
 
