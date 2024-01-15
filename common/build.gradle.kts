@@ -11,7 +11,7 @@ dependencies {
     // Webhook clients
     implementation(libs.client.discord)
 
-    // Libraries
+    // External libraries
     implementation(libs.dazzleconf) {
         exclude("org.yaml")
     }
@@ -21,8 +21,11 @@ dependencies {
 
     // These are provided by the platforms
     compileOnly(libs.adventure)
+    compileOnly(libs.minimessage)
     compileOnly(libs.slf4j)
     compileOnly(libs.snakeyaml)
+
+    compileOnly(libs.miniplaceholders)
 }
 
 indra {

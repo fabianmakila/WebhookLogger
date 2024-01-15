@@ -24,13 +24,7 @@ public final class ChatListener implements Listener {
             return;
         }
 
-        Player player = event.getPlayer();
-        Message message = new Message(
-            player.getUniqueId(),
-            player.getName(),
-            event.message()
-        );
-
+        Message message = new Message(event.getPlayer(), event.message());
         this.wcl.clientManager().log(message);
     }
 }

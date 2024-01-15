@@ -1,10 +1,9 @@
 package fi.fabianadrian.webhookchatlogger.common.client;
 
-import fi.fabianadrian.webhookchatlogger.common.Message;
+import net.kyori.adventure.text.Component;
 
 public interface WebhookClient {
+	void send(Component component);
 
-    void log(Message message);
-
-    void reload();
+	void reload();
 }

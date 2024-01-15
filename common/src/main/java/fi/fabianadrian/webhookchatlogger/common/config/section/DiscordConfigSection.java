@@ -3,7 +3,18 @@ package fi.fabianadrian.webhookchatlogger.common.config.section;
 import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfDefault;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public interface DiscordConfigSection {
+
+	static Map<String, String> defaultTextReplacements() {
+		Map<String, String> replacementMap = new HashMap<>();
+		replacementMap.put("@", "(at)");
+		replacementMap.put("#", "(hashtag)");
+		return replacementMap;
+	}
+
 	@ConfComments("Discord webhook's ID.")
 	@ConfDefault.DefaultString("")
 	String id();
@@ -12,14 +23,6 @@ public interface DiscordConfigSection {
 	@ConfDefault.DefaultString("")
 	String token();
 
-	@ConfDefault.DefaultString("<author>: <message>")
-	@ConfComments({
-			"Placeholders:",
-			"<author> - Author's name",
-			"<message> - Message content"
-	})
-	String messageFormat();
-
 	@ConfComments({
 			"How often to send messages (in seconds).",
 			"Should be a value between 1 and 10.",
@@ -27,4 +30,7 @@ public interface DiscordConfigSection {
 	})
 	@ConfDefault.DefaultInteger(5)
 	int sendRate();
+
+	@ConfDefault.DefaultObject("defaultTextReplacements")
+	Map<String, String> textReplacements();
 }

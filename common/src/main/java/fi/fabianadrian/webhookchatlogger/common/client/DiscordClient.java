@@ -1,7 +1,6 @@
 package fi.fabianadrian.webhookchatlogger.common.client;
 
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
-import fi.fabianadrian.webhookchatlogger.common.Message;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import fi.fabianadrian.webhookchatlogger.common.config.section.DiscordConfigSection;
 import io.github._4drian3d.jdwebhooks.WebHook;
@@ -11,13 +10,14 @@ import net.kyori.adventure.text.Component;
 import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class DiscordClient implements WebhookClient {
-	private final List<Message> messageBuffer = new LinkedList<>();
+	private final List<Component> messageBuffer = new LinkedList<>();
 	private final WebhookChatLogger wcl;
 	private WebHookClient client;
 	private DiscordConfigSection config;
@@ -28,7 +28,7 @@ public class DiscordClient implements WebhookClient {
 	}
 
 	@Override
-	public void log(Message message) {
+	public void send(Component message) {
 		if (this.scheduledSendMessageTask == null) {
 			return;
 		}
@@ -56,23 +56,21 @@ public class DiscordClient implements WebhookClient {
 
 	private Runnable sendMessageTask() {
 		return () -> {
-			List<Message> messages = this.messageBuffer;
+			List<Component> messages = this.messageBuffer;
 
 			if (this.messageBuffer.isEmpty()) {
 				return;
 			}
 
-			String messageFormat = this.config.messageFormat();
 			StringJoiner joiner = new StringJoiner("\n");
+			this.messageBuffer.forEach(message -> joiner.add(DiscordSerializer.INSTANCE.serialize(message)));
 
-			this.messageBuffer.forEach(message -> {
-				String formattedMessage = messageFormat
-						.replaceAll("<author>", message.authorName())
-						.replaceAll("<message>", serializeComponent(message.content()));
-				joiner.add(formattedMessage);
-			});
+			String webhookContent = joiner.toString();
+			for (Map.Entry<String, String> entry : this.config.textReplacements().entrySet()) {
+				webhookContent = webhookContent.replaceAll(entry.getKey(), entry.getValue());
+			}
 
-			WebHook webHook = WebHook.builder().content(joiner.toString()).build();
+			WebHook webHook = WebHook.builder().content(webhookContent).build();
 			CompletableFuture<HttpResponse<String>> future = this.client.sendWebHook(webHook);
 
 			future.thenAccept(response -> this.messageBuffer.removeAll(messages)).exceptionally(ex -> {
@@ -80,11 +78,5 @@ public class DiscordClient implements WebhookClient {
 				return null;
 			});
 		};
-	}
-
-	private String serializeComponent(Component component) {
-		String serialized = DiscordSerializer.INSTANCE.serialize(component);
-		serialized = serialized.replaceAll("@", "(at)");
-		return serialized;
 	}
 }
