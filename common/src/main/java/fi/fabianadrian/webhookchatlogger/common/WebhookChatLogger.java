@@ -6,11 +6,14 @@ import fi.fabianadrian.webhookchatlogger.common.config.WebhookChatLoggerConfig;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class WebhookChatLogger {
 	private final Logger logger;
 	private final ConfigManager<WebhookChatLoggerConfig> configManager;
 	private final ClientManager clientManager;
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 	public WebhookChatLogger(Logger logger, Path dataFolder) {
 		this.logger = logger;
@@ -23,6 +26,7 @@ public class WebhookChatLogger {
 		this.configManager.reload();
 
 		this.clientManager = new ClientManager(this);
+		this.clientManager.reload();
 	}
 
 	public void reload() {
@@ -31,7 +35,7 @@ public class WebhookChatLogger {
 	}
 
 	public void shutdown() {
-		this.clientManager.shutdown();
+		this.scheduler.shutdown();
 	}
 
 	public WebhookChatLoggerConfig config() {
@@ -44,5 +48,9 @@ public class WebhookChatLogger {
 
 	public ClientManager clientManager() {
 		return this.clientManager;
+	}
+
+	public ScheduledExecutorService scheduler() {
+		return this.scheduler;
 	}
 }

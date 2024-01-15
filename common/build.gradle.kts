@@ -9,13 +9,14 @@ description = rootProject.description
 
 dependencies {
     // Webhook clients
-    implementation(libs.client.discord) {
-
-    }
+    implementation(libs.client.discord)
 
     // Libraries
     implementation(libs.dazzleconf) {
         exclude("org.yaml")
+    }
+    implementation(libs.mcdiscordserializer) {
+        exclude("net.kyori")
     }
 
     // These are provided by the platforms

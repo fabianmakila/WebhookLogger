@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.indra)
-    alias(libs.plugins.minotaur)
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginYml)
     java
@@ -28,11 +27,12 @@ tasks {
     shadowJar {
         minimize()
         sequenceOf(
-            "io.github.4adrian3d",
-            "com.google.code.gson",
+            "io.github._4drian3d.jdwebhooks",
+            "com.google.gson",
             "org.bstats",
             "org.json",
-            "space.arim"
+            "space.arim",
+            "dev.vankka.mcdiscordreserializer"
         ).forEach { pkg ->
             relocate(pkg, "fi.fabianadrian.webhookchatlogger.dependency.$pkg")
         }
