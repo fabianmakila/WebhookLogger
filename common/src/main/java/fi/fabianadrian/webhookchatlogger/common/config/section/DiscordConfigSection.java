@@ -13,18 +13,18 @@ public interface DiscordConfigSection {
 	String token();
 
 	@ConfDefault.DefaultString("<author>: <message>")
-	@ConfComments("""
-			Placeholders:
-			<author> - Author's name
-			<message> - Message content
-			""")
+	@ConfComments({
+			"Placeholders:",
+			"<author> - Author's name",
+			"<message> - Message content"
+	})
 	String messageFormat();
 
-	@ConfComments("""
-			How often to send messages (in seconds).
-			Should be a value between 1 and 10.
-			The default value is 5.
-			""")
+	@ConfComments({
+			"How often to send messages (in seconds).",
+			"Should be a value between 1 and 10.",
+			"The default value is 5."
+	})
 	@ConfDefault.DefaultInteger(5)
 	int sendRate();
 }
