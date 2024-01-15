@@ -1,23 +1,14 @@
 plugins {
-    alias(libs.plugins.indra)
+    id("webhookchatlogger.java-conventions")
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginYml)
-    java
 }
-
-group = rootProject.group
-version = rootProject.version
-description = rootProject.description
 
 dependencies {
     implementation(project(":common"))
     compileOnly(libs.platform.paper)
 
     implementation(libs.bstats.bukkit)
-}
-
-indra {
-    javaVersions().target(17)
 }
 
 tasks {

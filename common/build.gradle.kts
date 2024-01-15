@@ -1,11 +1,6 @@
 plugins {
-    alias(libs.plugins.indra)
-    java
+    id("webhookchatlogger.java-conventions")
 }
-
-group = rootProject.group
-version = rootProject.version
-description = rootProject.description
 
 dependencies {
     // Webhook clients
@@ -26,8 +21,4 @@ dependencies {
     compileOnly(libs.snakeyaml)
 
     compileOnly(libs.miniplaceholders)
-}
-
-indra {
-    javaVersions().target(17)
 }

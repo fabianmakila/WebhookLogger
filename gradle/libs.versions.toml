@@ -22,6 +22,6 @@ snakeyaml = { module = "org.yaml:snakeyaml", version = "2.2" }
 mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.3.0" }
 
 [plugins]
-indra = { id = "net.kyori.indra", version = "3.0.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
 pluginYml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.5.3" }

@@ -15,29 +15,29 @@ import java.util.List;
 
 public class RootCommandExecutor implements CommandExecutor, TabExecutor {
 
-    private final WebhookChatLogger wcl;
+	private final WebhookChatLogger wcl;
 
-    public RootCommandExecutor(WebhookChatLoggerPlugin plugin) {
-        this.wcl = plugin.wcl();
-    }
+	public RootCommandExecutor(WebhookChatLoggerPlugin plugin) {
+		this.wcl = plugin.wcl();
+	}
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length == 0) {
-            return false;
-        }
+	@Override
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+		if (args.length == 0) {
+			return false;
+		}
 
-        if ("reload".equalsIgnoreCase(args[0])) {
-            this.wcl.reload();
-            sender.sendMessage(Component.text("Reload complete!", NamedTextColor.GREEN));
-            return true;
-        }
+		if ("reload".equalsIgnoreCase(args[0])) {
+			this.wcl.reload();
+			sender.sendMessage(Component.text("Reload complete!", NamedTextColor.GREEN));
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("reload");
-    }
+	@Override
+	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+		return List.of("reload");
+	}
 }
