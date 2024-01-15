@@ -41,6 +41,7 @@ public class ClientManager {
 					this.messageFormat,
 					Placeholder.unparsed("author_name", authorName),
 					Placeholder.component("author_display_name", authorDisplayName),
+					Placeholder.component("message", message.message()),
 					MiniPlaceholders.getAudiencePlaceholders(message.author())
 			);
 		}
@@ -48,7 +49,8 @@ public class ClientManager {
 		return this.miniMessage.deserialize(
 				this.messageFormat,
 				Placeholder.unparsed("author_name", authorName),
-				Placeholder.component("author_display_name", authorDisplayName)
+				Placeholder.component("author_display_name", authorDisplayName),
+				Placeholder.component("message", message.message())
 		);
 	}
 }
