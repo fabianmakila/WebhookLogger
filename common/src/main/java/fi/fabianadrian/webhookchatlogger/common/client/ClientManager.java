@@ -7,12 +7,8 @@ import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientManager {
 	private final WebhookChatLogger wcl;
@@ -22,7 +18,6 @@ public class ClientManager {
 
 	public ClientManager(WebhookChatLogger wcl) {
 		this.wcl = wcl;
-
 		this.discordClient = new DiscordClient(wcl);
 	}
 
@@ -33,7 +28,6 @@ public class ClientManager {
 
 	public void reload() {
 		this.messageFormat = this.wcl.config().messageFormat();
-
 		this.discordClient.reload();
 	}
 
