@@ -8,16 +8,17 @@ import io.github._4drian3d.jdwebhooks.WebHookClient;
 import net.kyori.adventure.text.Component;
 
 import java.net.http.HttpResponse;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class DiscordClient implements WebhookClient {
-	private final List<Component> messageBuffer = new LinkedList<>();
+	private final Queue<Component> messageBuffer = new ConcurrentLinkedQueue<>();
 	private final WebhookChatLogger wcl;
 	private WebHookClient client;
 	private DiscordConfigSection config;
@@ -56,21 +57,30 @@ public class DiscordClient implements WebhookClient {
 
 	private Runnable sendMessageTask() {
 		return () -> {
-			List<Component> messages = this.messageBuffer;
+			// Copy messageBuffer
+			List<Component> messages = List.copyOf(this.messageBuffer);
 
+			// If empty don't run
 			if (this.messageBuffer.isEmpty()) {
 				return;
 			}
 
+			// Joiner adds newlines
 			StringJoiner joiner = new StringJoiner("\n");
-			this.messageBuffer.forEach(message -> joiner.add(DiscordSerializer.INSTANCE.serialize(message)));
+			messages.forEach(message -> joiner.add(DiscordSerializer.INSTANCE.serialize(message)));
 
+			// Joiner -> Combined string
 			String webhookContent = joiner.toString();
+
+			// Replacements defined in config
 			for (Map.Entry<String, String> entry : this.config.textReplacements().entrySet()) {
 				webhookContent = webhookContent.replaceAll(entry.getKey(), entry.getValue());
 			}
 
+			// Construct webhook
 			WebHook webHook = WebHook.builder().content(webhookContent).build();
+
+			// Construct future
 			CompletableFuture<HttpResponse<String>> future = this.client.sendWebHook(webHook);
 
 			future.thenAccept(response -> this.messageBuffer.removeAll(messages)).exceptionally(ex -> {
