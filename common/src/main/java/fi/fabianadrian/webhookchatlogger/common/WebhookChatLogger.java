@@ -3,6 +3,7 @@ package fi.fabianadrian.webhookchatlogger.common;
 import fi.fabianadrian.webhookchatlogger.common.client.ClientManager;
 import fi.fabianadrian.webhookchatlogger.common.config.ConfigManager;
 import fi.fabianadrian.webhookchatlogger.common.config.WebhookChatLoggerConfig;
+import fi.fabianadrian.webhookchatlogger.common.dependency.DependencyManager;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ public class WebhookChatLogger {
 	private final ConfigManager<WebhookChatLoggerConfig> configManager;
 	private final ClientManager clientManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+	private final DependencyManager dependencyManager = new DependencyManager();
 
 	public WebhookChatLogger(Logger logger, Path dataFolder) {
 		this.logger = logger;
@@ -52,5 +54,9 @@ public class WebhookChatLogger {
 
 	public ScheduledExecutorService scheduler() {
 		return this.scheduler;
+	}
+
+	public DependencyManager dependencyManager() {
+		return this.dependencyManager;
 	}
 }
