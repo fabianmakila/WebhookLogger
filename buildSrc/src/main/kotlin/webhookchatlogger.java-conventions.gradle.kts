@@ -1,5 +1,5 @@
 plugins {
-	`java-library`
+	java
 	id("com.diffplug.spotless")
 }
 

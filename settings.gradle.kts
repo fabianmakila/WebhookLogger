@@ -2,7 +2,8 @@ rootProject.name = "WebhookChatLogger"
 
 sequenceOf(
     "common",
-    "paper"
+    "paper",
+    "sponge10"
 ).forEach { include(it) }
 
 dependencyResolutionManagement {
@@ -10,5 +11,6 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.spongepowered.org/repository/maven-public/")
     }
 }

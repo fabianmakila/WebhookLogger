@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhookchatlogger.paper.command;
 
-import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPlugin;
+import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPaper;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,7 +17,7 @@ public class RootCommandExecutor implements CommandExecutor, TabExecutor {
 
 	private final WebhookChatLogger wcl;
 
-	public RootCommandExecutor(WebhookChatLoggerPlugin plugin) {
+	public RootCommandExecutor(WebhookChatLoggerPaper plugin) {
 		this.wcl = plugin.wcl();
 	}
 

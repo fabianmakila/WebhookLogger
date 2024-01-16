@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.stream.Stream;
 
-public final class WebhookChatLoggerPlugin extends JavaPlugin {
+public final class WebhookChatLoggerPaper extends JavaPlugin {
 	private WebhookChatLogger wcl;
 
 	@Override
