@@ -2,6 +2,7 @@ package fi.fabianadrian.webhookchatlogger.common.client;
 
 import fi.fabianadrian.webhookchatlogger.common.Message;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhookchatlogger.common.config.WebhookChatLoggerConfig;
 import fi.fabianadrian.webhookchatlogger.common.dependency.Dependency;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.identity.Identity;
@@ -10,15 +11,13 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ClientManager {
 	private final WebhookChatLogger wcl;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final DiscordClient discordClient;
-	private String messageFormat;
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	private WebhookChatLoggerConfig config;
 
 	public ClientManager(WebhookChatLogger wcl) {
 		this.wcl = wcl;
@@ -31,7 +30,7 @@ public class ClientManager {
 	}
 
 	public void reload() {
-		this.messageFormat = this.wcl.config().messageFormat();
+		this.config = this.wcl.config();
 		this.discordClient.reload();
 	}
 
@@ -39,7 +38,7 @@ public class ClientManager {
 		String authorName = message.author().getOrDefault(Identity.NAME, "unknown author");
 		Component authorDisplayName = message.author().getOrDefault(Identity.DISPLAY_NAME, Component.text(authorName));
 
-		String timestamp = this.dateFormat.format(new Date());
+		String timestamp = this.config.timestampFormat().format(new Date());
 
 		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
 				Placeholder.unparsed("author_name", authorName),
@@ -53,7 +52,7 @@ public class ClientManager {
 		}
 
 		return this.miniMessage.deserialize(
-				this.messageFormat,
+				this.config.messageFormat(),
 				resolverBuilder.build()
 		);
 	}

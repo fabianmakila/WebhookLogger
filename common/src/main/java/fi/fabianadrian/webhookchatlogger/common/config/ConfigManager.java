@@ -1,5 +1,6 @@
 package fi.fabianadrian.webhookchatlogger.common.config;
 
+import fi.fabianadrian.webhookchatlogger.common.config.serializer.SimpleDateFormatSerializer;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -29,20 +30,22 @@ public final class ConfigManager<C> {
 	public static <C> ConfigManager<C> create(Path configFolder, String fileName, Class<C> configClass, Logger logger) {
 		// SnakeYaml example
 		SnakeYamlOptions yamlOptions = new SnakeYamlOptions.Builder()
-			.yamlSupplier(() -> {
-				DumperOptions dumperOptions = new DumperOptions();
-				// Enables comments
-				dumperOptions.setProcessComments(true);
-				dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-				return new Yaml(dumperOptions);
-			})
-			.commentMode(CommentMode.fullComments())
-			.build();
+				.yamlSupplier(() -> {
+					DumperOptions dumperOptions = new DumperOptions();
+					// Enables comments
+					dumperOptions.setProcessComments(true);
+					dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+					return new Yaml(dumperOptions);
+				})
+				.commentMode(CommentMode.fullComments())
+				.build();
+
+		ConfigurationOptions options = new ConfigurationOptions.Builder().addSerialiser(new SimpleDateFormatSerializer()).build();
 
 		ConfigurationFactory<C> configFactory = SnakeYamlConfigurationFactory.create(
-			configClass,
-			ConfigurationOptions.defaults(),
-			yamlOptions
+				configClass,
+				options,
+				yamlOptions
 		);
 		return new ConfigManager<>(new ConfigurationHelper<>(configFolder, fileName, configFactory), logger);
 	}
@@ -56,16 +59,16 @@ public final class ConfigManager<C> {
 		} catch (ConfigFormatSyntaxException ex) {
 			configData = configHelper.getFactory().loadDefaults();
 			this.logger.error(
-				"The yaml syntax in your configuration is invalid. " +
-					"Check your YAML syntax with a tool such as https://yaml-online-parser.appspot.com/",
-				ex
+					"The yaml syntax in your configuration is invalid. " +
+							"Check your YAML syntax with a tool such as https://yaml-online-parser.appspot.com/",
+					ex
 			);
 		} catch (InvalidConfigException ex) {
 			configData = configHelper.getFactory().loadDefaults();
 			this.logger.error(
-				"One of the values in your configuration is not valid. " +
-					"Check to make sure you have specified the right data types.",
-				ex
+					"One of the values in your configuration is not valid. " +
+							"Check to make sure you have specified the right data types.",
+					ex
 			);
 		}
 	}

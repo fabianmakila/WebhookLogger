@@ -6,6 +6,8 @@ import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.annote.ConfKey;
 import space.arim.dazzleconf.annote.SubSection;
 
+import java.text.SimpleDateFormat;
+
 
 public interface WebhookChatLoggerConfig {
 	@ConfDefault.DefaultString("[<timestamp>] <author_name>: <message>")
@@ -16,6 +18,12 @@ public interface WebhookChatLoggerConfig {
 			"<author_name>, <author_display_name>, <message>, <timestamp>"
 	})
 	String messageFormat();
+
+	@ConfDefault.DefaultString("HH:mm:ss")
+	@ConfComments({
+			"Format for the <timestamp> placeholder."
+	})
+	SimpleDateFormat timestampFormat();
 
 	@ConfDefault.DefaultBoolean(true)
 	@ConfComments("Whether cancelled chat messages should be sent to the webhook.")
