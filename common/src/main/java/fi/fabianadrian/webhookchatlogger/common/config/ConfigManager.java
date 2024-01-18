@@ -12,6 +12,7 @@ import space.arim.dazzleconf.ext.snakeyaml.CommentMode;
 import space.arim.dazzleconf.ext.snakeyaml.SnakeYamlConfigurationFactory;
 import space.arim.dazzleconf.ext.snakeyaml.SnakeYamlOptions;
 import space.arim.dazzleconf.helper.ConfigurationHelper;
+import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -40,7 +41,10 @@ public final class ConfigManager<C> {
 				.commentMode(CommentMode.fullComments())
 				.build();
 
-		ConfigurationOptions options = new ConfigurationOptions.Builder().addSerialiser(new SimpleDateFormatSerializer()).build();
+		ConfigurationOptions options = new ConfigurationOptions.Builder()
+				.addSerialiser(new SimpleDateFormatSerializer())
+				.sorter(new AnnotationBasedSorter())
+				.build();
 
 		ConfigurationFactory<C> configFactory = SnakeYamlConfigurationFactory.create(
 				configClass,
