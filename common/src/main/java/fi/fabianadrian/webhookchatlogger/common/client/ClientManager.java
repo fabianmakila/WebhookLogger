@@ -48,7 +48,7 @@ public class ClientManager {
 		);
 
 		if (this.wcl.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudiencePlaceholders(message.author()));
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(message.author()));
 		}
 
 		return this.miniMessage.deserialize(
