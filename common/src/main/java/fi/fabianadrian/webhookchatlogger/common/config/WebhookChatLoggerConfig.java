@@ -14,7 +14,7 @@ public interface WebhookChatLoggerConfig {
 	@AnnotationBasedSorter.Order(0)
 	@ConfDefault.DefaultString("[<timestamp>] <author_name>: <message>")
 	@ConfComments({
-			"Which format logged messages will use. Supports MiniMessage.",
+			"Which format logged messages will use. Supports MiniMessage and MiniPlaceholders.",
 			"Keep in mind that not all webhooks support all features e.g. colors.",
 			"Available placeholders:",
 			"<author_name>, <author_display_name>, <message>, <timestamp>"

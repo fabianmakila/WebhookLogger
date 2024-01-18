@@ -22,7 +22,7 @@ public interface DiscordConfigSection {
 	String id();
 
 	@AnnotationBasedSorter.Order(1)
-	@ConfComments("Dicsord webhook's secret token.")
+	@ConfComments("Discord webhook's secret token.")
 	@ConfDefault.DefaultString("")
 	String token();
 
