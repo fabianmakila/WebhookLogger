@@ -11,13 +11,16 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class ClientManager {
 	private final WebhookChatLogger wcl;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final DiscordClient discordClient;
 	private WebhookChatLoggerConfig config;
+	private DateTimeFormatter dateTimeFormatter;
 
 	public ClientManager(WebhookChatLogger wcl) {
 		this.wcl = wcl;
@@ -32,18 +35,25 @@ public class ClientManager {
 	public void reload() {
 		this.config = this.wcl.config();
 		this.discordClient.reload();
+
+		String pattern = this.config.placeholders().timestampFormat();
+		ZoneId zoneId = this.config.placeholders().timeZone();
+		this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern).withZone(zoneId);
 	}
 
 	private Component parseMessage(Message message) {
 		String authorName = message.author().getOrDefault(Identity.NAME, "unknown author");
 		Component authorDisplayName = message.author().getOrDefault(Identity.DISPLAY_NAME, Component.text(authorName));
 
-		String timestamp = this.config.timestampFormat().format(new Date());
+		String timestamp = this.dateTimeFormatter.format(Instant.now());
+
+		String cancelled = message.cancelled() ? this.config.placeholders().cancelled() : "";
 
 		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
 				Placeholder.unparsed("author_name", authorName),
 				Placeholder.component("author_display_name", authorDisplayName),
 				Placeholder.component("message", message.message()),
+				Placeholder.unparsed("cancelled", cancelled),
 				Placeholder.unparsed("timestamp", timestamp)
 		);
 

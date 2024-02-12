@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhookchatlogger.common.config;
 
-import fi.fabianadrian.webhookchatlogger.common.config.serializer.SimpleDateFormatSerializer;
+import fi.fabianadrian.webhookchatlogger.common.config.serializer.ZoneIdSerializer;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -42,7 +42,7 @@ public final class ConfigManager<C> {
 				.build();
 
 		ConfigurationOptions options = new ConfigurationOptions.Builder()
-				.addSerialiser(new SimpleDateFormatSerializer())
+				.addSerialiser(new ZoneIdSerializer())
 				.sorter(new AnnotationBasedSorter())
 				.build();
 

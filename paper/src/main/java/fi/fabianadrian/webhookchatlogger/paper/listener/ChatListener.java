@@ -22,7 +22,7 @@ public final class ChatListener implements Listener {
 			return;
 		}
 
-		Message message = new Message(event.getPlayer(), event.message());
+		Message message = new Message(event.getPlayer(), event.message(), event.isCancelled());
 		this.wcl.clientManager().send(message);
 	}
 }
