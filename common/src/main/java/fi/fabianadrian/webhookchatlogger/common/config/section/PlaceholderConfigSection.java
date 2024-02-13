@@ -21,7 +21,7 @@ public interface PlaceholderConfigSection {
 			"The timezone used in <timestamp> placeholder.",
 			"Set to 'default' to use the server timezone."
 	})
-	ZoneId timeZone();
+	ZoneId timestampTimezone();
 
 	@AnnotationBasedSorter.Order(2)
 	@ConfDefault.DefaultString("[Cancelled] ")

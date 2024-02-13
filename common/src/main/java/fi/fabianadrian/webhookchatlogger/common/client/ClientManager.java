@@ -37,7 +37,7 @@ public class ClientManager {
 		this.discordClient.reload();
 
 		String pattern = this.config.placeholders().timestampFormat();
-		ZoneId zoneId = this.config.placeholders().timeZone();
+		ZoneId zoneId = this.config.placeholders().timestampTimezone();
 		this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern).withZone(zoneId);
 	}
 
