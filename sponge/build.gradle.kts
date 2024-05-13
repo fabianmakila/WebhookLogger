@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.platform.sponge)
+    implementation(libs.slf4j)
 }
 
 sponge {
