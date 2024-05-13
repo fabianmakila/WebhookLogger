@@ -11,6 +11,6 @@ public final class LoggableCommand extends Loggable {
 	}
 
 	public String command() {
-		return command;
+		return this.command.startsWith("/") ? this.command : "/" + this.command;
 	}
 }

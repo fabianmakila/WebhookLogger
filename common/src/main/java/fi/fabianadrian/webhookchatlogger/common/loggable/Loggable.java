@@ -18,7 +18,7 @@ public abstract class Loggable {
 	}
 
 	public String senderName() {
-		return sender.getOrDefault(Identity.NAME, "unknown");
+		return sender.getOrDefault(Identity.NAME, "console");
 	}
 
 	public Component senderDisplayName() {
