@@ -1,13 +1,13 @@
 [versions]
 bstats = "3.0.2"
-adventure = "4.15.0"
+adventure = "4.17.0"
 
 [libraries]
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
 
 # Platforms
 platform-paper = { module = "io.papermc.paper:paper-api", version = "1.20.4-R0.1-SNAPSHOT" }
-platform-sponge10 = { module = "org.spongepowered:spongeapi", version = "10.0.0" }
+platform-sponge = { module = "org.spongepowered:spongeapi", version = "10.0.0" }
 
 # Webhook clients
 client-discord = { module = "io.github.4drian3d:jdwebhooks", version = "1.0.1" }
@@ -24,6 +24,6 @@ mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
-spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
+spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.25.0" }
 pluginYml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
-sponge = { id = "org.spongepowered.gradle.plugin", version = "2.0.2" }
+sponge = { id = "org.spongepowered.gradle.plugin", version = "2.2.0" }

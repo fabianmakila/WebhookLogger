@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(libs.platform.sponge10)
+    compileOnly(libs.platform.sponge)
 }
 
 sponge {
