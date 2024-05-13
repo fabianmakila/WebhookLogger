@@ -3,7 +3,7 @@ rootProject.name = "WebhookChatLogger"
 sequenceOf(
     "common",
     "paper",
-    "sponge10"
+    "sponge"
 ).forEach { include(it) }
 
 dependencyResolutionManagement {
