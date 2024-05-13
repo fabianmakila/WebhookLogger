@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RootCommandExecutor implements CommandExecutor, TabExecutor {
+public final class RootCommandExecutor implements CommandExecutor, TabExecutor {
 
 	private final WebhookChatLogger wcl;
 
@@ -37,7 +37,7 @@ public class RootCommandExecutor implements CommandExecutor, TabExecutor {
 	}
 
 	@Override
-	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+	public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 		return List.of("reload");
 	}
 }

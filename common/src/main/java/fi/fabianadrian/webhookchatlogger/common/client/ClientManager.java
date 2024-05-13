@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-public class ClientManager {
+public final class ClientManager {
 	private final WebhookChatLogger wcl;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final DiscordClient discordClient;

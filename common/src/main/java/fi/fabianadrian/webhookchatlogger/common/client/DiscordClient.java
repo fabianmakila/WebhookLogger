@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class DiscordClient implements WebhookClient {
+public final class DiscordClient implements WebhookClient {
 	private final Queue<Component> messageBuffer = new ConcurrentLinkedQueue<>();
 	private final WebhookChatLogger wcl;
 	private WebHookClient client;

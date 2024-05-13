@@ -7,7 +7,7 @@ import space.arim.dazzleconf.serialiser.ValueSerialiser;
 
 import java.time.ZoneId;
 
-public class ZoneIdSerializer implements ValueSerialiser<ZoneId> {
+public final class ZoneIdSerializer implements ValueSerialiser<ZoneId> {
 	@Override
 	public Class<ZoneId> getTargetClass() {
 		return ZoneId.class;

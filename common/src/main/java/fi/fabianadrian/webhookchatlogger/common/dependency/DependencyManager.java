@@ -3,7 +3,7 @@ package fi.fabianadrian.webhookchatlogger.common.dependency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DependencyManager {
+public final class DependencyManager {
 	private final List<Dependency> presentDependenciesList = new ArrayList<>();
 
 	public boolean isPresent(Dependency dependency) {

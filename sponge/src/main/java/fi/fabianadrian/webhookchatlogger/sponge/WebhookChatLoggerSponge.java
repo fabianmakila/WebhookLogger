@@ -1,13 +1,13 @@
-package fi.fabianadrian.webhookchatlogger.sponge10;
+package fi.fabianadrian.webhookchatlogger.sponge;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import org.spongepowered.plugin.builtin.jvm.Plugin;
 
 @Plugin("webhookchatlogger")
-public class WebhookChatLoggerSponge10 {
+public class WebhookChatLoggerSponge {
 	private WebhookChatLogger wcl;
 
-	public WebhookChatLoggerSponge10() {
+	public WebhookChatLoggerSponge() {
 
 	}
 }
