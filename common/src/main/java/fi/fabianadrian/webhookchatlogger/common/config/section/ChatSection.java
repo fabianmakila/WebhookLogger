@@ -11,7 +11,7 @@ public interface ChatSection {
 	boolean enabled();
 
 	@AnnotationBasedSorter.Order(1)
-	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <author_name>: <message>")
+	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <sender_name>: <message>")
 	@ConfComments({
 			"The webhook format for chat messages. Supports MiniMessage and MiniPlaceholders.",
 			"Keep in mind that not all webhooks support all features e.g. colors.",

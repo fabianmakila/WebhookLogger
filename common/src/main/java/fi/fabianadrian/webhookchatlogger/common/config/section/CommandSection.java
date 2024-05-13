@@ -11,7 +11,7 @@ public interface CommandSection {
 	boolean enabled();
 
 	@AnnotationBasedSorter.Order(1)
-	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <author_name>: <message>")
+	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <sender_name>: <command>")
 	@ConfComments({
 			"The webhook format for executed commands. Supports MiniMessage and MiniPlaceholders.",
 			"Keep in mind that not all webhooks support all features e.g. colors.",

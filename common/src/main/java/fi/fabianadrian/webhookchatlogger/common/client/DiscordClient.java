@@ -44,11 +44,11 @@ public final class DiscordClient implements WebhookClient {
 		}
 
 		this.config = this.wcl.config().discordSection();
-		if (this.config.id().isBlank() || this.config.token().isBlank()) {
+		if (this.config.url().isBlank()) {
 			return;
 		}
 
-		this.client = WebHookClient.from(this.config.id(), this.config.token());
+		this.client = WebHookClient.fromURL(this.config.url());
 		//TODO Test here that the client actually works and only after that proceed
 
 		Runnable sendMessageTask = sendMessageTask();
@@ -84,7 +84,7 @@ public final class DiscordClient implements WebhookClient {
 			CompletableFuture<HttpResponse<String>> future = this.client.sendWebHook(webHook);
 
 			future.thenAccept(response -> this.messageBuffer.removeAll(messages)).exceptionally(ex -> {
-				this.wcl.logger().warn("Error sending webhook: " + ex.getMessage());
+				this.wcl.logger().warn("Error sending webhook: {}", ex.getMessage());
 				return null;
 			});
 		};

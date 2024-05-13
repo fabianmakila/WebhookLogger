@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import fi.fabianadrian.webhookchatlogger.sponge.listener.ChatListener;
 import fi.fabianadrian.webhookchatlogger.sponge.listener.CommandListener;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;

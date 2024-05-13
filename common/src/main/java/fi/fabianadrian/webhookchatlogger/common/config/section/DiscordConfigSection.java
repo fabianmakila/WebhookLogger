@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface DiscordConfigSection {
-
 	static Map<String, String> defaultTextReplacements() {
 		Map<String, String> replacementMap = new HashMap<>();
 		replacementMap.put("@", "(at)");
@@ -17,16 +16,11 @@ public interface DiscordConfigSection {
 	}
 
 	@AnnotationBasedSorter.Order(0)
-	@ConfComments("Discord webhook's ID.")
+	@ConfComments("The URL for the Discord webhook.")
 	@ConfDefault.DefaultString("")
-	String id();
+	String url();
 
 	@AnnotationBasedSorter.Order(1)
-	@ConfComments("Discord webhook's secret token.")
-	@ConfDefault.DefaultString("")
-	String token();
-
-	@AnnotationBasedSorter.Order(2)
 	@ConfComments({
 			"How often to send messages (in seconds).",
 			"Should be a value between 1 and 10.",
@@ -35,7 +29,7 @@ public interface DiscordConfigSection {
 	@ConfDefault.DefaultInteger(5)
 	int sendRate();
 
-	@AnnotationBasedSorter.Order(3)
+	@AnnotationBasedSorter.Order(2)
 	@ConfDefault.DefaultObject("defaultTextReplacements")
 	Map<String, String> textReplacements();
 }
