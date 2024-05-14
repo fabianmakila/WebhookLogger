@@ -11,7 +11,7 @@ public interface JoinQuitEventConfig {
 	boolean enabled();
 
 	@AnnotationBasedSorter.Order(1)
-	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <audience_name> joined the game")
+	@ConfDefault.DefaultString("[<timestamp>] <message>")
 	@ConfComments({
 			"The webhook format for when a player joins or quits. Supports MiniMessage and MiniPlaceholders.",
 			"Keep in mind that not all webhooks support all features e.g. colors.",
