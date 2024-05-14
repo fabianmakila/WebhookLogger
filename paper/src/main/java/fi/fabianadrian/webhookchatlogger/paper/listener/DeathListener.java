@@ -22,7 +22,7 @@ public final class DeathListener implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 		DeathEventConfig config = this.wcl.eventsConfig().death();
 
-		if (!config.cancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 

@@ -21,5 +21,5 @@ public interface DeathEventConfig {
 	@AnnotationBasedSorter.Order(2)
 	@ConfDefault.DefaultBoolean(false)
 	@ConfComments("Whether cancelled death events will be logged.")
-	boolean cancelled();
+	boolean logCancelled();
 }
