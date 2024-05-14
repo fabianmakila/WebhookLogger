@@ -26,12 +26,12 @@ public interface CommandEventConfig {
 	boolean logCancelled();
 
 	@AnnotationBasedSorter.Order(3)
-	@ConfDefault.DefaultBoolean(true)
+	@ConfDefault.DefaultBoolean(false)
 	@ConfComments("Whether console commands will be logged.")
 	boolean logConsole();
 
 	@AnnotationBasedSorter.Order(4)
-	@ConfDefault.DefaultBoolean(true)
+	@ConfDefault.DefaultBoolean(false)
 	@ConfComments("Whether other entities commands will be logged.")
 	boolean logOther();
 }
