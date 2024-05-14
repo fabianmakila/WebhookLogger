@@ -1,8 +1,9 @@
 package fi.fabianadrian.webhookchatlogger.sponge.listener;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.common.loggable.LoggableCommand;
+import fi.fabianadrian.webhookchatlogger.common.event.CommandEventComponentBuilder;
 import fi.fabianadrian.webhookchatlogger.sponge.WebhookChatLoggerSponge;
+import net.kyori.adventure.text.Component;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.command.ExecuteCommandEvent;
@@ -23,7 +24,10 @@ public class CommandListener {
 			return;
 		}
 
-		LoggableCommand command = new LoggableCommand(playerOptional.get(), event.command(), false);
-		this.wcl.clientManager().send(command);
+		Component component = new CommandEventComponentBuilder(this.wcl)
+				.audience(playerOptional.get())
+				.command(event.command())
+				.build();
+		this.wcl.clientManager().send(component);
 	}
 }

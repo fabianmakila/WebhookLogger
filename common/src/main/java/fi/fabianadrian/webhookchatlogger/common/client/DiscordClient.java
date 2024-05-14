@@ -43,7 +43,7 @@ public final class DiscordClient implements WebhookClient {
 			this.scheduledSendMessageTask.cancel(false);
 		}
 
-		this.config = this.wcl.config().discordSection();
+		this.config = this.wcl.mainConfig().discord();
 		if (this.config.url().isBlank()) {
 			return;
 		}

@@ -1,9 +1,10 @@
 package fi.fabianadrian.webhookchatlogger.paper.listener;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.common.config.section.CommandSection;
-import fi.fabianadrian.webhookchatlogger.common.loggable.LoggableCommand;
+import fi.fabianadrian.webhookchatlogger.common.config.event.CommandEventConfig;
+import fi.fabianadrian.webhookchatlogger.common.event.CommandEventComponentBuilder;
 import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPaper;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,25 +20,37 @@ public final class CommandListener implements Listener {
 
 	@EventHandler
 	public void onServerCommand(ServerCommandEvent event) {
-		CommandSection config = this.wcl.config().command();
+		CommandEventConfig config = this.wcl.eventsConfig().command();
 
-		if (!(event.getSender() instanceof ConsoleCommandSender) || !config.console() || !config.cancelled() && event.isCancelled()) {
+		if (event.getSender() instanceof ConsoleCommandSender) {
+			if (!config.logConsole()) {
+				return;
+			}
+		} else if (!config.logCancelled() && event.isCancelled() || !config.logOther()) {
 			return;
 		}
 
-		LoggableCommand command = new LoggableCommand(event.getSender(), event.getCommand(), event.isCancelled());
-		this.wcl.clientManager().send(command);
+		Component component = new CommandEventComponentBuilder(this.wcl)
+				.cancelled(event.isCancelled())
+				.audience(event.getSender())
+				.command(event.getCommand())
+				.build();
+		this.wcl.clientManager().send(component);
 	}
 
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		CommandSection config = this.wcl.config().command();
+		CommandEventConfig config = this.wcl.eventsConfig().command();
 
-		if (!config.cancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
-		LoggableCommand command = new LoggableCommand(event.getPlayer(), event.getMessage(), event.isCancelled());
-		this.wcl.clientManager().send(command);
+		Component component = new CommandEventComponentBuilder(this.wcl)
+				.cancelled(event.isCancelled())
+				.audience(event.getPlayer())
+				.command(event.getMessage())
+				.build();
+		this.wcl.clientManager().send(component);
 	}
 }

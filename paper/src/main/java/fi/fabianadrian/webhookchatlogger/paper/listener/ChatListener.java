@@ -1,9 +1,11 @@
 package fi.fabianadrian.webhookchatlogger.paper.listener;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.common.loggable.LoggableMessage;
+import fi.fabianadrian.webhookchatlogger.common.config.event.ChatEventConfig;
+import fi.fabianadrian.webhookchatlogger.common.event.ChatEventComponentBuilder;
 import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPaper;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -16,11 +18,17 @@ public final class ChatListener implements Listener {
 
 	@EventHandler
 	public void onChat(AsyncChatEvent event) {
-		if (!this.wcl.config().chat().cancelled() && event.isCancelled()) {
+		ChatEventConfig config = this.wcl.eventsConfig().chat();
+
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
-		LoggableMessage message = new LoggableMessage(event.getPlayer(), event.message(), event.isCancelled());
+		Component message = new ChatEventComponentBuilder(this.wcl)
+				.audience(event.getPlayer())
+				.cancelled(event.isCancelled())
+				.message(event.message())
+				.build();
 		this.wcl.clientManager().send(message);
 	}
 }

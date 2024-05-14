@@ -1,8 +1,9 @@
 package fi.fabianadrian.webhookchatlogger.common;
 
 import fi.fabianadrian.webhookchatlogger.common.client.ClientManager;
+import fi.fabianadrian.webhookchatlogger.common.config.EventsConfig;
 import fi.fabianadrian.webhookchatlogger.common.config.ConfigManager;
-import fi.fabianadrian.webhookchatlogger.common.config.WebhookChatLoggerConfig;
+import fi.fabianadrian.webhookchatlogger.common.config.MainConfig;
 import fi.fabianadrian.webhookchatlogger.common.dependency.DependencyManager;
 import org.slf4j.Logger;
 
@@ -12,27 +13,37 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public final class WebhookChatLogger {
 	private final Logger logger;
-	private final ConfigManager<WebhookChatLoggerConfig> configManager;
+	private final ConfigManager<MainConfig> mainConfigManager;
+	private final ConfigManager<EventsConfig> eventsConfigManager;
 	private final ClientManager clientManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final DependencyManager dependencyManager = new DependencyManager();
 
 	public WebhookChatLogger(Logger logger, Path dataFolder) {
 		this.logger = logger;
-		this.configManager = ConfigManager.create(
+		this.mainConfigManager = ConfigManager.create(
 				dataFolder,
 				"config.yml",
-				WebhookChatLoggerConfig.class,
+				MainConfig.class,
 				logger
 		);
-		this.configManager.reload();
+		this.mainConfigManager.reload();
+		this.eventsConfigManager = ConfigManager.create(
+				dataFolder,
+				"events.yml",
+				EventsConfig.class,
+				logger
+		);
+		eventsConfigManager.reload();
 
 		this.clientManager = new ClientManager(this);
 		this.clientManager.reload();
 	}
 
 	public void reload() {
-		this.configManager.reload();
+		this.mainConfigManager.reload();
+		this.eventsConfigManager.reload();
+
 		this.clientManager.reload();
 	}
 
@@ -40,8 +51,12 @@ public final class WebhookChatLogger {
 		this.scheduler.shutdown();
 	}
 
-	public WebhookChatLoggerConfig config() {
-		return this.configManager.config();
+	public MainConfig mainConfig() {
+		return this.mainConfigManager.config();
+	}
+
+	public EventsConfig eventsConfig() {
+		return this.eventsConfigManager.config();
 	}
 
 	public Logger logger() {

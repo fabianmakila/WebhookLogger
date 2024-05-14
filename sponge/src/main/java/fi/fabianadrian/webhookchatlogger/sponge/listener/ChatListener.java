@@ -1,8 +1,9 @@
 package fi.fabianadrian.webhookchatlogger.sponge.listener;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
-import fi.fabianadrian.webhookchatlogger.common.loggable.LoggableMessage;
+import fi.fabianadrian.webhookchatlogger.common.event.ChatEventComponentBuilder;
 import fi.fabianadrian.webhookchatlogger.sponge.WebhookChatLoggerSponge;
+import net.kyori.adventure.text.Component;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.message.PlayerChatEvent;
@@ -23,7 +24,10 @@ public class ChatListener {
 			return;
 		}
 
-		LoggableMessage message = new LoggableMessage(playerOptional.get(), event.message(), false);
-		this.wcl.clientManager().send(message);
+		Component component = new ChatEventComponentBuilder(this.wcl)
+				.audience(playerOptional.get())
+				.message(event.message())
+				.build();
+		this.wcl.clientManager().send(component);
 	}
 }
