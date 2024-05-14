@@ -2,7 +2,6 @@ package fi.fabianadrian.webhookchatlogger.common.event;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class JoinQuitEventComponentBuilder extends EventComponentBuilder {
@@ -21,7 +20,7 @@ public class JoinQuitEventComponentBuilder extends EventComponentBuilder {
 	}
 
 	public JoinQuitEventComponentBuilder location(int x, int y, int z) {
-		String locationString = String.format("x%o, y%o, z%o", x, y, z);
+		String locationString = String.format("x%s, y%s, z%s", x, y, z);
 		this.resolverBuilder = this.resolverBuilder.resolver(
 				Placeholder.unparsed("location", locationString)
 		);
@@ -29,9 +28,9 @@ public class JoinQuitEventComponentBuilder extends EventComponentBuilder {
 		return this;
 	}
 
-	public JoinQuitEventComponentBuilder message(Component message) {
+	public JoinQuitEventComponentBuilder message(String message) {
 		this.resolverBuilder = this.resolverBuilder.resolver(
-				Placeholder.component("message", message)
+				Placeholder.unparsed("message", message)
 		);
 		return this;
 	}

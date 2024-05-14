@@ -20,7 +20,7 @@ public final class DeathEventComponentBuilder extends EventComponentBuilder{
 	}
 
 	public DeathEventComponentBuilder location(int x, int y, int z) {
-		String locationString = String.format("x%o, y%o, z%o", x, y, z);
+		String locationString = String.format("x%s, y%s, z%s", x, y, z);
 		this.resolverBuilder = this.resolverBuilder.resolver(
 				Placeholder.unparsed("location", locationString)
 		);
