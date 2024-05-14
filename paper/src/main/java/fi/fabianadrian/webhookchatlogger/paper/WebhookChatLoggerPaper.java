@@ -6,6 +6,7 @@ import fi.fabianadrian.webhookchatlogger.paper.command.RootCommandExecutor;
 import fi.fabianadrian.webhookchatlogger.paper.listener.ChatListener;
 import fi.fabianadrian.webhookchatlogger.paper.listener.CommandListener;
 import fi.fabianadrian.webhookchatlogger.paper.listener.DeathListener;
+import fi.fabianadrian.webhookchatlogger.paper.listener.JoinQuitListener;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
@@ -57,7 +58,8 @@ public final class WebhookChatLoggerPaper extends JavaPlugin {
 		Stream.of(
 				new ChatListener(this),
 				new CommandListener(this),
-				new DeathListener(this)
+				new DeathListener(this),
+				new JoinQuitListener(this)
 		).forEach(listener -> manager.registerEvents(listener, this));
 	}
 }

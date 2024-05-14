@@ -19,9 +19,5 @@ public interface EventsConfig {
 
 	@AnnotationBasedSorter.Order(3)
 	@SubSection
-	JoinEventConfig join();
-
-	@AnnotationBasedSorter.Order(4)
-	@SubSection
-	QuitEventConfig quit();
+	JoinQuitEventConfig joinQuit();
 }
