@@ -13,9 +13,7 @@ public interface CommandEventConfig {
 	@AnnotationBasedSorter.Order(1)
 	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <audience_name>: <command>")
 	@ConfComments({
-			"The webhook format for executed commands. Supports MiniMessage and MiniPlaceholders.",
-			"Keep in mind that not all webhooks support all features e.g. colors.",
-			"Available placeholders:",
+			"The webhook format for executed commands. Available placeholders:",
 			"<audience_name>, <audience_display_name>, <command>, <timestamp>, <cancelled>"
 	})
 	String format();

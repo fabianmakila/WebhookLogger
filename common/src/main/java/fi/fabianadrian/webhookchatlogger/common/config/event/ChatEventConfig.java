@@ -13,9 +13,7 @@ public interface ChatEventConfig {
 	@AnnotationBasedSorter.Order(1)
 	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <audience_name>: <message>")
 	@ConfComments({
-			"The webhook format for chat messages. Supports MiniMessage and MiniPlaceholders.",
-			"Keep in mind that not all webhooks support all features e.g. colors.",
-			"Available placeholders:",
+			"The webhook format for chat messages. Available placeholders:",
 			"<audience_name>, <audience_display_name>, <message>, <timestamp>, <cancelled>"
 	})
 	String format();

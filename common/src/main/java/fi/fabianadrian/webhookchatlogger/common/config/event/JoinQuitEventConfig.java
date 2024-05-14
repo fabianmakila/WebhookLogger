@@ -13,9 +13,7 @@ public interface JoinQuitEventConfig {
 	@AnnotationBasedSorter.Order(1)
 	@ConfDefault.DefaultString("[<timestamp>] <message>")
 	@ConfComments({
-			"The webhook format for when a player joins or quits. Supports MiniMessage and MiniPlaceholders.",
-			"Keep in mind that not all webhooks support all features e.g. colors.",
-			"Available placeholders:",
+			"The webhook format for when a player joins or quits. Available placeholders:",
 			"<audience_name>, <audience_display_name>, <message>, <timestamp>, <address>"
 	})
 	String format();
