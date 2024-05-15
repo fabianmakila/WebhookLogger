@@ -1,6 +1,7 @@
 package fi.fabianadrian.webhookchatlogger.paper.listener;
 
 import fi.fabianadrian.webhookchatlogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhookchatlogger.common.config.event.JoinQuitEventConfig;
 import fi.fabianadrian.webhookchatlogger.common.event.JoinQuitEventComponentBuilder;
 import fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPaper;
 import net.kyori.adventure.text.Component;
@@ -20,6 +21,11 @@ public final class JoinQuitListener implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
+		JoinQuitEventConfig config = this.wcl.eventsConfig().joinQuit();
+		if (!config.enabled()) {
+			return;
+		}
+
 		Component joinMessage = event.joinMessage();
 		String joinMessageAsString = joinMessage != null ? PlainTextComponentSerializer.plainText().serialize(joinMessage) : "";
 		Location loc = event.getPlayer().getLocation();
@@ -34,7 +40,12 @@ public final class JoinQuitListener implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerQuitEvent event) {
+	public void onQuit(PlayerQuitEvent event) {
+		JoinQuitEventConfig config = this.wcl.eventsConfig().joinQuit();
+		if (!config.enabled()) {
+			return;
+		}
+
 		Component quitMessage = event.quitMessage();
 		String quitMessageAsString = quitMessage != null ? PlainTextComponentSerializer.plainText().serialize(quitMessage) : "";
 		Location loc = event.getPlayer().getLocation();
