@@ -21,8 +21,9 @@ public final class DeathListener implements Listener {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
+		Component deathMessage = event.deathMessage();
 
-		if (!config.logCancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled() || deathMessage == null) {
 			return;
 		}
 
@@ -31,7 +32,7 @@ public final class DeathListener implements Listener {
 		Component component = new DeathEventComponentBuilder(this.webhookLogger)
 				.audience(event.getEntity())
 				.cancelled(event.isCancelled())
-				.message(PlainTextComponentSerializer.plainText().serialize(event.deathMessage()))
+				.message(PlainTextComponentSerializer.plainText().serialize(deathMessage))
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
 				.build();
 		this.webhookLogger.clientManager().send(component);
