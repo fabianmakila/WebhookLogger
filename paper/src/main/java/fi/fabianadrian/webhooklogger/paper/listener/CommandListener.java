@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhooklogger.paper.listener;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.CommandEventComponentBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
@@ -12,15 +12,15 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
 public final class CommandListener implements Listener {
-	private final WebhookChatLogger wcl;
+	private final WebhookLogger webhookLogger;
 
 	public CommandListener(WebhookLoggerPaper plugin) {
-		this.wcl = plugin.wcl();
+		this.webhookLogger = plugin.webhookLogger();
 	}
 
 	@EventHandler
 	public void onServerCommand(ServerCommandEvent event) {
-		CommandEventConfig config = this.wcl.eventsConfig().command();
+		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
 
 		if (event.getSender() instanceof ConsoleCommandSender) {
 			if (!config.logConsole()) {
@@ -30,27 +30,27 @@ public final class CommandListener implements Listener {
 			return;
 		}
 
-		Component component = new CommandEventComponentBuilder(this.wcl)
+		Component component = new CommandEventComponentBuilder(this.webhookLogger)
 				.cancelled(event.isCancelled())
 				.audience(event.getSender())
 				.command(event.getCommand())
 				.build();
-		this.wcl.clientManager().send(component);
+		this.webhookLogger.clientManager().send(component);
 	}
 
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		CommandEventConfig config = this.wcl.eventsConfig().command();
+		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
-		Component component = new CommandEventComponentBuilder(this.wcl)
+		Component component = new CommandEventComponentBuilder(this.webhookLogger)
 				.cancelled(event.isCancelled())
 				.audience(event.getPlayer())
 				.command(event.getMessage())
 				.build();
-		this.wcl.clientManager().send(component);
+		this.webhookLogger.clientManager().send(component);
 	}
 }

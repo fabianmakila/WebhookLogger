@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhooklogger.paper;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.paper.command.RootCommandExecutor;
 import fi.fabianadrian.webhooklogger.paper.listener.ChatListener;
@@ -15,15 +15,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.stream.Stream;
 
 public final class WebhookLoggerPaper extends JavaPlugin {
-	private WebhookChatLogger wcl;
+	private WebhookLogger webhookLogger;
 
 	@Override
 	public void onEnable() {
-		this.wcl = new WebhookChatLogger(getSLF4JLogger(), getDataFolder().toPath());
+		this.webhookLogger = new WebhookLogger(getSLF4JLogger(), getDataFolder().toPath());
 
 		PluginManager manager = getServer().getPluginManager();
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
-			this.wcl.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
+			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
 
 		registerCommands();
@@ -35,15 +35,15 @@ public final class WebhookLoggerPaper extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		this.wcl.shutdown();
+		this.webhookLogger.shutdown();
 	}
 
-	public WebhookChatLogger wcl() {
-		return this.wcl;
+	public WebhookLogger webhookLogger() {
+		return this.webhookLogger;
 	}
 
 	private void registerCommands() {
-		PluginCommand rootCommand = getCommand("webhookchatlogger");
+		PluginCommand rootCommand = getCommand("webhooklogger");
 		if (rootCommand == null) {
 			return;
 		}

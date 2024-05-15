@@ -1,12 +1,12 @@
 package fi.fabianadrian.webhooklogger.common.event;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public final class CommandEventComponentBuilder extends EventComponentBuilder {
-	public CommandEventComponentBuilder(WebhookChatLogger wcl) {
-		super(wcl, wcl.eventsConfig().command().format());
+	public CommandEventComponentBuilder(WebhookLogger webhookLogger) {
+		super(webhookLogger, webhookLogger.eventsConfig().command().format());
 	}
 
 	@Override

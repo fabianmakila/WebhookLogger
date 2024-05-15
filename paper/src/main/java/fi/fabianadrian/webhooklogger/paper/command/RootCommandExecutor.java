@@ -1,7 +1,7 @@
 package fi.fabianadrian.webhooklogger.paper.command;
 
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -13,11 +13,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public final class RootCommandExecutor implements CommandExecutor, TabExecutor {
-
-	private final WebhookChatLogger wcl;
+	private final WebhookLogger webhookLogger;
 
 	public RootCommandExecutor(WebhookLoggerPaper plugin) {
-		this.wcl = plugin.wcl();
+		this.webhookLogger = plugin.webhookLogger();
 	}
 
 	@Override
@@ -27,7 +26,7 @@ public final class RootCommandExecutor implements CommandExecutor, TabExecutor {
 		}
 
 		if ("reload".equalsIgnoreCase(args[0])) {
-			this.wcl.reload();
+			this.webhookLogger.reload();
 			sender.sendMessage(Component.text("Reload complete!", NamedTextColor.GREEN));
 			return true;
 		}

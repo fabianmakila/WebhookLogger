@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhooklogger.sponge.listener;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.event.CommandEventComponentBuilder;
 import fi.fabianadrian.webhooklogger.sponge.WebhookLoggerSponge;
 import net.kyori.adventure.text.Component;
@@ -11,10 +11,10 @@ import org.spongepowered.api.event.command.ExecuteCommandEvent;
 import java.util.Optional;
 
 public class CommandListener {
-	private final WebhookChatLogger wcl;
+	private final WebhookLogger webhookLogger;
 
 	public CommandListener(WebhookLoggerSponge plugin) {
-		this.wcl = plugin.wcl();
+		this.webhookLogger = plugin.webhookLogger();
 	}
 
 	@Listener
@@ -24,10 +24,10 @@ public class CommandListener {
 			return;
 		}
 
-		Component component = new CommandEventComponentBuilder(this.wcl)
+		Component component = new CommandEventComponentBuilder(this.webhookLogger)
 				.audience(playerOptional.get())
 				.command(event.command())
 				.build();
-		this.wcl.clientManager().send(component);
+		this.webhookLogger.clientManager().send(component);
 	}
 }

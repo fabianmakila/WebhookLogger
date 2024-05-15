@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public final class WebhookChatLogger {
+public final class WebhookLogger {
 	private final Logger logger;
 	private final ConfigManager<MainConfig> mainConfigManager;
 	private final ConfigManager<EventsConfig> eventsConfigManager;
@@ -19,7 +19,7 @@ public final class WebhookChatLogger {
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final DependencyManager dependencyManager = new DependencyManager();
 
-	public WebhookChatLogger(Logger logger, Path dataFolder) {
+	public WebhookLogger(Logger logger, Path dataFolder) {
 		this.logger = logger;
 		this.mainConfigManager = ConfigManager.create(
 				dataFolder,
@@ -34,7 +34,7 @@ public final class WebhookChatLogger {
 				EventsConfig.class,
 				logger
 		);
-		eventsConfigManager.reload();
+		this.eventsConfigManager.reload();
 
 		this.clientManager = new ClientManager(this);
 		this.clientManager.reload();

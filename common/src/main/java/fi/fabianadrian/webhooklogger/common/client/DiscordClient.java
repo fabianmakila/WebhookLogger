@@ -1,7 +1,7 @@
 package fi.fabianadrian.webhooklogger.common.client;
 
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.section.DiscordConfigSection;
 import io.github._4drian3d.jdwebhooks.WebHook;
 import io.github._4drian3d.jdwebhooks.WebHookClient;
@@ -19,13 +19,13 @@ import java.util.concurrent.TimeUnit;
 
 public final class DiscordClient implements WebhookClient {
 	private final Queue<Component> messageBuffer = new ConcurrentLinkedQueue<>();
-	private final WebhookChatLogger wcl;
+	private final WebhookLogger webhookLogger;
 	private WebHookClient client;
 	private DiscordConfigSection config;
 	private ScheduledFuture<?> scheduledSendMessageTask;
 
-	public DiscordClient(WebhookChatLogger wcl) {
-		this.wcl = wcl;
+	public DiscordClient(WebhookLogger webhookLogger) {
+		this.webhookLogger = webhookLogger;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public final class DiscordClient implements WebhookClient {
 			this.scheduledSendMessageTask.cancel(false);
 		}
 
-		this.config = this.wcl.mainConfig().discord();
+		this.config = this.webhookLogger.mainConfig().discord();
 		if (this.config.url().isBlank()) {
 			return;
 		}
@@ -52,7 +52,7 @@ public final class DiscordClient implements WebhookClient {
 		//TODO Test here that the client actually works and only after that proceed
 
 		Runnable sendMessageTask = sendMessageTask();
-		this.scheduledSendMessageTask = this.wcl.scheduler().scheduleAtFixedRate(sendMessageTask, 0, this.config.sendRate(), TimeUnit.SECONDS);
+		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(sendMessageTask, 0, this.config.sendRate(), TimeUnit.SECONDS);
 	}
 
 	private Runnable sendMessageTask() {
@@ -84,7 +84,7 @@ public final class DiscordClient implements WebhookClient {
 			CompletableFuture<HttpResponse<String>> future = this.client.sendWebHook(webHook);
 
 			future.thenAccept(response -> this.messageBuffer.removeAll(messages)).exceptionally(ex -> {
-				this.wcl.logger().warn("Error sending webhook: {}", ex.getMessage());
+				this.webhookLogger.logger().warn("Error sending webhook: {}", ex.getMessage());
 				return null;
 			});
 		};

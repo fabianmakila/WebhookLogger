@@ -1,12 +1,12 @@
 package fi.fabianadrian.webhooklogger.common.event;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class JoinQuitEventComponentBuilder extends EventComponentBuilder {
-	public JoinQuitEventComponentBuilder(WebhookChatLogger wcl) {
-		super(wcl, wcl.eventsConfig().joinQuit().format());
+	public JoinQuitEventComponentBuilder(WebhookLogger webhookLogger) {
+		super(webhookLogger, webhookLogger.eventsConfig().joinQuit().format());
 	}
 
 	@Override

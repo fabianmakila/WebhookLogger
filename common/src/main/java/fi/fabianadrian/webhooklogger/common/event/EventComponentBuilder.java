@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhooklogger.common.event;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.section.PlaceholderConfigSection;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import io.github.miniplaceholders.api.MiniPlaceholders;
@@ -16,16 +16,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public abstract class EventComponentBuilder {
-	protected final WebhookChatLogger wcl;
+	protected final WebhookLogger webhookLogger;
 	protected final PlaceholderConfigSection placeholderConfig;
 	protected TagResolver.Builder resolverBuilder;
 	protected String format;
 
-	public EventComponentBuilder(WebhookChatLogger wcl, String format) {
-		this.wcl = wcl;
+	public EventComponentBuilder(WebhookLogger webhookLogger, String format) {
+		this.webhookLogger = webhookLogger;
 		this.format = format;
 
-		this.placeholderConfig = wcl.mainConfig().placeholders();
+		this.placeholderConfig = webhookLogger.mainConfig().placeholders();
 
 		DateTimeFormatter formatter = DateTimeFormatter
 				.ofPattern(this.placeholderConfig.timestampFormat())
@@ -48,7 +48,7 @@ public abstract class EventComponentBuilder {
 				Placeholder.unparsed("audience_uuid", uuidAsString)
 		);
 
-		if (this.wcl.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
+		if (this.webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
 			this.resolverBuilder = this.resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
 		}
 

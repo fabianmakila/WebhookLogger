@@ -1,7 +1,7 @@
 package fi.fabianadrian.webhooklogger.sponge;
 
 import com.google.inject.Inject;
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.sponge.listener.ChatListener;
 import fi.fabianadrian.webhooklogger.sponge.listener.CommandListener;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Plugin("webhookchatlogger")
 public class WebhookLoggerSponge {
-	private WebhookChatLogger wcl;
+	private WebhookLogger webhookLogger;
 	private final PluginContainer container;
 	private final Path configDir;
 
@@ -32,17 +32,17 @@ public class WebhookLoggerSponge {
 
 	@Listener
 	public void onServerStart(final StartedEngineEvent<Server> event) {
-		this.wcl = new WebhookChatLogger(LoggerFactory.getLogger("webhookchatlogger"), this.configDir);
+		this.webhookLogger = new WebhookLogger(LoggerFactory.getLogger("webhookchatlogger"), this.configDir);
 		registerListeners();
 	}
 
 	@Listener
 	public void onServerStopping(final StoppingEngineEvent<Server> event) {
-		this.wcl.shutdown();
+		this.webhookLogger.shutdown();
 	}
 
-	public WebhookChatLogger wcl() {
-		return this.wcl;
+	public WebhookLogger webhookLogger() {
+		return this.webhookLogger;
 	}
 
 	private void registerListeners() {

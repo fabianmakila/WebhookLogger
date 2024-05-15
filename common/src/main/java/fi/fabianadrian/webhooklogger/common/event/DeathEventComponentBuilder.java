@@ -1,12 +1,12 @@
 package fi.fabianadrian.webhooklogger.common.event;
 
-import fi.fabianadrian.webhooklogger.common.WebhookChatLogger;
+import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public final class DeathEventComponentBuilder extends EventComponentBuilder{
-	public DeathEventComponentBuilder(WebhookChatLogger wcl) {
-		super(wcl, wcl.eventsConfig().death().format());
+	public DeathEventComponentBuilder(WebhookLogger webhookLogger) {
+		super(webhookLogger, webhookLogger.eventsConfig().death().format());
 	}
 
 	@Override
