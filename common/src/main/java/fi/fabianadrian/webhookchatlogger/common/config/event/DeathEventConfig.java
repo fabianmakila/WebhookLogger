@@ -6,8 +6,8 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 public interface DeathEventConfig {
 	@AnnotationBasedSorter.Order(0)
-	@ConfDefault.DefaultBoolean(true)
-	@ConfComments("Whether commands will be logged.")
+	@ConfDefault.DefaultBoolean(false)
+	@ConfComments("Whether player deaths will be logged.")
 	boolean enabled();
 
 	@AnnotationBasedSorter.Order(1)

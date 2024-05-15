@@ -6,7 +6,7 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 public interface JoinQuitEventConfig {
 	@AnnotationBasedSorter.Order(0)
-	@ConfDefault.DefaultBoolean(true)
+	@ConfDefault.DefaultBoolean(false)
 	@ConfComments("Whether player joins and quits will be logged.")
 	boolean enabled();
 

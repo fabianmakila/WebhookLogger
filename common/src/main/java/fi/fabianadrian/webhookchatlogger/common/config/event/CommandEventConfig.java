@@ -6,12 +6,12 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 public interface CommandEventConfig {
 	@AnnotationBasedSorter.Order(0)
-	@ConfDefault.DefaultBoolean(true)
+	@ConfDefault.DefaultBoolean(false)
 	@ConfComments("Whether commands will be logged.")
 	boolean enabled();
 
 	@AnnotationBasedSorter.Order(1)
-	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <audience_name>: <command>")
+	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <audience_display_name>: <command>")
 	@ConfComments({
 			"The webhook format for executed commands. Available placeholders:",
 			"<audience_name>, <audience_display_name>, <command>, <timestamp>, <cancelled>"
