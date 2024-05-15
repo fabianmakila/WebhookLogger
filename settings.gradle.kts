@@ -1,4 +1,4 @@
-rootProject.name = "WebhookChatLogger"
+rootProject.name = "WebhookLogger"
 
 sequenceOf(
     "common",

@@ -1,4 +1,4 @@
-rootProject.name = "webhookchatlogger-conventions"
+rootProject.name = "webhooklogger-conventions"
 
 dependencyResolutionManagement {
 	repositories {

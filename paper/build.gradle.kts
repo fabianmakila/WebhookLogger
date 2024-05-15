@@ -1,5 +1,5 @@
 plugins {
-	id("webhookchatlogger.platform-conventions")
+	id("webhooklogger.platform-conventions")
 	alias(libs.plugins.pluginYml)
 }
 
@@ -10,21 +10,20 @@ dependencies {
 }
 
 bukkit {
-	main = "fi.fabianadrian.webhookchatlogger.paper.WebhookChatLoggerPaper"
+	main = "fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper"
 	name = rootProject.name
 	apiVersion = "1.17"
 	authors = listOf("FabianAdrian")
-	website = "https://github.com/fabianmakila/WebhookChatLogger"
+	website = "https://github.com/fabianmakila/WebhookLogger"
 	softDepend = listOf("MiniPlaceholders")
 	commands {
-		register("webhookchatlogger") {
-			aliases = listOf("wcl")
-			description = "WebhookChatLogger main command"
-			permission = "webhookchatlogger.reload"
+		register("webhooklogger") {
+			description = "WebhookLogger main command"
+			permission = "webhooklogger.reload"
 		}
 	}
 	permissions {
-		register("webhookchatlogger.reload") {
+		register("webhooklogger.reload") {
 			description = "Allows you to run the reload command"
 		}
 	}

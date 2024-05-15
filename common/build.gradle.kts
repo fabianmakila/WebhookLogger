@@ -1,5 +1,5 @@
 plugins {
-    id("webhookchatlogger.java-conventions")
+    id("webhooklogger.java-conventions")
 }
 
 dependencies {

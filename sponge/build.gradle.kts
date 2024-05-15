@@ -2,7 +2,7 @@ import org.spongepowered.gradle.plugin.config.PluginLoaders
 import org.spongepowered.plugin.metadata.model.PluginDependency
 
 plugins {
-    id("webhookchatlogger.platform-conventions")
+    id("webhooklogger.platform-conventions")
     alias(libs.plugins.sponge)
 }
 
@@ -23,11 +23,11 @@ sponge {
     plugin(rootProject.name.lowercase()) {
         displayName(rootProject.name)
         version(rootProject.version.toString())
-        entrypoint("fi.fabianadrian.webhookchatlogger.sponge10.WebhookChatLoggerSponge10")
+        entrypoint("fi.fabianadrian.webhooklogger.sponge.WebhookLoggerSponge")
         links {
-            homepage("https://modrinth.com/plugin/webhookchatlogger")
-            source("https://github.com/fabianmakila/webhookchatlogger")
-            issues("https://github.com/fabianmakila/webhookchatlogger/issues")
+            homepage("https://modrinth.com/plugin/webhooklogger")
+            source("https://github.com/fabianmakila/webhooklogger")
+            issues("https://github.com/fabianmakila/webhooklogger/issues")
         }
         contributor("FabianAdrian") {
             description("Developer")
