@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @Plugin("webhookchatlogger")
-public class WebhookLoggerSponge {
+public final class WebhookLoggerSponge {
 	private WebhookLogger webhookLogger;
 	private final PluginContainer container;
 	private final Path configDir;

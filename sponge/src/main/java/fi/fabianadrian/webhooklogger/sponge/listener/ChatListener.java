@@ -10,7 +10,7 @@ import org.spongepowered.api.event.message.PlayerChatEvent;
 
 import java.util.Optional;
 
-public class ChatListener {
+public final class ChatListener {
 	private final WebhookLogger webhookLogger;
 
 	public ChatListener(WebhookLoggerSponge plugin) {

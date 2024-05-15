@@ -10,7 +10,7 @@ import org.spongepowered.api.event.command.ExecuteCommandEvent;
 
 import java.util.Optional;
 
-public class CommandListener {
+public final class CommandListener {
 	private final WebhookLogger webhookLogger;
 
 	public CommandListener(WebhookLoggerSponge plugin) {
