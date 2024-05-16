@@ -23,7 +23,7 @@ public final class DeathListener implements Listener {
 		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
 		Component deathMessage = event.deathMessage();
 
-		if (!config.logCancelled() && event.isCancelled() || deathMessage == null) {
+		if (!config.enabled() || !config.logCancelled() && event.isCancelled() || deathMessage == null) {
 			return;
 		}
 

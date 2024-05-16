@@ -22,11 +22,15 @@ public final class CommandListener implements Listener {
 	public void onServerCommand(ServerCommandEvent event) {
 		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
 
+		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
+			return;
+		}
+
 		if (event.getSender() instanceof ConsoleCommandSender) {
 			if (!config.logConsole()) {
 				return;
 			}
-		} else if (!config.logCancelled() && event.isCancelled() || !config.logOther()) {
+		} else if (!config.logOther()) {
 			return;
 		}
 
