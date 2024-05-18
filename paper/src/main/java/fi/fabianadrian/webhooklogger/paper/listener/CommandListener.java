@@ -46,7 +46,7 @@ public final class CommandListener implements Listener {
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
 		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
 
-		if (!config.logCancelled() && event.isCancelled()) {
+		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
