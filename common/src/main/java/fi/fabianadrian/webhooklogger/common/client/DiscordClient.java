@@ -44,9 +44,9 @@ public final class DiscordClient {
             switch (response.statusCode()) {
                 case 204 -> this.messageQueue.removeAll(messages);
                 case 429 ->
-                        this.logger.warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this.", this.url);
+                        this.logger.warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", this.url);
                 default ->
-                        this.logger.warn("Failed to send a webhook to {}. Got status code {}.", this.url, response.statusCode());
+                        this.logger.warn("Failed to send a webhook to {}. Got status code {}", this.url, response.statusCode());
             }
         });
     }
