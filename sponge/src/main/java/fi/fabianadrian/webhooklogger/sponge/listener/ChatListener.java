@@ -1,9 +1,9 @@
 package fi.fabianadrian.webhooklogger.sponge.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.event.ChatEventComponentBuilder;
+import fi.fabianadrian.webhooklogger.common.event.ChatEventBuilder;
+import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.sponge.WebhookLoggerSponge;
-import net.kyori.adventure.text.Component;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.message.PlayerChatEvent;
@@ -24,10 +24,9 @@ public final class ChatListener {
 			return;
 		}
 
-		Component component = new ChatEventComponentBuilder(this.webhookLogger)
+		EventBuilder builder = new ChatEventBuilder(this.webhookLogger)
 				.audience(playerOptional.get())
-				.message(event.message())
-				.build();
-		this.webhookLogger.clientManager().send(component);
+				.message(event.message());
+		this.webhookLogger.clientManager().send(builder);
 	}
 }

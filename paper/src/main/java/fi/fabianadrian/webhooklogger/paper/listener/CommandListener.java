@@ -2,9 +2,9 @@ package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.CommandEventComponentBuilder;
+import fi.fabianadrian.webhooklogger.common.event.CommandEventBuilder;
+import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,12 +34,11 @@ public final class CommandListener implements Listener {
 			return;
 		}
 
-		Component component = new CommandEventComponentBuilder(this.webhookLogger)
+		EventBuilder builder = new CommandEventBuilder(this.webhookLogger)
 				.cancelled(event.isCancelled())
 				.audience(event.getSender())
-				.command(event.getCommand())
-				.build();
-		this.webhookLogger.clientManager().send(component);
+				.command(event.getCommand());
+		this.webhookLogger.clientManager().send(builder);
 	}
 
 	@EventHandler
@@ -50,11 +49,10 @@ public final class CommandListener implements Listener {
 			return;
 		}
 
-		Component component = new CommandEventComponentBuilder(this.webhookLogger)
+		EventBuilder builder = new CommandEventBuilder(this.webhookLogger)
 				.cancelled(event.isCancelled())
 				.audience(event.getPlayer())
-				.command(event.getMessage())
-				.build();
-		this.webhookLogger.clientManager().send(component);
+				.command(event.getMessage());
+		this.webhookLogger.clientManager().send(builder);
 	}
 }

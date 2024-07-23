@@ -2,7 +2,8 @@ package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.JoinQuitEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.JoinQuitEventComponentBuilder;
+import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
+import fi.fabianadrian.webhooklogger.common.event.JoinQuitEventBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -30,13 +31,12 @@ public final class JoinQuitListener implements Listener {
 		String joinMessageAsString = joinMessage != null ? PlainTextComponentSerializer.plainText().serialize(joinMessage) : "";
 		Location loc = event.getPlayer().getLocation();
 
-		Component component = new JoinQuitEventComponentBuilder(this.webhookLogger)
+		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
 				.audience(event.getPlayer())
 				.message(joinMessageAsString)
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-				.address(String.valueOf(event.getPlayer().getAddress()))
-				.build();
-		this.webhookLogger.clientManager().send(component);
+				.address(String.valueOf(event.getPlayer().getAddress()));
+		this.webhookLogger.clientManager().send(builder);
 	}
 
 	@EventHandler
@@ -49,12 +49,12 @@ public final class JoinQuitListener implements Listener {
 		Component quitMessage = event.quitMessage();
 		String quitMessageAsString = quitMessage != null ? PlainTextComponentSerializer.plainText().serialize(quitMessage) : "";
 		Location loc = event.getPlayer().getLocation();
-		Component component = new JoinQuitEventComponentBuilder(this.webhookLogger)
+
+		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
 				.audience(event.getPlayer())
 				.message(quitMessageAsString)
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-				.address(String.valueOf(event.getPlayer().getAddress()))
-				.build();
-		this.webhookLogger.clientManager().send(component);
+				.address(String.valueOf(event.getPlayer().getAddress()));
+		this.webhookLogger.clientManager().send(builder);
 	}
 }

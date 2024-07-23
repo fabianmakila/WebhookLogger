@@ -15,14 +15,16 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public abstract class EventComponentBuilder {
+public abstract class EventBuilder {
 	protected final WebhookLogger webhookLogger;
 	protected final PlaceholderConfigSection placeholderConfig;
+	private final EventType eventType;
 	protected TagResolver.Builder resolverBuilder;
 	protected String format;
 
-	public EventComponentBuilder(WebhookLogger webhookLogger, String format) {
+	public EventBuilder(WebhookLogger webhookLogger, EventType eventType, String format) {
 		this.webhookLogger = webhookLogger;
+		this.eventType = eventType;
 		this.format = format;
 
 		this.placeholderConfig = webhookLogger.mainConfig().placeholders();
@@ -35,7 +37,7 @@ public abstract class EventComponentBuilder {
 		);
 	}
 
-	protected EventComponentBuilder audience(Audience audience) {
+	protected EventBuilder audience(Audience audience) {
 		String name = audience.getOrDefault(Identity.NAME, "unknown");
 		Component displayName = audience.getOrDefault(Identity.DISPLAY_NAME, Component.text(name));
 
@@ -55,16 +57,20 @@ public abstract class EventComponentBuilder {
 		return this;
 	}
 
-	protected EventComponentBuilder cancelled(boolean cancelled) {
+	protected EventBuilder cancelled(boolean cancelled) {
 		String cancelledString = cancelled ? this.placeholderConfig.cancelled() : "";
 		this.resolverBuilder = resolverBuilder.resolver(Placeholder.unparsed("cancelled", cancelledString));
 		return this;
 	}
 
-	public Component build() {
+	public Component component() {
 		return MiniMessage.miniMessage().deserialize(
 				this.format,
 				this.resolverBuilder.build()
 		);
+	}
+
+	public EventType type() {
+		return this.eventType;
 	}
 }

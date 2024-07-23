@@ -2,7 +2,8 @@ package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.DeathEventComponentBuilder;
+import fi.fabianadrian.webhooklogger.common.event.DeathEventBuilder;
+import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -29,12 +30,11 @@ public final class DeathListener implements Listener {
 
 		Location loc = event.getEntity().getLocation();
 
-		Component component = new DeathEventComponentBuilder(this.webhookLogger)
+		EventBuilder builder = new DeathEventBuilder(this.webhookLogger)
 				.audience(event.getEntity())
 				.cancelled(event.isCancelled())
 				.message(PlainTextComponentSerializer.plainText().serialize(deathMessage))
-				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-				.build();
-		this.webhookLogger.clientManager().send(component);
+				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+		this.webhookLogger.clientManager().send(builder);
 	}
 }

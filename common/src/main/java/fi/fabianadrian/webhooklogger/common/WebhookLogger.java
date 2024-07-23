@@ -1,8 +1,8 @@
 package fi.fabianadrian.webhooklogger.common;
 
 import fi.fabianadrian.webhooklogger.common.client.ClientManager;
-import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
+import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
 import org.slf4j.Logger;

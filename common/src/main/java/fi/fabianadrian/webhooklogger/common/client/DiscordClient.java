@@ -1,92 +1,50 @@
 package fi.fabianadrian.webhooklogger.common.client;
 
-import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
-import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.config.section.DiscordConfigSection;
 import io.github._4drian3d.jdwebhooks.WebHook;
 import io.github._4drian3d.jdwebhooks.WebHookClient;
-import net.kyori.adventure.text.Component;
+import org.slf4j.Logger;
 
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import java.util.StringJoiner;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
-public final class DiscordClient implements WebhookClient {
-	private final Queue<Component> messageBuffer = new ConcurrentLinkedQueue<>();
-	private final WebhookLogger webhookLogger;
-	private WebHookClient client;
-	private DiscordConfigSection config;
-	private ScheduledFuture<?> scheduledSendMessageTask;
+public final class DiscordClient {
+	private final Queue<String> messageBuffer = new ConcurrentLinkedQueue<>();
+	private final WebHookClient client;
+	private final Logger logger;
+	private final String url;
 
-	public DiscordClient(WebhookLogger webhookLogger) {
-		this.webhookLogger = webhookLogger;
+	public DiscordClient(Logger logger, String url) {
+		this.logger = logger;
+		this.url = url;
+
+		this.client = WebHookClient.fromURL(url);
 	}
 
-	@Override
-	public void send(Component message) {
-		if (this.scheduledSendMessageTask == null) {
-			return;
-		}
+	public String url() {
+		return this.url;
+	}
 
+	public void addMessageToBuffer(String message) {
 		this.messageBuffer.add(message);
 	}
 
-	@Override
-	public void reload() {
-		if (this.scheduledSendMessageTask != null) {
-			this.scheduledSendMessageTask.cancel(false);
-		}
+	public void sendMessagesInBuffer() throws RuntimeException {
+		// Copy messageBuffer
+		List<String> messages = List.copyOf(this.messageBuffer);
 
-		this.config = this.webhookLogger.mainConfig().discord();
-		if (this.config.url().isBlank()) {
+		// If empty don't run
+		if (this.messageBuffer.isEmpty()) {
 			return;
 		}
 
-		this.client = WebHookClient.fromURL(this.config.url());
-		//TODO Test here that the client actually works and only after that proceed
-
-		Runnable sendMessageTask = sendMessageTask();
-		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(sendMessageTask, 0, this.config.sendRate(), TimeUnit.SECONDS);
-	}
-
-	private Runnable sendMessageTask() {
-		return () -> {
-			// Copy messageBuffer
-			List<Component> messages = List.copyOf(this.messageBuffer);
-
-			// If empty don't run
-			if (this.messageBuffer.isEmpty()) {
-				return;
+		// Construct webhook
+		WebHook webHook = WebHook.builder().content(String.join(", ", messages)).build();
+		this.client.sendWebHook(webHook).thenAccept(response -> {
+			switch (response.statusCode()) {
+				default ->
+						this.logger.warn("Failed to send a webhook to {}. Got status code {}.", this.url, response.statusCode());
 			}
-
-			// Joiner adds newlines
-			StringJoiner joiner = new StringJoiner("\n");
-			messages.forEach(message -> joiner.add(DiscordSerializer.INSTANCE.serialize(message)));
-
-			// Joiner -> Combined string
-			String webhookContent = joiner.toString();
-
-			// Replacements defined in config
-			for (Map.Entry<String, String> entry : this.config.textReplacements().entrySet()) {
-				webhookContent = webhookContent.replaceAll(entry.getKey(), entry.getValue());
-			}
-
-			// Construct webhook
-			WebHook webHook = WebHook.builder().content(webhookContent).build();
-
-			// Construct future
-			CompletableFuture<HttpResponse<String>> future = this.client.sendWebHook(webHook);
-
-			future.thenAccept(response -> this.messageBuffer.removeAll(messages)).exceptionally(ex -> {
-				this.webhookLogger.logger().warn("Error sending webhook: {}", ex.getMessage());
-				return null;
-			});
-		};
+		});
 	}
 }
