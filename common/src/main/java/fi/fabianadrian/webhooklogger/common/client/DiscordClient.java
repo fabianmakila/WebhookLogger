@@ -9,42 +9,45 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class DiscordClient {
-	private final Queue<String> messageBuffer = new ConcurrentLinkedQueue<>();
-	private final WebHookClient client;
-	private final Logger logger;
-	private final String url;
+    private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
+    private final WebHookClient client;
+    private final Logger logger;
+    private final String url;
 
-	public DiscordClient(Logger logger, String url) {
-		this.logger = logger;
-		this.url = url;
+    public DiscordClient(Logger logger, String url) {
+        this.logger = logger;
+        this.url = url;
 
-		this.client = WebHookClient.fromURL(url);
-	}
+        this.client = WebHookClient.fromURL(url);
+    }
 
-	public String url() {
-		return this.url;
-	}
+    public String url() {
+        return this.url;
+    }
 
-	public void addMessageToBuffer(String message) {
-		this.messageBuffer.add(message);
-	}
+    public void add(String message) {
+        this.messageQueue.add(message);
+    }
 
-	public void sendMessagesInBuffer() throws RuntimeException {
-		// Copy messageBuffer
-		List<String> messages = List.copyOf(this.messageBuffer);
+    public void send() throws RuntimeException {
+        // Copy messageBuffer
+        List<String> messages = List.copyOf(this.messageQueue);
 
-		// If empty don't run
-		if (this.messageBuffer.isEmpty()) {
-			return;
-		}
+        // If empty don't run
+        if (this.messageQueue.isEmpty()) {
+            return;
+        }
 
-		// Construct webhook
-		WebHook webHook = WebHook.builder().content(String.join(", ", messages)).build();
-		this.client.sendWebHook(webHook).thenAccept(response -> {
-			switch (response.statusCode()) {
-				default ->
-						this.logger.warn("Failed to send a webhook to {}. Got status code {}.", this.url, response.statusCode());
-			}
-		});
-	}
+        // Construct webhook
+        WebHook webHook = WebHook.builder().content(String.join(", ", messages)).build();
+        this.client.sendWebHook(webHook).thenAccept(response -> {
+            switch (response.statusCode()) {
+                case 204 -> this.messageQueue.removeAll(messages);
+                case 429 ->
+                        this.logger.warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this.", this.url);
+                default ->
+                        this.logger.warn("Failed to send a webhook to {}. Got status code {}.", this.url, response.statusCode());
+            }
+        });
+    }
 }

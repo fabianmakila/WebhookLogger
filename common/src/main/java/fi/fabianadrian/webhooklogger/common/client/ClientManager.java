@@ -34,7 +34,7 @@ public final class ClientManager {
 			discordSerialized = discordSerialized.replaceAll(entry.getKey(), entry.getValue());
 		}
 
-		client.addMessageToBuffer(discordSerialized);
+		client.add(discordSerialized);
 	}
 
 	public void reload() {
@@ -47,7 +47,10 @@ public final class ClientManager {
 		}
 
 		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(
-				() -> this.clients.values().forEach(DiscordClient::sendMessagesInBuffer),
+				() -> {
+					this.defaultClient.send();
+					this.clients.values().forEach(DiscordClient::send);
+				},
 				0,
 				this.config.sendRate(),
 				TimeUnit.SECONDS
