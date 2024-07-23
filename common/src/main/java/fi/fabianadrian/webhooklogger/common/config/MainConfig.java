@@ -23,6 +23,11 @@ public interface MainConfig {
 
 	@AnnotationBasedSorter.Order(0)
 	@ConfDefault.DefaultObject("defaultWebhooks")
+	@ConfComments({
+			"Here you can configure your webhook URL's.",
+			"If no webhook is defined for a specific event the \"default\" webhook will be used instead.",
+			"Available events can be found in the events.yml file."
+	})
 	Map<String, String> webhooks();
 
 	@AnnotationBasedSorter.Order(1)
@@ -36,6 +41,10 @@ public interface MainConfig {
 
 	@AnnotationBasedSorter.Order(2)
 	@ConfDefault.DefaultObject("defaultTextReplacements")
+	@ConfComments({
+			"You can use this to filter or replace text.",
+			"Supports regex."
+	})
 	Map<String, String> textReplacements();
 
 	@AnnotationBasedSorter.Order(3)
