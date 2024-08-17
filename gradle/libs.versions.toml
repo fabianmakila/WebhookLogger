@@ -28,3 +28,4 @@ shadow = { id = "com.gradleup.shadow", version = "8.3.0" }
 spotless = { id = "com.diffplug.spotless", version = "7.0.0.BETA1" }
 pluginYml-paper = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 sponge = { id = "org.spongepowered.gradle.plugin", version = "2.2.0" }
+runPaper = { id = "xyz.jpenilla.run-paper", version = "2.3.0" }

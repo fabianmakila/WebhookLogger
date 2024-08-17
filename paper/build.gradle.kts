@@ -1,6 +1,7 @@
 plugins {
 	id("webhooklogger.java-conventions")
 	alias(libs.plugins.pluginYml.paper)
+	alias(libs.plugins.runPaper)
 	alias(libs.plugins.shadow)
 }
 
@@ -28,6 +29,12 @@ paper {
 tasks {
 	build {
 		dependsOn(shadowJar)
+	}
+	runServer {
+		downloadPlugins {
+			modrinth("miniplaceholders", "J2guR3GH")
+		}
+		minecraftVersion("1.20.6")
 	}
 	shadowJar {
 		minimize()
