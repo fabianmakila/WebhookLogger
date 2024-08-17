@@ -23,9 +23,10 @@ sponge {
     }
     license("GPLv3")
     plugin(rootProject.name.lowercase()) {
+        description(rootProject.description)
         displayName(rootProject.name)
-        version(rootProject.version.toString())
         entrypoint("fi.fabianadrian.webhooklogger.sponge.WebhookLoggerSponge")
+        version(rootProject.version.toString())
         links {
             homepage("https://modrinth.com/plugin/webhooklogger")
             source("https://github.com/fabianmakila/webhooklogger")
@@ -37,6 +38,11 @@ sponge {
         dependency("spongeapi") {
             loadOrder(PluginDependency.LoadOrder.AFTER)
             optional(false)
+        }
+        dependency("miniplaceholders") {
+            loadOrder(PluginDependency.LoadOrder.AFTER)
+            optional(true)
+            version("2.2.4")
         }
     }
 }

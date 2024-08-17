@@ -2,9 +2,14 @@ package fi.fabianadrian.webhooklogger.common.event;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jetbrains.annotations.Nullable;
 
 public final class DeathEventBuilder extends EventBuilder {
+	private final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
+
 	public DeathEventBuilder(WebhookLogger webhookLogger) {
 		super(webhookLogger, EventType.DEATH, webhookLogger.eventsConfig().death().format());
 	}
@@ -28,10 +33,17 @@ public final class DeathEventBuilder extends EventBuilder {
 		return this;
 	}
 
-	public DeathEventBuilder message(String message) {
+	public DeathEventBuilder message(@Nullable Component message) {
+		String messageAsString = "";
+
+		if (message != null) {
+			this.serializer.serialize(message);
+		}
+
 		this.resolverBuilder = this.resolverBuilder.resolver(
-				Placeholder.unparsed("message", message)
+				Placeholder.unparsed("message", messageAsString)
 		);
+
 		return this;
 	}
 }

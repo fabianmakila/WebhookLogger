@@ -2,9 +2,16 @@ package fi.fabianadrian.webhooklogger.common.event;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jetbrains.annotations.Nullable;
+
+import java.net.InetSocketAddress;
 
 public final class JoinQuitEventBuilder extends EventBuilder {
+	private final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
+
 	public JoinQuitEventBuilder(WebhookLogger webhookLogger) {
 		super(webhookLogger, EventType.JOINQUIT, webhookLogger.eventsConfig().joinQuit().format());
 	}
@@ -28,16 +35,23 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 		return this;
 	}
 
-	public JoinQuitEventBuilder message(String message) {
+	public JoinQuitEventBuilder message(@Nullable Component message) {
+		String messageAsString = "";
+
+		if (message != null) {
+			messageAsString = this.serializer.serialize(message);
+		}
+
 		this.resolverBuilder = this.resolverBuilder.resolver(
-				Placeholder.unparsed("message", message)
+				Placeholder.unparsed("message", messageAsString)
 		);
+
 		return this;
 	}
 
-	public JoinQuitEventBuilder address(String address) {
+	public JoinQuitEventBuilder address(InetSocketAddress address) {
 		this.resolverBuilder = this.resolverBuilder.resolver(
-				Placeholder.unparsed("address", address)
+				Placeholder.unparsed("address", String.valueOf(address))
 		);
 		return this;
 	}

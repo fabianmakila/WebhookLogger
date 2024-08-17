@@ -5,8 +5,6 @@ import fi.fabianadrian.webhooklogger.common.config.event.JoinQuitEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.JoinQuitEventBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,15 +25,12 @@ public final class JoinQuitListener implements Listener {
 			return;
 		}
 
-		Component joinMessage = event.joinMessage();
-		String joinMessageAsString = joinMessage != null ? PlainTextComponentSerializer.plainText().serialize(joinMessage) : "";
 		Location loc = event.getPlayer().getLocation();
-
 		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
 				.audience(event.getPlayer())
-				.message(joinMessageAsString)
+				.message(event.joinMessage())
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-				.address(String.valueOf(event.getPlayer().getAddress()));
+				.address(event.getPlayer().getAddress());
 		this.webhookLogger.clientManager().send(builder);
 	}
 
@@ -46,15 +41,13 @@ public final class JoinQuitListener implements Listener {
 			return;
 		}
 
-		Component quitMessage = event.quitMessage();
-		String quitMessageAsString = quitMessage != null ? PlainTextComponentSerializer.plainText().serialize(quitMessage) : "";
 		Location loc = event.getPlayer().getLocation();
 
 		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
 				.audience(event.getPlayer())
-				.message(quitMessageAsString)
+				.message(event.quitMessage())
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-				.address(String.valueOf(event.getPlayer().getAddress()));
+				.address(event.getPlayer().getAddress());
 		this.webhookLogger.clientManager().send(builder);
 	}
 }

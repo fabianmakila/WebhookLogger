@@ -14,7 +14,8 @@ client-discord = { module = "io.github.4drian3d:jdwebhooks", version = "1.0.1" }
 
 # Libraries
 adventure = { module = "net.kyori:adventure-api", version.ref = "adventure" }
-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+adventure-text-serializer-plain = { module = "net.kyori:adventure-text-serializer-plain"}
+adventure-text-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 
 dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }

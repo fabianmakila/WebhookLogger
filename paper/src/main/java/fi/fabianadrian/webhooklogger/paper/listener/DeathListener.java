@@ -5,8 +5,6 @@ import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.DeathEventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,9 +20,8 @@ public final class DeathListener implements Listener {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
-		Component deathMessage = event.deathMessage();
 
-		if (!config.enabled() || !config.logCancelled() && event.isCancelled() || deathMessage == null) {
+		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
@@ -33,7 +30,7 @@ public final class DeathListener implements Listener {
 		EventBuilder builder = new DeathEventBuilder(this.webhookLogger)
 				.audience(event.getEntity())
 				.cancelled(event.isCancelled())
-				.message(PlainTextComponentSerializer.plainText().serialize(deathMessage))
+				.message(event.deathMessage())
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 		this.webhookLogger.clientManager().send(builder);
 	}

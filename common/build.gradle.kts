@@ -16,7 +16,8 @@ dependencies {
 
     // These are provided by the platforms
     compileOnly(libs.adventure)
-    compileOnly(libs.minimessage)
+    compileOnly(libs.adventure.text.minimessage)
+    compileOnly(libs.adventure.text.serializer.plain)
     compileOnly(libs.slf4j)
     compileOnly(libs.snakeyaml)
 

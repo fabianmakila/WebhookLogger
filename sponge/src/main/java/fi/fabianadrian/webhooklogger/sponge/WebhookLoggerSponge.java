@@ -18,7 +18,7 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
 import java.nio.file.Path;
 import java.util.List;
 
-@Plugin("webhookchatlogger")
+@Plugin("webhooklogger")
 public final class WebhookLoggerSponge {
 	private WebhookLogger webhookLogger;
 	private final PluginContainer container;
@@ -32,7 +32,11 @@ public final class WebhookLoggerSponge {
 
 	@Listener
 	public void onServerStart(final StartedEngineEvent<Server> event) {
-		this.webhookLogger = new WebhookLogger(LoggerFactory.getLogger("webhookchatlogger"), this.configDir);
+		this.webhookLogger = new WebhookLogger(LoggerFactory.getLogger("webhooklogger"), this.configDir);
+
+		//TODO Miniplaceholders
+		//TODO Reload command
+
 		registerListeners();
 	}
 
