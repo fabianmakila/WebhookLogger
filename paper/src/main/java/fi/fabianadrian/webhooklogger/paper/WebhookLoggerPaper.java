@@ -2,13 +2,12 @@ package fi.fabianadrian.webhooklogger.paper;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
-import fi.fabianadrian.webhooklogger.paper.command.RootCommandExecutor;
+import fi.fabianadrian.webhooklogger.paper.commands.WebhookLoggerCommand;
 import fi.fabianadrian.webhooklogger.paper.listener.ChatListener;
 import fi.fabianadrian.webhooklogger.paper.listener.CommandListener;
 import fi.fabianadrian.webhooklogger.paper.listener.DeathListener;
 import fi.fabianadrian.webhooklogger.paper.listener.JoinQuitListener;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,7 +25,10 @@ public final class WebhookLoggerPaper extends JavaPlugin {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
 
-		registerCommands();
+		// Register reload command
+		WebhookLoggerCommand webhookLoggerCommand = new WebhookLoggerCommand(this);
+		webhookLoggerCommand.register();
+
 		registerListeners();
 
 		// bStats
@@ -40,17 +42,6 @@ public final class WebhookLoggerPaper extends JavaPlugin {
 
 	public WebhookLogger webhookLogger() {
 		return this.webhookLogger;
-	}
-
-	private void registerCommands() {
-		PluginCommand rootCommand = getCommand("webhooklogger");
-		if (rootCommand == null) {
-			return;
-		}
-
-		RootCommandExecutor rootCommandExecutor = new RootCommandExecutor(this);
-		rootCommand.setExecutor(rootCommandExecutor);
-		rootCommand.setTabCompleter(rootCommandExecutor);
 	}
 
 	private void registerListeners() {

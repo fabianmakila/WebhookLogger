@@ -8,7 +8,7 @@ version = rootProject.version
 description = rootProject.description
 
 java.toolchain {
-	languageVersion.set(JavaLanguageVersion.of(17))
+	languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {

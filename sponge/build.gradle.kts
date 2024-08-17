@@ -2,12 +2,14 @@ import org.spongepowered.gradle.plugin.config.PluginLoaders
 import org.spongepowered.plugin.metadata.model.PluginDependency
 
 plugins {
-    id("webhooklogger.platform-conventions")
+    id("webhooklogger.java-conventions")
     alias(libs.plugins.sponge)
 }
 
 dependencies {
+    implementation(project(":common"))
     compileOnly(libs.platform.sponge)
+
     implementation(libs.slf4j)
 }
 
