@@ -1,8 +1,7 @@
 plugins {
-	id("webhooklogger.java-conventions")
+	id("webhooklogger.platform-conventions")
 	alias(libs.plugins.pluginYml.paper)
 	alias(libs.plugins.runPaper)
-	alias(libs.plugins.shadow)
 }
 
 dependencies {
@@ -27,31 +26,10 @@ paper {
 }
 
 tasks {
-	build {
-		dependsOn(shadowJar)
-	}
 	runServer {
 		downloadPlugins {
 			modrinth("miniplaceholders", "J2guR3GH")
 		}
 		minecraftVersion("1.20.6")
-	}
-	shadowJar {
-		minimize()
-
-		destinationDirectory.set(file("${rootProject.rootDir}/dist"))
-		archiveClassifier.set("")
-		archiveBaseName.set("${rootProject.name}-Paper")
-
-		sequenceOf(
-			"io.github._4drian3d.jdwebhooks",
-			"com.google.gson",
-			"org.bstats",
-			"org.json",
-			"space.arim",
-			"dev.vankka.mcdiscordreserializer"
-		).forEach { pkg ->
-			relocate(pkg, "fi.fabianadrian.webhooklogger.dependency.$pkg")
-		}
 	}
 }

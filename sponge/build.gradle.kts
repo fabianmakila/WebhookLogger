@@ -2,7 +2,7 @@ import org.spongepowered.gradle.plugin.config.PluginLoaders
 import org.spongepowered.plugin.metadata.model.PluginDependency
 
 plugins {
-    id("webhooklogger.java-conventions")
+    id("webhooklogger.platform-conventions")
     alias(libs.plugins.sponge)
 }
 
@@ -11,6 +11,16 @@ dependencies {
     compileOnly(libs.platform.sponge)
 
     implementation(libs.slf4j)
+}
+
+tasks {
+    shadowJar {
+        sequenceOf(
+            "org.slf4j",
+        ).forEach { pkg ->
+            relocate(pkg, "fi.fabianadrian.webhooklogger.dependency.$pkg")
+        }
+    }
 }
 
 sponge {
