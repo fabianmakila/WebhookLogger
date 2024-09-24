@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.sponge;
 
 import com.google.inject.Inject;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
+import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.sponge.listener.ChatListener;
 import fi.fabianadrian.webhooklogger.sponge.listener.CommandListener;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,10 @@ public final class WebhookLoggerSponge {
 	public void onServerStart(final StartedEngineEvent<Server> event) {
 		this.webhookLogger = new WebhookLogger(LoggerFactory.getLogger("webhooklogger"), this.configDir);
 
-		//TODO Miniplaceholders
+		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
+			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
+		}
+
 		//TODO Reload command
 
 		registerListeners();
