@@ -2,7 +2,7 @@ package fi.fabianadrian.webhooklogger.paper;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
-import fi.fabianadrian.webhooklogger.paper.commands.WebhookLoggerCommand;
+import fi.fabianadrian.webhooklogger.paper.command.WebhookLoggerCommand;
 import fi.fabianadrian.webhooklogger.paper.listener.ChatListener;
 import fi.fabianadrian.webhooklogger.paper.listener.CommandListener;
 import fi.fabianadrian.webhooklogger.paper.listener.DeathListener;

@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhooklogger.paper.commands;
+package fi.fabianadrian.webhooklogger.paper.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
