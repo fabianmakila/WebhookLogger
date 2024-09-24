@@ -5,6 +5,7 @@ import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
 import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
+import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -13,38 +14,26 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public final class WebhookLogger {
 	private final Logger logger;
-	private final ConfigManager<MainConfig> mainConfigManager;
-	private final ConfigManager<EventsConfig> eventsConfigManager;
+	private final ConfigManager configManager;
 	private final ClientManager clientManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final DependencyManager dependencyManager = new DependencyManager();
 
 	public WebhookLogger(Logger logger, Path dataFolder) {
-		this.logger = logger;
-		this.mainConfigManager = ConfigManager.create(
-				dataFolder,
-				"config.yml",
-				MainConfig.class,
-				logger
-		);
-		this.mainConfigManager.reload();
-		this.eventsConfigManager = ConfigManager.create(
-				dataFolder,
-				"events.yml",
-				EventsConfig.class,
-				logger
-		);
-		this.eventsConfigManager.reload();
+		new TranslationManager(logger);
 
+		this.logger = logger;
+		this.configManager = new ConfigManager(dataFolder, logger);
 		this.clientManager = new ClientManager(this);
-		this.clientManager.reload();
+
+		reload();
 	}
 
-	public void reload() {
-		this.mainConfigManager.reload();
-		this.eventsConfigManager.reload();
-
+	public boolean reload() {
+		boolean success = this.configManager.reload();
 		this.clientManager.reload();
+
+		return success;
 	}
 
 	public void shutdown() {
@@ -52,11 +41,11 @@ public final class WebhookLogger {
 	}
 
 	public MainConfig mainConfig() {
-		return this.mainConfigManager.config();
+		return this.configManager.mainConfig();
 	}
 
 	public EventsConfig eventsConfig() {
-		return this.eventsConfigManager.config();
+		return this.configManager.eventsConfig();
 	}
 
 	public Logger logger() {

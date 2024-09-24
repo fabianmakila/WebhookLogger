@@ -11,12 +11,23 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import static io.papermc.paper.command.brigadier.Commands.literal;
+import static net.kyori.adventure.text.Component.translatable;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class WebhookLoggerCommand {
+	private static final Component COMPONENT_SUCCESS = translatable()
+			.key("webhooklogger.command.reload.success")
+			.color(NamedTextColor.GREEN)
+			.build();
+	private static final Component COMPONENT_FAILURE = translatable()
+			.key("webhooklogger.command.reload.failure")
+			.color(NamedTextColor.RED)
+			.build();
 	private final WebhookLogger webhookLogger;
 	private final LifecycleEventManager<Plugin> manager;
 
@@ -40,8 +51,13 @@ public final class WebhookLoggerCommand {
 	}
 
 	private int executeReload(CommandContext<CommandSourceStack> ctx) {
-		this.webhookLogger.reload();
-		ctx.getSource().getSender().sendMessage(Component.translatable("webhooklogger.command.reload"));
+		CommandSender sender = ctx.getSource().getSender();
+		if (this.webhookLogger.reload()) {
+			sender.sendMessage(COMPONENT_SUCCESS);
+		} else {
+			sender.sendMessage(COMPONENT_FAILURE);
+		}
+
 		return Command.SINGLE_SUCCESS;
 	}
 }
