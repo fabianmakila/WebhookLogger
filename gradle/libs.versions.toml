@@ -1,6 +1,7 @@
 [versions]
-bstats = "3.0.2"
 adventure = "4.17.0"
+bstats = "3.0.2"
+cloud-minecraft = "2.0.0-beta.10"
 
 [libraries]
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
@@ -22,6 +23,11 @@ dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", versio
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
 snakeyaml = { module = "org.yaml:snakeyaml", version = "2.2" }
 mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.3.0" }
+
+# Cloud
+cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-minecraft" }
+cloud-sponge = { module = "org.incendo:cloud-sponge7", version.ref = "cloud-minecraft" }
+cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
 [plugins]
 pluginYml-paper = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }

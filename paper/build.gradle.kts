@@ -8,6 +8,7 @@ dependencies {
 	implementation(project(":common"))
 	compileOnly(libs.platform.paper)
 
+	implementation(libs.cloud.paper)
 	implementation(libs.bstats.bukkit)
 }
 
