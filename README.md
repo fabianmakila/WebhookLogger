@@ -20,4 +20,4 @@ All configurable messages use the MiniMessage format and also support MiniPlaceh
 Configuration is handled using DazzleConf.
 
 ## Building
-Building WebhookLogger requires Java 17. The recommended command for building is `./gradlew spotlessApply build`
+Building WebhookLogger requires Java 21. The recommended command for building is `./gradlew build`
