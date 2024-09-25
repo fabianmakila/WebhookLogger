@@ -13,7 +13,6 @@ import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
 import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.minecraft.extras.AudienceProvider;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
 import org.slf4j.Logger;
@@ -88,8 +87,10 @@ public final class WebhookLogger {
 	private void setupCommandManager() {
 		this.commandManager.registerCommandPreProcessor(new WebhookLoggerCommandPreprocessor(this));
 		this.commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
-		AudienceProvider<Commander> audienceProvider = AudienceProvider.nativeAudience();
-		MinecraftExceptionHandler.create(audienceProvider).defaultHandlers().captionFormatter(new WebhookLoggerCaptionFormatter()).registerTo(this.commandManager);
+		MinecraftExceptionHandler.<Commander>createNative()
+				.defaultHandlers()
+				.captionFormatter(new WebhookLoggerCaptionFormatter())
+				.registerTo(this.commandManager);
 	}
 
 	private void registerCommands() {
