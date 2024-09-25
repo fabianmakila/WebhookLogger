@@ -5,6 +5,7 @@ cloud-minecraft = "2.0.0-beta.10"
 
 [libraries]
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+bstats-sponge = { module = "org.bstats:bstats-sponge", version.ref = "bstats" }
 
 # Platforms
 platform-paper = { module = "io.papermc.paper:paper-api", version = "1.21.1-R0.1-SNAPSHOT" }

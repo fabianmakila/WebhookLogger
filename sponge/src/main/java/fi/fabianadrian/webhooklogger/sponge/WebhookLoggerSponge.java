@@ -7,6 +7,7 @@ import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.sponge.listener.ChatListener;
 import fi.fabianadrian.webhooklogger.sponge.listener.CommandListener;
+import org.bstats.sponge.Metrics;
 import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,12 @@ public final class WebhookLoggerSponge implements Platform {
 	private CommandManager<Commander> commandManager;
 
 	@Inject
-	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir) {
+	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir, Metrics.Factory metricsFactory) {
 		this.container = container;
 		this.configDir = configDir;
 		this.logger = LoggerFactory.getLogger("webhooklogger");
+
+		metricsFactory.make(23463);
 	}
 
 	@Listener
