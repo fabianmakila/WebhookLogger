@@ -23,7 +23,9 @@ tasks {
 			"org.bstats",
 			"org.json",
 			"space.arim",
-			"dev.vankka.mcdiscordreserializer"
+			"dev.vankka.mcdiscordreserializer",
+			"org.incendo.cloud",
+			"io.leangen"
 		).forEach { pkg ->
 			relocate(pkg, "fi.fabianadrian.webhooklogger.dependency.$pkg")
 		}
