@@ -1,4 +1,4 @@
-![WebhookLogger banner](/assets/webhooklogger-banner.png)
+![Banner](/assets/webhooklogger-banner.svg)
 
 > [!IMPORTANT]
 > This README is intended for plugin developers. See the [Modrinth page](https://modrinth.com/plugin/webhooklogger) for a more user-friendly description.
