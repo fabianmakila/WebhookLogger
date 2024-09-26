@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public final class ChatListener extends AbstractListener<ChatEventBuilder> implements Listener {
-
 	public ChatListener(WebhookLogger webhookLogger) {
 		super(webhookLogger);
 	}

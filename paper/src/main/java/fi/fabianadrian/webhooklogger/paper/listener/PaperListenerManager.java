@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
-public class PaperListenerManager extends ListenerManager {
+public final class PaperListenerManager extends ListenerManager {
 	private final WebhookLoggerPaper plugin;
 	private final ListenerFactory factory;
 

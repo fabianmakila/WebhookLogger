@@ -35,7 +35,7 @@ public final class WebhookClient {
 		}
 
 		// Construct webhook
-		WebHook webHook = WebHook.builder().content(String.join(", ", messages)).build();
+		WebHook webHook = WebHook.builder().content(String.join("\n", messages)).build();
 		this.client.sendWebHook(webHook).thenAccept(response -> {
 			switch (response.statusCode()) {
 				case 204 -> this.messageQueue.removeAll(messages);
