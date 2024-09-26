@@ -36,7 +36,10 @@ public interface MainConfig {
 
 	@AnnotationBasedSorter.Order(0)
 	@ConfDefault.DefaultObject("defaultWebhooks")
-	@ConfComments("You should only configure 1 webhook per Discord channel to avoid rate limits.")
+	@ConfComments({
+			"You should only configure 1 webhook per Discord channel to avoid rate limits.",
+			"Available events: CHAT, COMMAND, DEATH and JOINQUIT"
+	})
 	List<@SubSection Webhook> webhooks();
 
 	@AnnotationBasedSorter.Order(1)
@@ -63,12 +66,9 @@ public interface MainConfig {
 
 	interface Webhook {
 		@AnnotationBasedSorter.Order(0)
-		@ConfDefault.DefaultString("")
 		String url();
 
 		@AnnotationBasedSorter.Order(1)
-		@ConfDefault.DefaultStrings({})
-		@ConfComments("Available events: CHAT, COMMAND, DEATH and JOINQUIT")
 		List<EventType> events();
 	}
 }
