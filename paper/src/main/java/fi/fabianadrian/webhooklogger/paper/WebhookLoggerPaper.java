@@ -55,7 +55,7 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	@Override
 	public Path configPath() {
-		return getDataPath();
+		return getDataFolder().toPath();
 	}
 
 	@Override
