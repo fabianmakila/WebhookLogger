@@ -20,7 +20,7 @@ paper {
 	website = "https://github.com/fabianmakila/WebhookLogger"
 
 	permissions {
-		register("webhooklogger.reload") {
+		register("webhooklogger.command.reload") {
 			description = "Allows you to run the reload command"
 		}
 	}
