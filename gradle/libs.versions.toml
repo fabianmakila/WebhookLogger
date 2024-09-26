@@ -22,7 +22,7 @@ miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api",
 
 dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
-snakeyaml = { module = "org.yaml:snakeyaml", version = "2.2" }
+snakeyaml = { module = "org.yaml:snakeyaml", version = "2.3" }
 mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.3.0" }
 
 # Cloud
