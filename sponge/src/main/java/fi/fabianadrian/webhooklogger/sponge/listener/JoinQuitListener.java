@@ -1,7 +1,6 @@
 package fi.fabianadrian.webhooklogger.sponge.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.config.event.JoinQuitEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.JoinQuitEventBuilder;
 import org.spongepowered.api.event.Listener;
@@ -17,11 +16,6 @@ public final class JoinQuitListener {
 
 	@Listener
 	public void onJoin(ServerSideConnectionEvent.Join event) {
-		JoinQuitEventConfig config = this.webhookLogger.eventsConfig().joinQuit();
-		if (!config.enabled()) {
-			return;
-		}
-
 		Location<?, ?> loc = event.player().location();
 
 		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
@@ -34,11 +28,6 @@ public final class JoinQuitListener {
 
 	@Listener
 	public void onQuit(ServerSideConnectionEvent.Disconnect event) {
-		JoinQuitEventConfig config = this.webhookLogger.eventsConfig().joinQuit();
-		if (!config.enabled()) {
-			return;
-		}
-
 		Location<?, ?> loc = event.player().location();
 
 		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)

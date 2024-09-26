@@ -4,7 +4,6 @@ import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.CommandEventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
-import fi.fabianadrian.webhooklogger.sponge.WebhookLoggerSponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.command.ExecuteCommandEvent;
@@ -16,8 +15,8 @@ import java.util.Optional;
 public final class CommandListener {
 	private final WebhookLogger webhookLogger;
 
-	public CommandListener(WebhookLoggerSponge plugin) {
-		this.webhookLogger = plugin.webhookLogger();
+	public CommandListener(WebhookLogger webhookLogger) {
+		this.webhookLogger = webhookLogger;
 	}
 
 	@Listener
@@ -25,7 +24,7 @@ public final class CommandListener {
 	public void onCommand(ExecuteCommandEvent.Pre event) {
 		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
 
-		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 

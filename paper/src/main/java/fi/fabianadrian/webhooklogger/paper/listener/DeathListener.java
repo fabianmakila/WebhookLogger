@@ -21,7 +21,7 @@ public final class DeathListener implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
 
-		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 

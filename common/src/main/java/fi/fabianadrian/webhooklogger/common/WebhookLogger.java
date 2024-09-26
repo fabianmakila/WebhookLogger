@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public final class WebhookLogger {
-	private final Logger logger;
+	private final Platform platform;
 	private final CommandManager<Commander> commandManager;
 	private final ConfigManager configManager;
 	private final ClientManager clientManager;
@@ -30,11 +30,11 @@ public final class WebhookLogger {
 	private final DependencyManager dependencyManager = new DependencyManager();
 
 	public WebhookLogger(Platform platform) {
-		this.logger = platform.logger();
+		this.platform = platform;
 
-		new TranslationManager(this.logger);
+		new TranslationManager(platform.logger());
 
-		this.configManager = new ConfigManager(platform.configPath(), this.logger);
+		this.configManager = new ConfigManager(platform.configPath(), platform.logger());
 
 		this.commandManager = platform.commandManager();
 		setupCommandManager();
@@ -48,6 +48,8 @@ public final class WebhookLogger {
 	public boolean reload() {
 		boolean success = this.configManager.reload();
 		this.clientManager.reload();
+
+		this.platform.registerListeners();
 
 		return success;
 	}
@@ -65,7 +67,7 @@ public final class WebhookLogger {
 	}
 
 	public Logger logger() {
-		return this.logger;
+		return this.platform.logger();
 	}
 
 	public ClientManager clientManager() {

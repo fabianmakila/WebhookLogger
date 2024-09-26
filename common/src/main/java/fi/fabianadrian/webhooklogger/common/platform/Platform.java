@@ -10,4 +10,5 @@ public interface Platform {
 	Logger logger();
 	Path configPath();
 	CommandManager<Commander> commandManager();
+	void registerListeners();
 }

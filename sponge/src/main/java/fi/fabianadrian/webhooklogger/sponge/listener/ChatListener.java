@@ -4,7 +4,6 @@ import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.ChatEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.ChatEventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
-import fi.fabianadrian.webhooklogger.sponge.WebhookLoggerSponge;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.IsCancelled;
@@ -16,8 +15,8 @@ import java.util.Optional;
 public final class ChatListener {
 	private final WebhookLogger webhookLogger;
 
-	public ChatListener(WebhookLoggerSponge plugin) {
-		this.webhookLogger = plugin.webhookLogger();
+	public ChatListener(WebhookLogger webhookLogger) {
+		this.webhookLogger = webhookLogger;
 	}
 
 	@Listener
@@ -25,7 +24,7 @@ public final class ChatListener {
 	public void onChat(PlayerChatEvent.Submit event) {
 		ChatEventConfig config = this.webhookLogger.eventsConfig().chat();
 
-		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 

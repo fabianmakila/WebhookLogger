@@ -26,7 +26,7 @@ public final class DeathListener {
 		}
 
 		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
-		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 

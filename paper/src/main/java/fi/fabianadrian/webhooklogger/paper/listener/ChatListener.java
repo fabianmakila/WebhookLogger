@@ -20,7 +20,7 @@ public final class ChatListener implements Listener {
 	public void onChat(AsyncChatEvent event) {
 		ChatEventConfig config = this.webhookLogger.eventsConfig().chat();
 
-		if (!config.enabled() || !config.logCancelled() && event.isCancelled()) {
+		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 

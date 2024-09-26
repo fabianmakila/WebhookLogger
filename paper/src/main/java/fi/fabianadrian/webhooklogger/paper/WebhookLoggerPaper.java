@@ -5,12 +5,10 @@ import fi.fabianadrian.webhooklogger.common.command.Commander;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.paper.command.PaperCommander;
-import fi.fabianadrian.webhooklogger.paper.listener.ChatListener;
-import fi.fabianadrian.webhooklogger.paper.listener.CommandListener;
-import fi.fabianadrian.webhooklogger.paper.listener.DeathListener;
-import fi.fabianadrian.webhooklogger.paper.listener.JoinQuitListener;
+import fi.fabianadrian.webhooklogger.paper.listener.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.CommandManager;
@@ -20,7 +18,6 @@ import org.incendo.cloud.paper.PaperCommandManager;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
@@ -35,7 +32,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
-
 
 		registerListeners();
 
@@ -52,14 +48,13 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 		return this.webhookLogger;
 	}
 
-	private void registerListeners() {
-		PluginManager manager = getServer().getPluginManager();
-		Stream.of(
-				new ChatListener(this),
-				new CommandListener(this),
-				new DeathListener(this),
-				new JoinQuitListener(this)
-		).forEach(listener -> manager.registerEvents(listener, this));
+	@Override
+	public void registerListeners() {
+		// Unregister any existing listeners
+		HandlerList.unregisterAll(this);
+
+		ListenerFactory factory = new ListenerFactory(this);
+		this.webhookLogger.clientManager().registry().registeredEventTypes().forEach(factory::register);
 	}
 
 	@Override

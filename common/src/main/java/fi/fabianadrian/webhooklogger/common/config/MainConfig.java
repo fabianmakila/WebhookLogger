@@ -7,11 +7,23 @@ import space.arim.dazzleconf.annote.SubSection;
 import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public interface MainConfig {
-	static Map<String, String> defaultWebhooks() {
-		return Map.of("default", "");
+	static List<Webhook> defaultWebhooks() {
+		return List.of(new Webhook() {
+			@Override
+			public String url() {
+				return "";
+			}
+
+			@Override
+			public Pattern regex() {
+				return Pattern.compile("chat");
+			}
+		});
 	}
 
 	static Map<String, String> defaultTextReplacements() {
@@ -28,7 +40,7 @@ public interface MainConfig {
 			"If no webhook is defined for a specific event the \"default\" webhook will be used instead.",
 			"Available events can be found in the events.yml file."
 	})
-	Map<String, String> webhooks();
+	List<Webhook> webhooks();
 
 	@AnnotationBasedSorter.Order(1)
 	@ConfComments({

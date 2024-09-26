@@ -5,16 +5,18 @@ import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.EventType;
+import org.slf4j.Logger;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 
 public final class ClientManager {
 	private final WebhookLogger webhookLogger;
-	private final Map<EventType, DiscordClient> clients = new HashMap<>();
-	private DiscordClient defaultClient;
+	private final WebhookRegistry registry = new WebhookRegistry();
 	private ScheduledFuture<?> scheduledSendMessageTask;
 	private MainConfig config;
 
@@ -23,10 +25,8 @@ public final class ClientManager {
 	}
 
 	public void send(EventBuilder eventBuilder) {
-		DiscordClient client = this.clients.getOrDefault(eventBuilder.type(), this.defaultClient);
-
-		if (client == null) {
-			this.webhookLogger.logger().warn("No webhook found for {} and default webhook is not configured! Consider turning off logging for this specific event or configure a default webhook", eventBuilder.type());
+		List<DiscordClient> clients = this.registry.forEventType(eventBuilder.type());
+		if (clients.isEmpty()) {
 			return;
 		}
 
@@ -35,12 +35,15 @@ public final class ClientManager {
 			discordSerialized = discordSerialized.replaceAll(entry.getKey(), entry.getValue());
 		}
 
-		client.add(discordSerialized);
+		//TODO Fix ugly
+		String finalDiscordSerialized = discordSerialized;
+		clients.forEach(client -> client.queue(finalDiscordSerialized));
 	}
 
 	public void reload() {
 		this.config = this.webhookLogger.mainConfig();
 
+		this.registry.clear();
 		parseWebhooks();
 
 		if (this.scheduledSendMessageTask != null) {
@@ -48,53 +51,35 @@ public final class ClientManager {
 		}
 
 		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(
-				() -> {
-					this.defaultClient.send();
-					this.clients.values().forEach(DiscordClient::send);
-				},
+				() -> this.registry.webhooks().forEach(DiscordClient::sendAll),
 				0,
 				this.config.sendRate(),
 				TimeUnit.SECONDS
 		);
 	}
 
-	private void parseWebhooks() {
-		this.defaultClient = null;
-		this.clients.clear();
-
-		this.config.webhooks().forEach((key, url) -> {
-			if (url.isBlank()) {
-				this.webhookLogger.logger().warn("{} webhook has empty URL! Please check the configuration", key);
-				return;
-			}
-
-			if (key.equalsIgnoreCase("default")) {
-				if (this.defaultClient != null) {
-					this.webhookLogger.logger().warn("Duplicate default logger found! Please check the webhook configuration");
-				}
-
-				this.defaultClient = new DiscordClient(this.webhookLogger.logger(), url);
-				return;
-			}
-
-			EventType type;
-			try {
-				type = EventType.valueOf(key.toUpperCase());
-			} catch (IllegalStateException e) {
-				this.webhookLogger.logger().warn("Unknown event {}! Please check the webhook configuration", key);
-				return;
-			}
-
-			this.clients.put(type, createClient(url));
-		});
+	public WebhookRegistry registry() {
+		return this.registry;
 	}
 
-	private DiscordClient createClient(String url) {
-		for (DiscordClient client : this.clients.values()) {
-			if (url.equals(client.url())) {
-				return client;
+	private void parseWebhooks() {
+		Logger logger = this.webhookLogger.logger();
+		this.config.webhooks().forEach(webhook -> {
+			if (webhook.url().isBlank()) {
+				logger.warn("webhook url blank");
+				// TODO Log message
+				return;
 			}
-		}
-		return new DiscordClient(this.webhookLogger.logger(), url);
+
+			List<EventType> events = new ArrayList<>();
+			for (EventType event : EventType.values()) {
+				Matcher matcher = webhook.regex().matcher(event.name());
+				if (matcher.find()) {
+					events.add(event);
+				}
+			}
+
+			this.registry.register(new DiscordClient(logger, webhook.url()), events);
+		});
 	}
 }

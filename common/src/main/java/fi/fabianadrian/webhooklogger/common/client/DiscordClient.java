@@ -21,15 +21,11 @@ public final class DiscordClient {
 		this.client = WebHookClient.fromURL(url);
 	}
 
-	public String url() {
-		return this.url;
-	}
-
-	public void add(String message) {
+	public void queue(String message) {
 		this.messageQueue.add(message);
 	}
 
-	public void send() throws RuntimeException {
+	public void sendAll() throws RuntimeException {
 		// Copy messageBuffer
 		List<String> messages = List.copyOf(this.messageQueue);
 

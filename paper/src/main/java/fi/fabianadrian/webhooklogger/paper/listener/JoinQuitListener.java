@@ -1,7 +1,6 @@
 package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.config.event.JoinQuitEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.JoinQuitEventBuilder;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
@@ -20,11 +19,6 @@ public final class JoinQuitListener implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		JoinQuitEventConfig config = this.webhookLogger.eventsConfig().joinQuit();
-		if (!config.enabled()) {
-			return;
-		}
-
 		Location loc = event.getPlayer().getLocation();
 		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
 				.audience(event.getPlayer())
@@ -36,11 +30,6 @@ public final class JoinQuitListener implements Listener {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		JoinQuitEventConfig config = this.webhookLogger.eventsConfig().joinQuit();
-		if (!config.enabled()) {
-			return;
-		}
-
 		Location loc = event.getPlayer().getLocation();
 
 		EventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
