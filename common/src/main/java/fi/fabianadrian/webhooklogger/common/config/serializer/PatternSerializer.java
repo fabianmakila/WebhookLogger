@@ -7,7 +7,7 @@ import space.arim.dazzleconf.serialiser.ValueSerialiser;
 
 import java.util.regex.Pattern;
 
-public class PatternSerializer implements ValueSerialiser<Pattern> {
+public final class PatternSerializer implements ValueSerialiser<Pattern> {
 	@Override
 	public Class<Pattern> getTargetClass() {
 		return Pattern.class;
