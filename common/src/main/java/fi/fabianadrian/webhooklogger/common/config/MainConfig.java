@@ -1,6 +1,7 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
 import fi.fabianadrian.webhooklogger.common.config.section.PlaceholderConfigSection;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.annote.SubSection;
@@ -9,7 +10,6 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public interface MainConfig {
 	static List<Webhook> defaultWebhooks() {
@@ -20,8 +20,8 @@ public interface MainConfig {
 			}
 
 			@Override
-			public Pattern regex() {
-				return Pattern.compile("chat");
+			public List<EventType> events() {
+				return List.of(EventType.CHAT);
 			}
 		});
 	}

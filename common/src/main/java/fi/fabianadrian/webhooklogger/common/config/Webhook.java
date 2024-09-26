@@ -1,9 +1,10 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
-import java.util.regex.Pattern;
+import java.util.List;
 
 public interface Webhook {
 	@AnnotationBasedSorter.Order(0)
@@ -12,5 +13,5 @@ public interface Webhook {
 
 	@AnnotationBasedSorter.Order(1)
 	@ConfDefault.DefaultStrings({})
-	Pattern regex();
+	List<EventType> events();
 }

@@ -4,15 +4,12 @@ import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
-import fi.fabianadrian.webhooklogger.common.event.EventType;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 
 public final class ClientManager {
 	private final WebhookLogger webhookLogger;
@@ -71,15 +68,7 @@ public final class ClientManager {
 				return;
 			}
 
-			List<EventType> events = new ArrayList<>();
-			for (EventType event : EventType.values()) {
-				Matcher matcher = webhook.regex().matcher(event.name());
-				if (matcher.find()) {
-					events.add(event);
-				}
-			}
-
-			this.registry.register(new DiscordClient(logger, webhook.url()), events);
+			this.registry.register(new DiscordClient(logger, webhook.url()), webhook.events());
 		});
 	}
 }
