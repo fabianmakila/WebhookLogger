@@ -3,8 +3,8 @@ package fi.fabianadrian.webhooklogger.sponge;
 import com.google.inject.Inject;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
-import fi.fabianadrian.webhooklogger.sponge.listener.ListenerFactory;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.sponge.Metrics;
 import org.incendo.cloud.CommandManager;
@@ -46,8 +46,6 @@ public final class WebhookLoggerSponge implements Platform {
 		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
-
-		registerListeners();
 	}
 
 	@Listener
@@ -57,14 +55,6 @@ public final class WebhookLoggerSponge implements Platform {
 
 	public WebhookLogger webhookLogger() {
 		return this.webhookLogger;
-	}
-
-	@Override
-	public void registerListeners() {
-		//TODO Unregister listeners here
-
-		ListenerFactory factory = new ListenerFactory(this.container, this.webhookLogger);
-		this.webhookLogger.clientManager().registry().registeredEventTypes().forEach(factory::register);
 	}
 
 	@Override
@@ -80,6 +70,11 @@ public final class WebhookLoggerSponge implements Platform {
 	@Override
 	public CommandManager<Audience> commandManager() {
 		return this.commandManager;
+	}
+
+	@Override
+	public ListenerRegistry listenerRegistry() {
+		return null;
 	}
 
 	private void createCommandManager() {

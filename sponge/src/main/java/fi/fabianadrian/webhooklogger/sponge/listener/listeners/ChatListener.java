@@ -1,9 +1,9 @@
-package fi.fabianadrian.webhooklogger.sponge.listener;
+package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.ChatEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.ChatEventBuilder;
-import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
+import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.IsCancelled;
@@ -12,11 +12,10 @@ import org.spongepowered.api.util.Tristate;
 
 import java.util.Optional;
 
-public final class ChatListener {
-	private final WebhookLogger webhookLogger;
+public final class ChatListener extends AbstractListener<ChatEventBuilder> {
 
 	public ChatListener(WebhookLogger webhookLogger) {
-		this.webhookLogger = webhookLogger;
+		super(webhookLogger);
 	}
 
 	@Listener
@@ -33,10 +32,10 @@ public final class ChatListener {
 			return;
 		}
 
-		EventBuilder builder = new ChatEventBuilder(this.webhookLogger)
+		ChatEventBuilder builder = new ChatEventBuilder(this.webhookLogger)
 				.audience(playerOptional.get())
 				.cancelled(event.isCancelled())
 				.message(event.message());
-		this.webhookLogger.clientManager().send(builder);
+		queue(builder);
 	}
 }

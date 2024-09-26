@@ -1,5 +1,6 @@
 package fi.fabianadrian.webhooklogger.common.platform;
 
+import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
 import net.kyori.adventure.audience.Audience;
 import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
@@ -10,5 +11,5 @@ public interface Platform {
 	Logger logger();
 	Path configPath();
 	CommandManager<Audience> commandManager();
-	void registerListeners();
+	ListenerRegistry listenerRegistry();
 }

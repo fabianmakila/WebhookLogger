@@ -1,9 +1,9 @@
-package fi.fabianadrian.webhooklogger.sponge.listener;
+package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.CommandEventBuilder;
-import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
+import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.command.ExecuteCommandEvent;
@@ -12,11 +12,9 @@ import org.spongepowered.api.util.Tristate;
 
 import java.util.Optional;
 
-public final class CommandListener {
-	private final WebhookLogger webhookLogger;
-
+public final class CommandListener extends AbstractListener<CommandEventBuilder> {
 	public CommandListener(WebhookLogger webhookLogger) {
-		this.webhookLogger = webhookLogger;
+		super(webhookLogger);
 	}
 
 	@Listener
@@ -33,10 +31,10 @@ public final class CommandListener {
 			return;
 		}
 
-		EventBuilder builder = new CommandEventBuilder(this.webhookLogger)
+		CommandEventBuilder builder = new CommandEventBuilder(this.webhookLogger)
 				.audience(playerOptional.get())
 				.cancelled(event.isCancelled())
 				.command(event.command());
-		this.webhookLogger.clientManager().send(builder);
+		queue(builder);
 	}
 }

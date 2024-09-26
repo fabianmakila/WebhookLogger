@@ -1,5 +1,6 @@
 package fi.fabianadrian.webhooklogger.common;
 
+import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
 import fi.fabianadrian.webhooklogger.common.command.CaptionFormatter;
 import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
@@ -47,9 +48,11 @@ public final class WebhookLogger {
 
 	public boolean reload() {
 		boolean success = this.configManager.reload();
-		this.clientManager.reload();
 
-		this.platform.registerListeners();
+		this.platform.listenerRegistry().unregisterAll();
+		this.clientManager.reload();
+		this.platform.listenerRegistry().registerAll();
+
 
 		return success;
 	}
@@ -84,6 +87,10 @@ public final class WebhookLogger {
 
 	public CommandManager<Audience> commandManager() {
 		return commandManager;
+	}
+
+	public ListenerRegistry listenerRegistry() {
+		return this.platform.listenerRegistry();
 	}
 
 	private void setupCommandManager() {

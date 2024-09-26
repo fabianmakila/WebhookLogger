@@ -2,12 +2,12 @@ package fi.fabianadrian.webhooklogger.paper;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
-import fi.fabianadrian.webhooklogger.paper.listener.ListenerFactory;
+import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerRegistry;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.CommandManager;
@@ -21,9 +21,11 @@ import java.nio.file.Path;
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
 	private LegacyPaperCommandManager<Audience> commandManager;
+	private PaperListenerRegistry listenerRegistry;
 
 	@Override
 	public void onEnable() {
+		this.listenerRegistry = new PaperListenerRegistry(this);
 		createCommandManager();
 		this.webhookLogger = new WebhookLogger(this);
 
@@ -31,8 +33,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
-
-		registerListeners();
 
 		// bStats
 		new Metrics(this, 18436);
@@ -48,15 +48,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	}
 
 	@Override
-	public void registerListeners() {
-		// Unregister any existing listeners
-		HandlerList.unregisterAll(this);
-
-		ListenerFactory factory = new ListenerFactory(this);
-		this.webhookLogger.clientManager().registry().registeredEventTypes().forEach(factory::register);
-	}
-
-	@Override
 	public Logger logger() {
 		return getSLF4JLogger();
 	}
@@ -69,6 +60,11 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	@Override
 	public CommandManager<Audience> commandManager() {
 		return this.commandManager;
+	}
+
+	@Override
+	public ListenerRegistry listenerRegistry() {
+		return this.listenerRegistry;
 	}
 
 	private void createCommandManager() {

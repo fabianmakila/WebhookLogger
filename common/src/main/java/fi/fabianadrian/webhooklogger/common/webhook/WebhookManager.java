@@ -1,21 +1,17 @@
 package fi.fabianadrian.webhooklogger.common.webhook;
 
-import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
-import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class WebhookManager {
 	private final WebhookLogger webhookLogger;
-	private final WebhookRegistry registry = new WebhookRegistry();
+	private final List<WebhookClient> clients = new ArrayList<>();
 	private ScheduledFuture<?> scheduledSendMessageTask;
 	private MainConfig config;
 
@@ -23,27 +19,8 @@ public final class WebhookManager {
 		this.webhookLogger = webhookLogger;
 	}
 
-	public void send(EventBuilder eventBuilder) {
-		List<WebhookClient> clients = this.registry.forEventType(eventBuilder.type());
-		if (clients.isEmpty()) {
-			return;
-		}
-
-		String discordSerialized = DiscordSerializer.INSTANCE.serialize(eventBuilder.component());
-		for (Map.Entry<Pattern, String> entry : this.config.textReplacements().entrySet()) {
-			Matcher matcher = entry.getKey().matcher(discordSerialized);
-			discordSerialized = matcher.replaceAll(entry.getValue());
-		}
-
-		//TODO Fix ugly
-		String finalDiscordSerialized = discordSerialized;
-		clients.forEach(client -> client.queue(finalDiscordSerialized));
-	}
-
 	public void reload() {
 		this.config = this.webhookLogger.mainConfig();
-
-		this.registry.clear();
 		parseWebhooks();
 
 		if (this.scheduledSendMessageTask != null) {
@@ -51,18 +28,16 @@ public final class WebhookManager {
 		}
 
 		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(
-				() -> this.registry.webhooks().forEach(WebhookClient::sendAll),
+				() -> this.clients.forEach(WebhookClient::sendAll),
 				0,
 				this.config.sendRate(),
 				TimeUnit.SECONDS
 		);
 	}
 
-	public WebhookRegistry registry() {
-		return this.registry;
-	}
-
 	private void parseWebhooks() {
+		this.clients.clear();
+
 		Logger logger = this.webhookLogger.logger();
 		this.config.webhooks().forEach(webhook -> {
 			if (webhook.url().isBlank()) {
@@ -71,7 +46,9 @@ public final class WebhookManager {
 				return;
 			}
 
-			this.registry.register(new WebhookClient(logger, webhook.url()), webhook.events());
+			WebhookClient client = new WebhookClient(logger, webhook.url());
+			this.webhookLogger.listenerRegistry().registerWebhookForEvents(client, webhook.events());
+			this.clients.add(client);
 		});
 	}
 }
