@@ -35,14 +35,14 @@ public final class WebhookLogger {
 		new TranslationManager(platform.logger());
 
 		this.configManager = new ConfigManager(platform.configPath(), platform.logger());
+		this.configManager.reload();
 
 		this.commandManager = platform.commandManager();
 		setupCommandManager();
 		registerCommands();
 
 		this.clientManager = new ClientManager(this);
-
-		reload();
+		this.clientManager.reload();
 	}
 
 	public boolean reload() {

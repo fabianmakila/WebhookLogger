@@ -40,7 +40,7 @@ public interface MainConfig {
 			"If no webhook is defined for a specific event the \"default\" webhook will be used instead.",
 			"Available events can be found in the events.yml file."
 	})
-	List<Webhook> webhooks();
+	List<@SubSection Webhook> webhooks();
 
 	@AnnotationBasedSorter.Order(1)
 	@ConfComments({
@@ -63,4 +63,14 @@ public interface MainConfig {
 	@ConfComments("Configuration options for various placeholders.")
 	@SubSection
 	PlaceholderConfigSection placeholders();
+
+	interface Webhook {
+		@AnnotationBasedSorter.Order(0)
+		@ConfDefault.DefaultString("")
+		String url();
+
+		@AnnotationBasedSorter.Order(1)
+		@ConfDefault.DefaultStrings({})
+		List<EventType> events();
+	}
 }
