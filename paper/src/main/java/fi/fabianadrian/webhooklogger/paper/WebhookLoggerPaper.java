@@ -1,27 +1,26 @@
 package fi.fabianadrian.webhooklogger.paper;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
-import fi.fabianadrian.webhooklogger.paper.command.PaperCommander;
-import fi.fabianadrian.webhooklogger.paper.listener.*;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
+import fi.fabianadrian.webhooklogger.paper.listener.ListenerFactory;
+import net.kyori.adventure.audience.Audience;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
 
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
-	private CommandManager<Commander> commandManager;
+	private LegacyPaperCommandManager<Audience> commandManager;
 
 	@Override
 	public void onEnable() {
@@ -68,18 +67,15 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	}
 
 	@Override
-	public CommandManager<Commander> commandManager() {
+	public CommandManager<Audience> commandManager() {
 		return this.commandManager;
 	}
 
 	private void createCommandManager() {
-		SenderMapper<CommandSourceStack, Commander> senderMapper = SenderMapper.create(
-				PaperCommander::new,
-				commander -> ((PaperCommander) commander).stack()
+		SenderMapper<CommandSender, Audience> mapper = SenderMapper.create(
+				commandSender -> commandSender,
+				audience -> (CommandSender) audience
 		);
-
-		this.commandManager = PaperCommandManager.builder(senderMapper)
-				.executionCoordinator(ExecutionCoordinator.simpleCoordinator())
-				.buildOnEnable(this);
+		this.commandManager = new LegacyPaperCommandManager<>(this, ExecutionCoordinator.simpleCoordinator(), mapper);
 	}
 }

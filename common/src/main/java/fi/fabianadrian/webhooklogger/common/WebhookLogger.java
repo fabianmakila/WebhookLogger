@@ -1,7 +1,6 @@
 package fi.fabianadrian.webhooklogger.common;
 
 import fi.fabianadrian.webhooklogger.common.client.ClientManager;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
 import fi.fabianadrian.webhooklogger.common.command.CaptionFormatter;
 import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
 import fi.fabianadrian.webhooklogger.common.command.commands.ReloadCommand;
@@ -12,6 +11,7 @@ import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
 import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
+import net.kyori.adventure.audience.Audience;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
@@ -23,7 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public final class WebhookLogger {
 	private final Platform platform;
-	private final CommandManager<Commander> commandManager;
+	private final CommandManager<Audience> commandManager;
 	private final ConfigManager configManager;
 	private final ClientManager clientManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -82,14 +82,14 @@ public final class WebhookLogger {
 		return this.dependencyManager;
 	}
 
-	public CommandManager<Commander> commandManager() {
+	public CommandManager<Audience> commandManager() {
 		return commandManager;
 	}
 
 	private void setupCommandManager() {
 		this.commandManager.registerCommandPreProcessor(new WebhookLoggerCommandPreprocessor(this));
 		this.commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
-		MinecraftExceptionHandler.<Commander>createNative()
+		MinecraftExceptionHandler.<Audience>createNative()
 				.defaultHandlers()
 				.captionFormatter(new CaptionFormatter())
 				.registerTo(this.commandManager);

@@ -1,8 +1,8 @@
 package fi.fabianadrian.webhooklogger.common.command.commands;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
 import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
@@ -32,7 +32,7 @@ public final class ReloadCommand extends BaseCommand {
 		);
 	}
 
-	private void executeReload(CommandContext<Commander> context) {
+	private void executeReload(CommandContext<Audience> context) {
 		if (this.webhookLogger.reload()) {
 			context.sender().sendMessage(COMPONENT_SUCCESS);
 		} else {

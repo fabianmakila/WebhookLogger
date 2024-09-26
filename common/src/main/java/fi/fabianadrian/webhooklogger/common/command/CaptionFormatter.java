@@ -1,5 +1,6 @@
 package fi.fabianadrian.webhooklogger.common.command;
 
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.caption.Caption;
@@ -13,9 +14,9 @@ import java.util.stream.Collectors;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
-public final class CaptionFormatter implements ComponentCaptionFormatter<Commander> {
+public final class CaptionFormatter implements ComponentCaptionFormatter<Audience> {
 	@Override
-	public @NonNull Component formatCaption(@NonNull Caption captionKey, @NonNull Commander recipient, @NonNull String caption, @NonNull List<@NonNull CaptionVariable> variables) {
+	public @NonNull Component formatCaption(@NonNull Caption captionKey, @NonNull Audience recipient, @NonNull String caption, @NonNull List<@NonNull CaptionVariable> variables) {
 		return translatable("cloud." + captionKey.key(), variables.stream().map(variable -> {
 			if (variable instanceof RichVariable) {
 				return (RichVariable) variable;

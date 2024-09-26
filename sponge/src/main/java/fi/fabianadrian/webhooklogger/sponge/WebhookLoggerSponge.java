@@ -2,10 +2,10 @@ package fi.fabianadrian.webhooklogger.sponge;
 
 import com.google.inject.Inject;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.sponge.listener.ListenerFactory;
+import net.kyori.adventure.audience.Audience;
 import org.bstats.sponge.Metrics;
 import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public final class WebhookLoggerSponge implements Platform {
 	private final PluginContainer container;
 	private final Path configDir;
 	private final Logger logger;
-	private CommandManager<Commander> commandManager;
+	private CommandManager<Audience> commandManager;
 
 	@Inject
 	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir, Metrics.Factory metricsFactory) {
@@ -78,7 +78,7 @@ public final class WebhookLoggerSponge implements Platform {
 	}
 
 	@Override
-	public CommandManager<Commander> commandManager() {
+	public CommandManager<Audience> commandManager() {
 		return this.commandManager;
 	}
 
