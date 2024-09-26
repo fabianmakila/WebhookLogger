@@ -4,14 +4,10 @@
 > This README is intended for plugin developers. See the [Modrinth page](https://modrinth.com/plugin/webhooklogger) for a more user-friendly description.
 
 # WebhookLogger
-WebhookLogger is a cross-platform Minecraft plugin for logging various in-game events to webhook(s).
-
+WebhookLogger is a cross-platform Minecraft plugin for logging various in-game events to Discord webhooks.
 
 ### Supported platforms
 - [Paper](https://github.com/PaperMC/Paper)
-
-### Supported webhooks
-- Discord
 
 ## Structure
 The project uses Adventure for most of the platform independent abstraction minimizing the need for writing our own platform adapters.  
