@@ -42,7 +42,7 @@ public final class ConfigManager {
 		try {
 			this.mainConfigData = this.mainConfigHelper.reloadConfigData();
 		} catch (Exception e) {
-			this.logger.error("Could not load config.yml", e);
+			this.logger.error("Could not load config.yml, falling back to default configuration", e);
 			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
 			success = false;
 		}
@@ -50,7 +50,7 @@ public final class ConfigManager {
 		try {
 			this.eventsConfigData = this.eventsConfigHelper.reloadConfigData();
 		} catch (Exception e) {
-			this.logger.error("Could not load events.yml", e);
+			this.logger.error("Could not load events.yml, falling back to default configuration", e);
 			this.eventsConfigData = this.eventsConfigHelper.getFactory().loadDefaults();
 			success = false;
 		}
