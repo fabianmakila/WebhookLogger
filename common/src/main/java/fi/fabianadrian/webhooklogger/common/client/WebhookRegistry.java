@@ -8,13 +8,9 @@ public final class WebhookRegistry {
 	private final Map<EventType, List<DiscordClient>> eventClientMap = new EnumMap<>(EventType.class);
 	private final List<DiscordClient> clients = new ArrayList<>();
 
-	public void register(DiscordClient client, List<EventType> events) {
+	public void register(final DiscordClient client, final List<EventType> events) {
 		this.clients.add(client);
-		events.forEach(event -> {
-			List<DiscordClient> clients = eventClientMap.getOrDefault(event, new ArrayList<>());
-			clients.add(client);
-			this.eventClientMap.put(event, clients);
-		});
+		events.forEach(event -> this.eventClientMap.computeIfAbsent(event, key -> new ArrayList<>()).add(client));
 	}
 
 	public void clear() {
