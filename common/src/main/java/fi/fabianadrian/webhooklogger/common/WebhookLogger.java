@@ -2,8 +2,8 @@ package fi.fabianadrian.webhooklogger.common;
 
 import fi.fabianadrian.webhooklogger.common.client.ClientManager;
 import fi.fabianadrian.webhooklogger.common.command.Commander;
-import fi.fabianadrian.webhooklogger.common.command.WebhookLoggerCaptionFormatter;
-import fi.fabianadrian.webhooklogger.common.command.WebhookLoggerCommand;
+import fi.fabianadrian.webhooklogger.common.command.CaptionFormatter;
+import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
 import fi.fabianadrian.webhooklogger.common.command.commands.ReloadCommand;
 import fi.fabianadrian.webhooklogger.common.command.processor.WebhookLoggerCommandPreprocessor;
 import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
@@ -91,13 +91,13 @@ public final class WebhookLogger {
 		this.commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
 		MinecraftExceptionHandler.<Commander>createNative()
 				.defaultHandlers()
-				.captionFormatter(new WebhookLoggerCaptionFormatter())
+				.captionFormatter(new CaptionFormatter())
 				.registerTo(this.commandManager);
 	}
 
 	private void registerCommands() {
 		List.of(
 				new ReloadCommand(this)
-		).forEach(WebhookLoggerCommand::register);
+		).forEach(BaseCommand::register);
 	}
 }

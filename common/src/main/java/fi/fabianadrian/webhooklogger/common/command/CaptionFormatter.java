@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
-public final class WebhookLoggerCaptionFormatter implements ComponentCaptionFormatter<Commander> {
+public final class CaptionFormatter implements ComponentCaptionFormatter<Commander> {
 	@Override
 	public @NonNull Component formatCaption(@NonNull Caption captionKey, @NonNull Commander recipient, @NonNull String caption, @NonNull List<@NonNull CaptionVariable> variables) {
 		return translatable("cloud." + captionKey.key(), variables.stream().map(variable -> {
