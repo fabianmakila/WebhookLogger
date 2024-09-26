@@ -2,17 +2,17 @@ package fi.fabianadrian.webhooklogger.sponge.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerFactory;
-import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.EventManager;
 import org.spongepowered.plugin.PluginContainer;
 
-public class SpongeListenerRegistry extends ListenerRegistry {
+public class SpongeListenerManager extends ListenerManager {
 	private final EventManager manager = Sponge.eventManager();
 	private final PluginContainer container;
 	private final SpongeListenerFactory factory;
 
-	public SpongeListenerRegistry(WebhookLogger webhookLogger, PluginContainer container) {
+	public SpongeListenerManager(WebhookLogger webhookLogger, PluginContainer container) {
 		super(webhookLogger);
 		this.container = container;
 		this.factory = new SpongeListenerFactory(webhookLogger);

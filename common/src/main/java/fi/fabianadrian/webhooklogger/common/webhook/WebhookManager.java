@@ -20,11 +20,16 @@ public final class WebhookManager {
 	}
 
 	public void reload() {
-		this.config = this.webhookLogger.mainConfig();
-		parseWebhooks();
-
 		if (this.scheduledSendMessageTask != null) {
 			this.scheduledSendMessageTask.cancel(false);
+		}
+
+		this.config = this.webhookLogger.mainConfig();
+
+		parseWebhooks();
+
+		if (this.clients.isEmpty()) {
+			return;
 		}
 
 		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(
@@ -36,19 +41,24 @@ public final class WebhookManager {
 	}
 
 	private void parseWebhooks() {
-		this.clients.clear();
-
 		Logger logger = this.webhookLogger.logger();
+
 		this.config.webhooks().forEach(webhook -> {
 			if (webhook.url().isBlank()) {
 				logger.warn("webhook url blank");
-				// TODO Log message
+				// TODO Better log message
+				return;
+			}
+
+			if (webhook.events().isEmpty()) {
+				logger.warn("webhook events blank");
+				// TODO Better log message
 				return;
 			}
 
 			WebhookClient client = new WebhookClient(logger, webhook.url());
-			this.webhookLogger.listenerRegistry().registerWebhookForEvents(client, webhook.events());
 			this.clients.add(client);
+			this.webhookLogger.listenerManager().registerWebhookForEvents(client, webhook.events());
 		});
 	}
 }

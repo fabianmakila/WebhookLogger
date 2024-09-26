@@ -1,17 +1,17 @@
 package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.listener.ListenerFactory;
-import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
-public class PaperListenerRegistry extends ListenerRegistry {
+public class PaperListenerManager extends ListenerManager {
 	private final WebhookLoggerPaper plugin;
 	private final ListenerFactory factory;
 
-	public PaperListenerRegistry(WebhookLoggerPaper plugin) {
+	public PaperListenerManager(WebhookLoggerPaper plugin) {
 		super(plugin.webhookLogger());
 		this.plugin = plugin;
 		this.factory = new PaperListenerFactory(plugin.webhookLogger());

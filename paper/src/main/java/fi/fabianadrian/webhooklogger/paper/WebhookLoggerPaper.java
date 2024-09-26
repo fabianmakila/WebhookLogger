@@ -2,9 +2,9 @@ package fi.fabianadrian.webhooklogger.paper;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
-import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
-import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerRegistry;
+import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerManager;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
@@ -21,13 +21,14 @@ import java.nio.file.Path;
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
 	private LegacyPaperCommandManager<Audience> commandManager;
-	private PaperListenerRegistry listenerRegistry;
+	private PaperListenerManager listenerRegistry;
 
 	@Override
 	public void onEnable() {
-		this.listenerRegistry = new PaperListenerRegistry(this);
 		createCommandManager();
 		this.webhookLogger = new WebhookLogger(this);
+		this.listenerRegistry = new PaperListenerManager(this);
+		this.webhookLogger.reload();
 
 		PluginManager manager = getServer().getPluginManager();
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
@@ -63,7 +64,7 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	}
 
 	@Override
-	public ListenerRegistry listenerRegistry() {
+	public ListenerManager listenerManager() {
 		return this.listenerRegistry;
 	}
 

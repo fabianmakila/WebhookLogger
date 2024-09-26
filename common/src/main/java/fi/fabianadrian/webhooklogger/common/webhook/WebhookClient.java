@@ -25,7 +25,7 @@ public final class WebhookClient {
 		this.messageQueue.add(message);
 	}
 
-	public void sendAll() throws RuntimeException {
+	public void sendAll() {
 		// Copy messageBuffer
 		List<String> messages = List.copyOf(this.messageQueue);
 

@@ -3,7 +3,7 @@ package fi.fabianadrian.webhooklogger.sponge;
 import com.google.inject.Inject;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
-import fi.fabianadrian.webhooklogger.common.listener.ListenerRegistry;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.sponge.Metrics;
@@ -73,7 +73,7 @@ public final class WebhookLoggerSponge implements Platform {
 	}
 
 	@Override
-	public ListenerRegistry listenerRegistry() {
+	public ListenerManager listenerManager() {
 		return null;
 	}
 

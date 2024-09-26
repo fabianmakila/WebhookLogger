@@ -1,6 +1,7 @@
 package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
+import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerFactory;
@@ -15,7 +16,7 @@ public final class PaperListenerFactory extends ListenerFactory {
 	}
 
 	@Override
-	public AbstractListener<?> create(EventType type) {
+	public AbstractListener<? extends EventBuilder> create(EventType type) {
 		switch (type) {
 			case CHAT -> {
 				return new ChatListener(this.webhookLogger);
