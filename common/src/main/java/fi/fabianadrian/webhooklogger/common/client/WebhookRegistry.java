@@ -6,7 +6,7 @@ import java.util.*;
 
 public final class WebhookRegistry {
 	private final Map<EventType, List<DiscordClient>> eventClientMap = new EnumMap<>(EventType.class);
-	private final List<DiscordClient> clients = new ArrayList<>();
+	private final Set<DiscordClient> clients = new HashSet<>();
 
 	public void register(final DiscordClient client, final List<EventType> events) {
 		this.clients.add(client);
@@ -22,8 +22,8 @@ public final class WebhookRegistry {
 		return this.eventClientMap.get(type);
 	}
 
-	public List<DiscordClient> webhooks() {
-		return List.copyOf(this.clients);
+	public Set<DiscordClient> webhooks() {
+		return Set.copyOf(this.clients);
 	}
 
 	public Set<EventType> registeredEventTypes() {
