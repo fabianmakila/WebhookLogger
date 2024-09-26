@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class ClientManager {
 	private final WebhookLogger webhookLogger;
@@ -28,8 +30,9 @@ public final class ClientManager {
 		}
 
 		String discordSerialized = DiscordSerializer.INSTANCE.serialize(eventBuilder.component());
-		for (Map.Entry<String, String> entry : this.config.textReplacements().entrySet()) {
-			discordSerialized = discordSerialized.replaceAll(entry.getKey(), entry.getValue());
+		for (Map.Entry<Pattern, String> entry : this.config.textReplacements().entrySet()) {
+			Matcher matcher = entry.getKey().matcher(discordSerialized);
+			discordSerialized = matcher.replaceAll(entry.getValue());
 		}
 
 		//TODO Fix ugly

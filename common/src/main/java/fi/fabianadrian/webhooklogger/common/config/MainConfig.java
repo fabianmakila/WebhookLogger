@@ -10,6 +10,7 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public interface MainConfig {
 	static List<Webhook> defaultWebhooks() {
@@ -57,7 +58,7 @@ public interface MainConfig {
 			"You can use this to filter or replace text.",
 			"Supports regex."
 	})
-	Map<String, String> textReplacements();
+	Map<Pattern, String> textReplacements();
 
 	@AnnotationBasedSorter.Order(3)
 	@ConfComments("Configuration options for various placeholders.")

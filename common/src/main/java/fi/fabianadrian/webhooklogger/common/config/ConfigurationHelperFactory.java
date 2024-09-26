@@ -1,5 +1,6 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
+import fi.fabianadrian.webhooklogger.common.config.serializer.PatternSerializer;
 import fi.fabianadrian.webhooklogger.common.config.serializer.ZoneIdSerializer;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -27,6 +28,7 @@ public final class ConfigurationHelperFactory {
 			.build();
 	private final ConfigurationOptions options = new ConfigurationOptions.Builder()
 			.addSerialiser(new ZoneIdSerializer())
+			.addSerialiser(new PatternSerializer())
 			.sorter(new AnnotationBasedSorter())
 			.build();
 
