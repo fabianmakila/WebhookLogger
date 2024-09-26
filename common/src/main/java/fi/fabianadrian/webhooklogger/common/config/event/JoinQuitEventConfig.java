@@ -6,11 +6,6 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 public interface JoinQuitEventConfig {
 	@AnnotationBasedSorter.Order(0)
-	@ConfDefault.DefaultBoolean(false)
-	@ConfComments("Whether player joins and quits will be logged.")
-	boolean enabled();
-
-	@AnnotationBasedSorter.Order(1)
 	@ConfDefault.DefaultString("[<timestamp>] <message>")
 	@ConfComments({
 			"The webhook format for when a player joins or quits. Available placeholders:",

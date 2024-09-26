@@ -1,19 +1,19 @@
 package fi.fabianadrian.webhooklogger.common.command;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import org.incendo.cloud.Command;
+import net.kyori.adventure.audience.Audience;
 import org.incendo.cloud.CommandManager;
 
-public abstract class WebhookLoggerCommand {
+public abstract class BaseCommand {
 	protected final WebhookLogger webhookLogger;
-	protected final CommandManager<Commander> manager;
+	protected final CommandManager<Audience> manager;
 
-	public WebhookLoggerCommand(WebhookLogger webhookLogger) {
+	public BaseCommand(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
 		this.manager = webhookLogger.commandManager();
 	}
 
-	protected Command.Builder<Commander> rootBuilder() {
+	protected org.incendo.cloud.Command.Builder<Audience> rootBuilder() {
 		return this.manager.commandBuilder("webhooklogger");
 	}
 

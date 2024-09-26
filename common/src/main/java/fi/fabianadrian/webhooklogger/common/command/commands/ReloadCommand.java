@@ -1,15 +1,15 @@
 package fi.fabianadrian.webhooklogger.common.command.commands;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
-import fi.fabianadrian.webhooklogger.common.command.WebhookLoggerCommand;
+import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
 
 import static net.kyori.adventure.text.Component.translatable;
 
-public final class ReloadCommand extends WebhookLoggerCommand {
+public final class ReloadCommand extends BaseCommand {
 	private static final Component COMPONENT_SUCCESS = translatable()
 			.key("webhooklogger.command.reload.success")
 			.color(NamedTextColor.GREEN)
@@ -32,7 +32,7 @@ public final class ReloadCommand extends WebhookLoggerCommand {
 		);
 	}
 
-	private void executeReload(CommandContext<Commander> context) {
+	private void executeReload(CommandContext<Audience> context) {
 		if (this.webhookLogger.reload()) {
 			context.sender().sendMessage(COMPONENT_SUCCESS);
 		} else {

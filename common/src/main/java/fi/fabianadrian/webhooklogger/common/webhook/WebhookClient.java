@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhooklogger.common.client;
+package fi.fabianadrian.webhooklogger.common.webhook;
 
 import io.github._4drian3d.jdwebhooks.WebHook;
 import io.github._4drian3d.jdwebhooks.WebHookClient;
@@ -8,28 +8,24 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class DiscordClient {
+public final class WebhookClient {
 	private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
 	private final WebHookClient client;
 	private final Logger logger;
 	private final String url;
 
-	public DiscordClient(Logger logger, String url) {
+	public WebhookClient(Logger logger, String url) {
 		this.logger = logger;
 		this.url = url;
 
 		this.client = WebHookClient.fromURL(url);
 	}
 
-	public String url() {
-		return this.url;
-	}
-
-	public void add(String message) {
+	public void queue(String message) {
 		this.messageQueue.add(message);
 	}
 
-	public void send() throws RuntimeException {
+	public void sendAll() {
 		// Copy messageBuffer
 		List<String> messages = List.copyOf(this.messageQueue);
 
@@ -39,7 +35,7 @@ public final class DiscordClient {
 		}
 
 		// Construct webhook
-		WebHook webHook = WebHook.builder().content(String.join(", ", messages)).build();
+		WebHook webHook = WebHook.builder().content(String.join("\n", messages)).build();
 		this.client.sendWebHook(webHook).thenAccept(response -> {
 			switch (response.statusCode()) {
 				case 204 -> this.messageQueue.removeAll(messages);

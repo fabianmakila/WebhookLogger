@@ -2,11 +2,10 @@ package fi.fabianadrian.webhooklogger.sponge;
 
 import com.google.inject.Inject;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
-import fi.fabianadrian.webhooklogger.sponge.listener.ChatListener;
-import fi.fabianadrian.webhooklogger.sponge.listener.CommandListener;
+import net.kyori.adventure.audience.Audience;
 import org.bstats.sponge.Metrics;
 import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
-import org.spongepowered.api.event.EventManager;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
 import org.spongepowered.api.event.lifecycle.StoppingEngineEvent;
@@ -22,7 +20,6 @@ import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.builtin.jvm.Plugin;
 
 import java.nio.file.Path;
-import java.util.List;
 
 @Plugin("webhooklogger")
 public final class WebhookLoggerSponge implements Platform {
@@ -30,7 +27,7 @@ public final class WebhookLoggerSponge implements Platform {
 	private final PluginContainer container;
 	private final Path configDir;
 	private final Logger logger;
-	private CommandManager<Commander> commandManager;
+	private CommandManager<Audience> commandManager;
 
 	@Inject
 	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir, Metrics.Factory metricsFactory) {
@@ -49,8 +46,6 @@ public final class WebhookLoggerSponge implements Platform {
 		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
-
-		registerListeners();
 	}
 
 	@Listener
@@ -60,14 +55,6 @@ public final class WebhookLoggerSponge implements Platform {
 
 	public WebhookLogger webhookLogger() {
 		return this.webhookLogger;
-	}
-
-	private void registerListeners() {
-		EventManager manager = Sponge.eventManager();
-		List.of(
-				new ChatListener(this),
-				new CommandListener(this)
-		).forEach(listener -> manager.registerListeners(this.container, listener));
 	}
 
 	@Override
@@ -81,8 +68,13 @@ public final class WebhookLoggerSponge implements Platform {
 	}
 
 	@Override
-	public CommandManager<Commander> commandManager() {
+	public CommandManager<Audience> commandManager() {
 		return this.commandManager;
+	}
+
+	@Override
+	public ListenerManager listenerManager() {
+		return null;
 	}
 
 	private void createCommandManager() {

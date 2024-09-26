@@ -1,11 +1,8 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
 import org.slf4j.Logger;
-import space.arim.dazzleconf.error.ConfigFormatSyntaxException;
-import space.arim.dazzleconf.error.InvalidConfigException;
 import space.arim.dazzleconf.helper.ConfigurationHelper;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 public final class ConfigManager {
@@ -43,31 +40,21 @@ public final class ConfigManager {
 	public boolean reload() {
 		boolean success = true;
 		try {
-			this.mainConfigData = loadConfig(this.mainConfigHelper);
+			this.mainConfigData = this.mainConfigHelper.reloadConfigData();
 		} catch (Exception e) {
-			this.logger.error("Could not load config.yml", e);
+			this.logger.error("Could not load config.yml, falling back to default configuration", e);
+			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
 			success = false;
 		}
 
 		try {
-			this.eventsConfigData = loadConfig(this.eventsConfigHelper);
+			this.eventsConfigData = this.eventsConfigHelper.reloadConfigData();
 		} catch (Exception e) {
-			this.logger.error("Could not load events.yml", e);
+			this.logger.error("Could not load events.yml, falling back to default configuration", e);
+			this.eventsConfigData = this.eventsConfigHelper.getFactory().loadDefaults();
 			success = false;
 		}
 
 		return success;
-	}
-
-	private <C> C loadConfig(ConfigurationHelper<C> configHelper) throws ConfigLoadException {
-		try {
-			return configHelper.reloadConfigData();
-		} catch (IOException e) {
-			throw new ConfigLoadException(e);
-		} catch (ConfigFormatSyntaxException e) {
-			throw new ConfigLoadException("The YAML syntax in your configuration is invalid. Check your YAML syntax with a tool such as https://yaml-online-parser.appspot.com/", e);
-		} catch (InvalidConfigException e) {
-			throw new ConfigLoadException("One of the values in your configuration is not valid. Check to make sure you have specified the right data types.", e);
-		}
 	}
 }

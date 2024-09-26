@@ -37,7 +37,7 @@ public final class DeathEventBuilder extends EventBuilder {
 		String messageAsString = "";
 
 		if (message != null) {
-			this.serializer.serialize(message);
+			messageAsString = this.serializer.serialize(message);
 		}
 
 		this.resolverBuilder = this.resolverBuilder.resolver(

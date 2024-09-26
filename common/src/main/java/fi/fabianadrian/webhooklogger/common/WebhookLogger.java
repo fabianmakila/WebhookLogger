@@ -1,17 +1,18 @@
 package fi.fabianadrian.webhooklogger.common;
 
-import fi.fabianadrian.webhooklogger.common.client.ClientManager;
-import fi.fabianadrian.webhooklogger.common.command.Commander;
-import fi.fabianadrian.webhooklogger.common.command.WebhookLoggerCaptionFormatter;
-import fi.fabianadrian.webhooklogger.common.command.WebhookLoggerCommand;
+import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
+import fi.fabianadrian.webhooklogger.common.command.CaptionFormatter;
 import fi.fabianadrian.webhooklogger.common.command.commands.ReloadCommand;
 import fi.fabianadrian.webhooklogger.common.command.processor.WebhookLoggerCommandPreprocessor;
 import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
 import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
+import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
+import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
+import net.kyori.adventure.audience.Audience;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
@@ -22,32 +23,33 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public final class WebhookLogger {
-	private final Logger logger;
-	private final CommandManager<Commander> commandManager;
+	private final Platform platform;
+	private final CommandManager<Audience> commandManager;
 	private final ConfigManager configManager;
-	private final ClientManager clientManager;
+	private final WebhookManager webhookManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final DependencyManager dependencyManager = new DependencyManager();
 
 	public WebhookLogger(Platform platform) {
-		this.logger = platform.logger();
+		this.platform = platform;
 
-		new TranslationManager(this.logger);
+		new TranslationManager(platform.logger());
 
-		this.configManager = new ConfigManager(platform.configPath(), this.logger);
+		this.configManager = new ConfigManager(platform.configPath(), platform.logger());
 
 		this.commandManager = platform.commandManager();
 		setupCommandManager();
 		registerCommands();
 
-		this.clientManager = new ClientManager(this);
-
-		reload();
+		this.webhookManager = new WebhookManager(this);
 	}
 
 	public boolean reload() {
 		boolean success = this.configManager.reload();
-		this.clientManager.reload();
+		this.platform.listenerManager().unregisterAll();
+
+		this.webhookManager.reload();
+		this.platform.listenerManager().registerAll();
 
 		return success;
 	}
@@ -65,11 +67,7 @@ public final class WebhookLogger {
 	}
 
 	public Logger logger() {
-		return this.logger;
-	}
-
-	public ClientManager clientManager() {
-		return this.clientManager;
+		return this.platform.logger();
 	}
 
 	public ScheduledExecutorService scheduler() {
@@ -80,22 +78,26 @@ public final class WebhookLogger {
 		return this.dependencyManager;
 	}
 
-	public CommandManager<Commander> commandManager() {
+	public CommandManager<Audience> commandManager() {
 		return commandManager;
+	}
+
+	public ListenerManager listenerManager() {
+		return this.platform.listenerManager();
 	}
 
 	private void setupCommandManager() {
 		this.commandManager.registerCommandPreProcessor(new WebhookLoggerCommandPreprocessor(this));
 		this.commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
-		MinecraftExceptionHandler.<Commander>createNative()
+		MinecraftExceptionHandler.createNative()
 				.defaultHandlers()
-				.captionFormatter(new WebhookLoggerCaptionFormatter())
+				.captionFormatter(new CaptionFormatter())
 				.registerTo(this.commandManager);
 	}
 
 	private void registerCommands() {
 		List.of(
 				new ReloadCommand(this)
-		).forEach(WebhookLoggerCommand::register);
+		).forEach(BaseCommand::register);
 	}
 }

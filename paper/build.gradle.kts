@@ -15,12 +15,12 @@ dependencies {
 paper {
 	main = "fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper"
 	name = rootProject.name
-	apiVersion = "1.20.6"
+	apiVersion = "1.19"
 	authors = listOf("FabianAdrian")
 	website = "https://github.com/fabianmakila/WebhookLogger"
 
 	permissions {
-		register("webhooklogger.reload") {
+		register("webhooklogger.command.reload") {
 			description = "Allows you to run the reload command"
 		}
 	}
@@ -31,6 +31,6 @@ tasks {
 		downloadPlugins {
 			modrinth("miniplaceholders", "J2guR3GH")
 		}
-		minecraftVersion("1.20.6")
+		minecraftVersion("1.19.4")
 	}
 }
