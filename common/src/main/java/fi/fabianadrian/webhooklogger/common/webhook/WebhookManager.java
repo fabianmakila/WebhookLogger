@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhooklogger.common.client;
+package fi.fabianadrian.webhooklogger.common.webhook;
 
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
@@ -13,18 +13,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class ClientManager {
+public final class WebhookManager {
 	private final WebhookLogger webhookLogger;
 	private final WebhookRegistry registry = new WebhookRegistry();
 	private ScheduledFuture<?> scheduledSendMessageTask;
 	private MainConfig config;
 
-	public ClientManager(WebhookLogger webhookLogger) {
+	public WebhookManager(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
 	}
 
 	public void send(EventBuilder eventBuilder) {
-		List<DiscordClient> clients = this.registry.forEventType(eventBuilder.type());
+		List<WebhookClient> clients = this.registry.forEventType(eventBuilder.type());
 		if (clients.isEmpty()) {
 			return;
 		}
@@ -51,7 +51,7 @@ public final class ClientManager {
 		}
 
 		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(
-				() -> this.registry.webhooks().forEach(DiscordClient::sendAll),
+				() -> this.registry.webhooks().forEach(WebhookClient::sendAll),
 				0,
 				this.config.sendRate(),
 				TimeUnit.SECONDS
@@ -71,7 +71,7 @@ public final class ClientManager {
 				return;
 			}
 
-			this.registry.register(new DiscordClient(logger, webhook.url()), webhook.events());
+			this.registry.register(new WebhookClient(logger, webhook.url()), webhook.events());
 		});
 	}
 }

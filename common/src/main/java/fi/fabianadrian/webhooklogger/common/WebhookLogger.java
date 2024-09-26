@@ -1,6 +1,6 @@
 package fi.fabianadrian.webhooklogger.common;
 
-import fi.fabianadrian.webhooklogger.common.client.ClientManager;
+import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
 import fi.fabianadrian.webhooklogger.common.command.CaptionFormatter;
 import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
 import fi.fabianadrian.webhooklogger.common.command.commands.ReloadCommand;
@@ -25,7 +25,7 @@ public final class WebhookLogger {
 	private final Platform platform;
 	private final CommandManager<Audience> commandManager;
 	private final ConfigManager configManager;
-	private final ClientManager clientManager;
+	private final WebhookManager clientManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final DependencyManager dependencyManager = new DependencyManager();
 
@@ -41,7 +41,7 @@ public final class WebhookLogger {
 		setupCommandManager();
 		registerCommands();
 
-		this.clientManager = new ClientManager(this);
+		this.clientManager = new WebhookManager(this);
 		this.clientManager.reload();
 	}
 
@@ -70,7 +70,7 @@ public final class WebhookLogger {
 		return this.platform.logger();
 	}
 
-	public ClientManager clientManager() {
+	public WebhookManager clientManager() {
 		return this.clientManager;
 	}
 

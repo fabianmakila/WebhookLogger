@@ -1,14 +1,14 @@
-package fi.fabianadrian.webhooklogger.common.client;
+package fi.fabianadrian.webhooklogger.common.webhook;
 
 import fi.fabianadrian.webhooklogger.common.event.EventType;
 
 import java.util.*;
 
 public final class WebhookRegistry {
-	private final Map<EventType, List<DiscordClient>> eventClientMap = new EnumMap<>(EventType.class);
-	private final Set<DiscordClient> clients = new HashSet<>();
+	private final Map<EventType, List<WebhookClient>> eventClientMap = new EnumMap<>(EventType.class);
+	private final Set<WebhookClient> clients = new HashSet<>();
 
-	public void register(final DiscordClient client, final List<EventType> events) {
+	public void register(final WebhookClient client, final List<EventType> events) {
 		this.clients.add(client);
 		events.forEach(event -> this.eventClientMap.computeIfAbsent(event, key -> new ArrayList<>()).add(client));
 	}
@@ -18,11 +18,11 @@ public final class WebhookRegistry {
 		this.eventClientMap.clear();
 	}
 
-	public List<DiscordClient> forEventType(EventType type) {
+	public List<WebhookClient> forEventType(EventType type) {
 		return this.eventClientMap.get(type);
 	}
 
-	public Set<DiscordClient> webhooks() {
+	public Set<WebhookClient> webhooks() {
 		return Set.copyOf(this.clients);
 	}
 

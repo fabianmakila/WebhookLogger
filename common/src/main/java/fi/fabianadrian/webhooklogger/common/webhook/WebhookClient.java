@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhooklogger.common.client;
+package fi.fabianadrian.webhooklogger.common.webhook;
 
 import io.github._4drian3d.jdwebhooks.WebHook;
 import io.github._4drian3d.jdwebhooks.WebHookClient;
@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class DiscordClient {
+public final class WebhookClient {
 	private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
 	private final WebHookClient client;
 	private final Logger logger;
 	private final String url;
 
-	public DiscordClient(Logger logger, String url) {
+	public WebhookClient(Logger logger, String url) {
 		this.logger = logger;
 		this.url = url;
 
