@@ -45,14 +45,12 @@ public final class WebhookManager {
 
 		this.config.webhooks().forEach(webhook -> {
 			if (webhook.url().isBlank()) {
-				logger.warn("webhook url blank");
-				// TODO Better log message
+				logger.warn("You have a webhook with empty URL.");
 				return;
 			}
 
 			if (webhook.events().isEmpty()) {
-				logger.warn("webhook events blank");
-				// TODO Better log message
+				logger.warn("You have a webhook with empty events.");
 				return;
 			}
 

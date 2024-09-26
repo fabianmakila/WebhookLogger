@@ -36,11 +36,7 @@ public interface MainConfig {
 
 	@AnnotationBasedSorter.Order(0)
 	@ConfDefault.DefaultObject("defaultWebhooks")
-	@ConfComments({
-			"Here you can configure your webhook URL's.",
-			"If no webhook is defined for a specific event the \"default\" webhook will be used instead.",
-			"Available events can be found in the events.yml file."
-	})
+	@ConfComments("You should only configure 1 webhook per Discord channel to avoid rate limits.")
 	List<@SubSection Webhook> webhooks();
 
 	@AnnotationBasedSorter.Order(1)
@@ -72,6 +68,7 @@ public interface MainConfig {
 
 		@AnnotationBasedSorter.Order(1)
 		@ConfDefault.DefaultStrings({})
+		@ConfComments("Available events: CHAT, COMMAND, DEATH and JOINQUIT")
 		List<EventType> events();
 	}
 }
