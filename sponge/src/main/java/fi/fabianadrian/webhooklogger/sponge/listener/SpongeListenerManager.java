@@ -7,7 +7,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.EventManager;
 import org.spongepowered.plugin.PluginContainer;
 
-public class SpongeListenerManager extends ListenerManager {
+public final class SpongeListenerManager extends ListenerManager {
 	private final EventManager manager = Sponge.eventManager();
 	private final PluginContainer container;
 	private final SpongeListenerFactory factory;

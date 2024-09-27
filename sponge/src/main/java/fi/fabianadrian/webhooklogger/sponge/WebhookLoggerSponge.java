@@ -5,6 +5,7 @@ import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
+import fi.fabianadrian.webhooklogger.sponge.listener.SpongeListenerManager;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.sponge.Metrics;
 import org.incendo.cloud.CommandManager;
@@ -28,6 +29,7 @@ public final class WebhookLoggerSponge implements Platform {
 	private final Path configDir;
 	private final Logger logger;
 	private CommandManager<Audience> commandManager;
+	private SpongeListenerManager listenerManager;
 
 	@Inject
 	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir, Metrics.Factory metricsFactory) {
@@ -41,7 +43,10 @@ public final class WebhookLoggerSponge implements Platform {
 	@Listener
 	public void onServerStart(final StartedEngineEvent<Server> event) {
 		createCommandManager();
+
 		this.webhookLogger = new WebhookLogger(this);
+		this.listenerManager = new SpongeListenerManager(this.webhookLogger, this.container);
+		this.webhookLogger.reload();
 
 		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
@@ -74,7 +79,7 @@ public final class WebhookLoggerSponge implements Platform {
 
 	@Override
 	public ListenerManager listenerManager() {
-		return null;
+		return this.listenerManager;
 	}
 
 	private void createCommandManager() {
