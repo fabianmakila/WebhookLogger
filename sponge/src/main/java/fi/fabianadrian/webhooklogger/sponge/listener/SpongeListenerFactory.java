@@ -17,16 +17,16 @@ public final class SpongeListenerFactory extends ListenerFactory {
 	protected AbstractListener<?> create(EventType type) {
 		switch (type) {
 			case CHAT -> {
-				return new ChatListener(this.webhookLogger);
+				return new ChatListener(webhookLogger);
 			}
 			case COMMAND -> {
-				return new CommandListener(this.webhookLogger);
+				return new CommandListener(webhookLogger);
 			}
 			case DEATH -> {
-				return new DeathListener(this.webhookLogger);
+				return new DeathListener(webhookLogger);
 			}
 			case JOINQUIT -> {
-				return new JoinQuitListener(this.webhookLogger);
+				return new JoinQuitListener(webhookLogger);
 			}
 		}
 		throw new IllegalStateException("Unknown EventType");

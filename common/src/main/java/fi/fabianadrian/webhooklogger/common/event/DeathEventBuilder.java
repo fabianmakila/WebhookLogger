@@ -26,7 +26,7 @@ public final class DeathEventBuilder extends EventBuilder {
 
 	public DeathEventBuilder location(int x, int y, int z) {
 		String locationString = String.format("x%s, y%s, z%s", x, y, z);
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.unparsed("location", locationString)
 		);
 
@@ -37,10 +37,10 @@ public final class DeathEventBuilder extends EventBuilder {
 		String messageAsString = "";
 
 		if (message != null) {
-			messageAsString = this.serializer.serialize(message);
+			messageAsString = serializer.serialize(message);
 		}
 
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.unparsed("message", messageAsString)
 		);
 

@@ -16,7 +16,7 @@ public final class JoinQuitListener extends AbstractListener<JoinQuitEventBuilde
 	public void onJoin(ServerSideConnectionEvent.Join event) {
 		Location<?, ?> loc = event.player().location();
 
-		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
+		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(webhookLogger)
 				.audience(event.player())
 				.message(event.message())
 				.location(loc.blockX(), loc.blockY(), loc.blockZ())
@@ -28,7 +28,7 @@ public final class JoinQuitListener extends AbstractListener<JoinQuitEventBuilde
 	public void onQuit(ServerSideConnectionEvent.Disconnect event) {
 		Location<?, ?> loc = event.player().location();
 
-		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
+		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(webhookLogger)
 				.audience(event.player())
 				.message(event.message())
 				.location(loc.blockX(), loc.blockY(), loc.blockZ())

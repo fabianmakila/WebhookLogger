@@ -25,7 +25,7 @@ public final class ReloadCommand extends BaseCommand {
 
 	@Override
 	public void register() {
-		this.manager.command(rootBuilder()
+		manager.command(rootBuilder()
 				.literal("reload")
 				.permission("webhooklogger.command.reload")
 				.handler(this::executeReload)
@@ -33,7 +33,7 @@ public final class ReloadCommand extends BaseCommand {
 	}
 
 	private void executeReload(CommandContext<Audience> context) {
-		if (this.webhookLogger.reload()) {
+		if (webhookLogger.reload()) {
 			context.sender().sendMessage(COMPONENT_SUCCESS);
 		} else {
 			context.sender().sendMessage(COMPONENT_FAILURE);

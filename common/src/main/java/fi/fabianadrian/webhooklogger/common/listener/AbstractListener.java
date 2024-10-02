@@ -18,22 +18,22 @@ public abstract class AbstractListener<B extends EventBuilder> {
 
 	public AbstractListener(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
-		this.replacements = webhookLogger.mainConfig().textReplacements();
+		replacements = webhookLogger.mainConfig().textReplacements();
 	}
 
 	public void addWebhook(WebhookClient client) {
-		this.clients.add(client);
+		clients.add(client);
 	}
 
 	protected void queue(B builder) {
 		String discordSerialized = DiscordSerializer.INSTANCE.serialize(builder.component());
-		for (Map.Entry<Pattern, String> entry : this.replacements.entrySet()) {
+		for (Map.Entry<Pattern, String> entry : replacements.entrySet()) {
 			Matcher matcher = entry.getKey().matcher(discordSerialized);
 			discordSerialized = matcher.replaceAll(entry.getValue());
 		}
 
 		//TODO Fix ugly
 		String finalDiscordSerialized = discordSerialized;
-		this.clients.forEach(client -> client.queue(finalDiscordSerialized));
+		clients.forEach(client -> client.queue(finalDiscordSerialized));
 	}
 }

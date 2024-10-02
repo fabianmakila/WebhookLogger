@@ -18,31 +18,31 @@ public final class WebhookClient {
 		this.logger = logger;
 		this.url = url;
 
-		this.client = WebHookClient.fromURL(url);
+		client = WebHookClient.fromURL(url);
 	}
 
 	public void queue(String message) {
-		this.messageQueue.add(message);
+		messageQueue.add(message);
 	}
 
 	public void sendAll() {
 		// Copy messageBuffer
-		List<String> messages = List.copyOf(this.messageQueue);
+		List<String> messages = List.copyOf(messageQueue);
 
 		// If empty don't run
-		if (this.messageQueue.isEmpty()) {
+		if (messageQueue.isEmpty()) {
 			return;
 		}
 
 		// Construct webhook
 		WebHook webHook = WebHook.builder().content(String.join("\n", messages)).build();
-		this.client.sendWebHook(webHook).thenAccept(response -> {
+		client.sendWebHook(webHook).thenAccept(response -> {
 			switch (response.statusCode()) {
-				case 204 -> this.messageQueue.removeAll(messages);
+				case 204 -> messageQueue.removeAll(messages);
 				case 429 ->
-						this.logger.warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", this.url);
+						logger.warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", url);
 				default ->
-						this.logger.warn("Failed to send a webhook to {}. Got status code {}", this.url, response.statusCode());
+						logger.warn("Failed to send a webhook to {}. Got status code {}", url, response.statusCode());
 			}
 		});
 	}

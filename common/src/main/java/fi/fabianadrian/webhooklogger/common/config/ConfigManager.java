@@ -17,12 +17,12 @@ public final class ConfigManager {
 		this.logger = logger;
 
 		ConfigurationHelperFactory helperFactory = new ConfigurationHelperFactory(configPath);
-		this.mainConfigHelper = helperFactory.create("config.yml", MainConfig.class);
-		this.eventsConfigHelper = helperFactory.create("events.yml", EventsConfig.class);
+		mainConfigHelper = helperFactory.create("config.yml", MainConfig.class);
+		eventsConfigHelper = helperFactory.create("events.yml", EventsConfig.class);
 	}
 
 	public MainConfig mainConfig() {
-		MainConfig configData = this.mainConfigData;
+		MainConfig configData = mainConfigData;
 		if (configData == null) {
 			throw new IllegalStateException("Configuration has not been loaded yet");
 		}
@@ -30,7 +30,7 @@ public final class ConfigManager {
 	}
 
 	public EventsConfig eventsConfig() {
-		EventsConfig configData = this.eventsConfigData;
+		EventsConfig configData = eventsConfigData;
 		if (configData == null) {
 			throw new IllegalStateException("Configuration has not been loaded yet");
 		}
@@ -40,18 +40,18 @@ public final class ConfigManager {
 	public boolean reload() {
 		boolean success = true;
 		try {
-			this.mainConfigData = this.mainConfigHelper.reloadConfigData();
+			mainConfigData = mainConfigHelper.reloadConfigData();
 		} catch (Exception e) {
-			this.logger.error("Could not load config.yml, falling back to default configuration", e);
-			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
+			logger.error("Could not load config.yml, falling back to default configuration", e);
+			mainConfigData = mainConfigHelper.getFactory().loadDefaults();
 			success = false;
 		}
 
 		try {
-			this.eventsConfigData = this.eventsConfigHelper.reloadConfigData();
+			eventsConfigData = eventsConfigHelper.reloadConfigData();
 		} catch (Exception e) {
-			this.logger.error("Could not load events.yml, falling back to default configuration", e);
-			this.eventsConfigData = this.eventsConfigHelper.getFactory().loadDefaults();
+			logger.error("Could not load events.yml, falling back to default configuration", e);
+			eventsConfigData = eventsConfigHelper.getFactory().loadDefaults();
 			success = false;
 		}
 

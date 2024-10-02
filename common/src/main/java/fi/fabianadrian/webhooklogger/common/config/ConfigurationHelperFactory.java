@@ -39,9 +39,9 @@ public final class ConfigurationHelperFactory {
 	public <C> ConfigurationHelper<C> create(String fileName, Class<C> configClass) {
 		ConfigurationFactory<C> factory = SnakeYamlConfigurationFactory.create(
 				configClass,
-				this.options,
-				this.yamlOptions
+				options,
+				yamlOptions
 		);
-		return new ConfigurationHelper<>(this.configurationPath, fileName, factory);
+		return new ConfigurationHelper<>(configurationPath, fileName, factory);
 	}
 }

@@ -21,7 +21,7 @@ public final class ChatEventBuilder extends EventBuilder {
 	}
 
 	public ChatEventBuilder message(Component message) {
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.component("message", message)
 		);
 		return this;

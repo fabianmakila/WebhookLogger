@@ -21,7 +21,7 @@ public final class ChatListener extends AbstractListener<ChatEventBuilder> {
 	@Listener
 	@IsCancelled(Tristate.UNDEFINED)
 	public void onChat(PlayerChatEvent.Submit event) {
-		ChatEventConfig config = this.webhookLogger.eventsConfig().chat();
+		ChatEventConfig config = webhookLogger.eventsConfig().chat();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
@@ -32,7 +32,7 @@ public final class ChatListener extends AbstractListener<ChatEventBuilder> {
 			return;
 		}
 
-		ChatEventBuilder builder = new ChatEventBuilder(this.webhookLogger)
+		ChatEventBuilder builder = new ChatEventBuilder(webhookLogger)
 				.audience(playerOptional.get())
 				.cancelled(event.isCancelled())
 				.message(event.message());

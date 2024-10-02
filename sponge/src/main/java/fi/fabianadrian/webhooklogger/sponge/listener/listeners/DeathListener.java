@@ -23,13 +23,13 @@ public final class DeathListener extends AbstractListener<DeathEventBuilder> {
 			return;
 		}
 
-		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
+		DeathEventConfig config = webhookLogger.eventsConfig().death();
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
 		Location<?, ?> loc = player.location();
-		DeathEventBuilder builder = new DeathEventBuilder(this.webhookLogger)
+		DeathEventBuilder builder = new DeathEventBuilder(webhookLogger)
 				.audience(player)
 				.cancelled(event.isCancelled())
 				.message(event.message())

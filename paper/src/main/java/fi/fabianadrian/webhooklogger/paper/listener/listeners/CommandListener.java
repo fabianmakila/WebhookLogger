@@ -17,7 +17,7 @@ public final class CommandListener extends AbstractListener<CommandEventBuilder>
 
 	@EventHandler
 	public void onServerCommand(ServerCommandEvent event) {
-		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
+		CommandEventConfig config = webhookLogger.eventsConfig().command();
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
@@ -30,7 +30,7 @@ public final class CommandListener extends AbstractListener<CommandEventBuilder>
 			return;
 		}
 
-		CommandEventBuilder builder = new CommandEventBuilder(this.webhookLogger)
+		CommandEventBuilder builder = new CommandEventBuilder(webhookLogger)
 				.cancelled(event.isCancelled())
 				.audience(event.getSender())
 				.command(event.getCommand());
@@ -39,12 +39,12 @@ public final class CommandListener extends AbstractListener<CommandEventBuilder>
 
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
+		CommandEventConfig config = webhookLogger.eventsConfig().command();
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
-		CommandEventBuilder builder = new CommandEventBuilder(this.webhookLogger)
+		CommandEventBuilder builder = new CommandEventBuilder(webhookLogger)
 				.cancelled(event.isCancelled())
 				.audience(event.getPlayer())
 				.command(event.getMessage());

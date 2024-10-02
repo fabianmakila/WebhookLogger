@@ -18,6 +18,6 @@ public final class WebhookLoggerCommandPreprocessor implements CommandPreprocess
 	@Override
 	public void accept(@NonNull CommandPreprocessingContext<Audience> context) {
 		CommandContext<Audience> commandContext = context.commandContext();
-		commandContext.store(ContextKeys.WEBHOOK_LOGGER_KEY, this.webhookLogger);
+		commandContext.store(ContextKeys.WEBHOOK_LOGGER_KEY, webhookLogger);
 	}
 }

@@ -44,42 +44,42 @@ public final class WebhookLoggerSponge implements Platform {
 	public void onServerStart(final StartedEngineEvent<Server> event) {
 		createCommandManager();
 
-		this.webhookLogger = new WebhookLogger(this);
-		this.listenerManager = new SpongeListenerManager(this.webhookLogger, this.container);
-		this.webhookLogger.reload();
+		webhookLogger = new WebhookLogger(this);
+		listenerManager = new SpongeListenerManager(webhookLogger, container);
+		webhookLogger.reload();
 
 		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
-			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
+			webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
 	}
 
 	@Listener
 	public void onServerStopping(final StoppingEngineEvent<Server> event) {
-		this.webhookLogger.shutdown();
+		webhookLogger.shutdown();
 	}
 
 	public WebhookLogger webhookLogger() {
-		return this.webhookLogger;
+		return webhookLogger;
 	}
 
 	@Override
 	public Logger logger() {
-		return this.logger;
+		return logger;
 	}
 
 	@Override
 	public Path configPath() {
-		return this.configDir;
+		return configDir;
 	}
 
 	@Override
 	public CommandManager<Audience> commandManager() {
-		return this.commandManager;
+		return commandManager;
 	}
 
 	@Override
 	public ListenerManager listenerManager() {
-		return this.listenerManager;
+		return listenerManager;
 	}
 
 	private void createCommandManager() {

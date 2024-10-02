@@ -24,7 +24,7 @@ public final class CommandEventBuilder extends EventBuilder {
 			command = "/" + command;
 		}
 
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.unparsed("command", command)
 		);
 		return this;

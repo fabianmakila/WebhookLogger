@@ -16,7 +16,7 @@ public final class DeathListener extends AbstractListener<DeathEventBuilder> imp
 
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
-		DeathEventConfig config = this.webhookLogger.eventsConfig().death();
+		DeathEventConfig config = webhookLogger.eventsConfig().death();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
@@ -24,7 +24,7 @@ public final class DeathListener extends AbstractListener<DeathEventBuilder> imp
 
 		Location loc = event.getEntity().getLocation();
 
-		DeathEventBuilder builder = new DeathEventBuilder(this.webhookLogger)
+		DeathEventBuilder builder = new DeathEventBuilder(webhookLogger)
 				.audience(event.getEntity())
 				.cancelled(event.isCancelled())
 				.message(event.deathMessage())

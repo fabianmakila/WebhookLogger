@@ -14,23 +14,23 @@ public final class PaperListenerManager extends ListenerManager {
 	public PaperListenerManager(WebhookLoggerPaper plugin) {
 		super(plugin.webhookLogger());
 		this.plugin = plugin;
-		this.factory = new PaperListenerFactory(plugin.webhookLogger());
+		factory = new PaperListenerFactory(plugin.webhookLogger());
 	}
 
 	@Override
 	public void registerAll() {
-		PluginManager manager = this.plugin.getServer().getPluginManager();
-		this.registry.values().forEach(listener -> manager.registerEvents((Listener) listener, this.plugin));
+		PluginManager manager = plugin.getServer().getPluginManager();
+		registry.values().forEach(listener -> manager.registerEvents((Listener) listener, plugin));
 	}
 
 	@Override
 	public void unregisterAll() {
-		HandlerList.unregisterAll(this.plugin);
-		this.registry.clear();
+		HandlerList.unregisterAll(plugin);
+		registry.clear();
 	}
 
 	@Override
 	protected ListenerFactory factory() {
-		return this.factory;
+		return factory;
 	}
 }

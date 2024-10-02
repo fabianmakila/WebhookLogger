@@ -10,11 +10,11 @@ public abstract class BaseCommand {
 
 	public BaseCommand(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
-		this.manager = webhookLogger.commandManager();
+		manager = webhookLogger.commandManager();
 	}
 
 	protected org.incendo.cloud.Command.Builder<Audience> rootBuilder() {
-		return this.manager.commandBuilder("webhooklogger");
+		return manager.commandBuilder("webhooklogger");
 	}
 
 	public abstract void register();

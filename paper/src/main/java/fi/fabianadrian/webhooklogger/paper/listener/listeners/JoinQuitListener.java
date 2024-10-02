@@ -17,7 +17,7 @@ public final class JoinQuitListener extends AbstractListener<JoinQuitEventBuilde
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		Location loc = event.getPlayer().getLocation();
-		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
+		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(webhookLogger)
 				.audience(event.getPlayer())
 				.message(event.joinMessage())
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
@@ -29,7 +29,7 @@ public final class JoinQuitListener extends AbstractListener<JoinQuitEventBuilde
 	public void onQuit(PlayerQuitEvent event) {
 		Location loc = event.getPlayer().getLocation();
 
-		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(this.webhookLogger)
+		JoinQuitEventBuilder builder = new JoinQuitEventBuilder(webhookLogger)
 				.audience(event.getPlayer())
 				.message(event.quitMessage())
 				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())

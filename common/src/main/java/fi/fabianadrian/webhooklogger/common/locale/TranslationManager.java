@@ -19,24 +19,24 @@ public final class TranslationManager {
 	public TranslationManager(Logger logger) {
 		this.logger = logger;
 
-		this.registry = TranslationRegistry.create(Key.key("webhooklogger", "main"));
-		this.registry.defaultLocale(DEFAULT_LOCALE);
+		registry = TranslationRegistry.create(Key.key("webhooklogger", "main"));
+		registry.defaultLocale(DEFAULT_LOCALE);
 
 		loadFromResourceBundle();
 
-		GlobalTranslator.translator().addSource(this.registry);
+		GlobalTranslator.translator().addSource(registry);
 	}
 
 	private void loadFromResourceBundle() {
 		ResourceBundle defaultBundle = ResourceBundle.getBundle("messages", DEFAULT_LOCALE);
 		try {
-			this.registry.registerAll(DEFAULT_LOCALE, defaultBundle, false);
+			registry.registerAll(DEFAULT_LOCALE, defaultBundle, false);
 			BUNDLED_LOCALES.forEach(locale -> {
 				ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-				this.registry.registerAll(locale, bundle, false);
+				registry.registerAll(locale, bundle, false);
 			});
 		} catch (IllegalArgumentException e) {
-			this.logger.warn("Error loading default locale file", e);
+			logger.warn("Error loading default locale file", e);
 		}
 	}
 }

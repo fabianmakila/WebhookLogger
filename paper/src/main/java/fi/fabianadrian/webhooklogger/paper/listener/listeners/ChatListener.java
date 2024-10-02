@@ -15,13 +15,13 @@ public final class ChatListener extends AbstractListener<ChatEventBuilder> imple
 
 	@EventHandler
 	public void onChat(AsyncChatEvent event) {
-		ChatEventConfig config = this.webhookLogger.eventsConfig().chat();
+		ChatEventConfig config = webhookLogger.eventsConfig().chat();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
-		ChatEventBuilder builder = new ChatEventBuilder(this.webhookLogger)
+		ChatEventBuilder builder = new ChatEventBuilder(webhookLogger)
 				.audience(event.getPlayer())
 				.cancelled(event.isCancelled())
 				.message(event.message());

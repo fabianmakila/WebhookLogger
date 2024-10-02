@@ -27,12 +27,12 @@ public abstract class EventBuilder {
 		this.eventType = eventType;
 		this.format = format;
 
-		this.placeholderConfig = webhookLogger.mainConfig().placeholders();
+		placeholderConfig = webhookLogger.mainConfig().placeholders();
 
 		DateTimeFormatter formatter = DateTimeFormatter
-				.ofPattern(this.placeholderConfig.timestampFormat())
-				.withZone(this.placeholderConfig.timestampTimezone());
-		this.resolverBuilder = TagResolver.builder().resolvers(
+				.ofPattern(placeholderConfig.timestampFormat())
+				.withZone(placeholderConfig.timestampTimezone());
+		resolverBuilder = TagResolver.builder().resolvers(
 				Placeholder.unparsed("timestamp", formatter.format(Instant.now()))
 		);
 	}
@@ -44,33 +44,33 @@ public abstract class EventBuilder {
 		UUID uuid = audience.getOrDefault(Identity.UUID, null);
 		String uuidAsString = uuid == null ? "unknown" : uuid.toString();
 
-		this.resolverBuilder = this.resolverBuilder.resolvers(
+		resolverBuilder = resolverBuilder.resolvers(
 				Placeholder.unparsed("audience_name", name),
 				Placeholder.component("audience_display_name", displayName),
 				Placeholder.unparsed("audience_uuid", uuidAsString)
 		);
 
-		if (this.webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
-			this.resolverBuilder = this.resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
+		if (webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
 		}
 
 		return this;
 	}
 
 	protected EventBuilder cancelled(boolean cancelled) {
-		String cancelledString = cancelled ? this.placeholderConfig.cancelled() : "";
-		this.resolverBuilder = resolverBuilder.resolver(Placeholder.unparsed("cancelled", cancelledString));
+		String cancelledString = cancelled ? placeholderConfig.cancelled() : "";
+		resolverBuilder = resolverBuilder.resolver(Placeholder.unparsed("cancelled", cancelledString));
 		return this;
 	}
 
 	public Component component() {
 		return MiniMessage.miniMessage().deserialize(
-				this.format,
-				this.resolverBuilder.build()
+				format,
+				resolverBuilder.build()
 		);
 	}
 
 	public EventType type() {
-		return this.eventType;
+		return eventType;
 	}
 }

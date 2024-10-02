@@ -20,30 +20,30 @@ public final class WebhookManager {
 	}
 
 	public void reload() {
-		if (this.scheduledSendMessageTask != null) {
-			this.scheduledSendMessageTask.cancel(false);
+		if (scheduledSendMessageTask != null) {
+			scheduledSendMessageTask.cancel(false);
 		}
 
-		this.config = this.webhookLogger.mainConfig();
+		config = webhookLogger.mainConfig();
 
 		parseWebhooks();
 
-		if (this.clients.isEmpty()) {
+		if (clients.isEmpty()) {
 			return;
 		}
 
-		this.scheduledSendMessageTask = this.webhookLogger.scheduler().scheduleAtFixedRate(
-				() -> this.clients.forEach(WebhookClient::sendAll),
+		scheduledSendMessageTask = webhookLogger.scheduler().scheduleAtFixedRate(
+				() -> clients.forEach(WebhookClient::sendAll),
 				0,
-				this.config.sendRate(),
+				config.sendRate(),
 				TimeUnit.SECONDS
 		);
 	}
 
 	private void parseWebhooks() {
-		Logger logger = this.webhookLogger.logger();
+		Logger logger = webhookLogger.logger();
 
-		this.config.webhooks().forEach(webhook -> {
+		config.webhooks().forEach(webhook -> {
 			if (webhook.url().isBlank()) {
 				logger.warn("You have a webhook with empty URL.");
 				return;
@@ -55,8 +55,8 @@ public final class WebhookManager {
 			}
 
 			WebhookClient client = new WebhookClient(logger, webhook.url());
-			this.clients.add(client);
-			this.webhookLogger.listenerManager().registerWebhookForEvents(client, webhook.events());
+			clients.add(client);
+			webhookLogger.listenerManager().registerWebhookForEvents(client, webhook.events());
 		});
 	}
 }

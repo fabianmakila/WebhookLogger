@@ -15,21 +15,21 @@ public final class SpongeListenerManager extends ListenerManager {
 	public SpongeListenerManager(WebhookLogger webhookLogger, PluginContainer container) {
 		super(webhookLogger);
 		this.container = container;
-		this.factory = new SpongeListenerFactory(webhookLogger);
+		factory = new SpongeListenerFactory(webhookLogger);
 	}
 
 	@Override
 	public void registerAll() {
-		this.registry.values().forEach(listener -> this.manager.registerListeners(this.container, listener));
+		registry.values().forEach(listener -> manager.registerListeners(container, listener));
 	}
 
 	@Override
 	public void unregisterAll() {
-		this.registry.values().forEach(this.manager::unregisterListeners);
+		registry.values().forEach(manager::unregisterListeners);
 	}
 
 	@Override
 	protected ListenerFactory factory() {
-		return this.factory;
+		return factory;
 	}
 }

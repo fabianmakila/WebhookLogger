@@ -20,7 +20,7 @@ public final class CommandListener extends AbstractListener<CommandEventBuilder>
 	@Listener
 	@IsCancelled(Tristate.UNDEFINED)
 	public void onCommand(ExecuteCommandEvent.Pre event) {
-		CommandEventConfig config = this.webhookLogger.eventsConfig().command();
+		CommandEventConfig config = webhookLogger.eventsConfig().command();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
@@ -31,7 +31,7 @@ public final class CommandListener extends AbstractListener<CommandEventBuilder>
 			return;
 		}
 
-		CommandEventBuilder builder = new CommandEventBuilder(this.webhookLogger)
+		CommandEventBuilder builder = new CommandEventBuilder(webhookLogger)
 				.audience(playerOptional.get())
 				.cancelled(event.isCancelled())
 				.command(event.command());

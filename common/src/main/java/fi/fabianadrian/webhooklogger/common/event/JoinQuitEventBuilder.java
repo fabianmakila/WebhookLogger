@@ -28,7 +28,7 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 
 	public JoinQuitEventBuilder location(int x, int y, int z) {
 		String locationString = String.format("x%s, y%s, z%s", x, y, z);
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.unparsed("location", locationString)
 		);
 
@@ -39,10 +39,10 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 		String messageAsString = "";
 
 		if (message != null) {
-			messageAsString = this.serializer.serialize(message);
+			messageAsString = serializer.serialize(message);
 		}
 
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.unparsed("message", messageAsString)
 		);
 
@@ -50,7 +50,7 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 	}
 
 	public JoinQuitEventBuilder address(InetSocketAddress address) {
-		this.resolverBuilder = this.resolverBuilder.resolver(
+		resolverBuilder = resolverBuilder.resolver(
 				Placeholder.unparsed("address", String.valueOf(address))
 		);
 		return this;

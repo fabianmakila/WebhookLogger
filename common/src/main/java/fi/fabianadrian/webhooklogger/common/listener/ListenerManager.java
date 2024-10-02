@@ -28,6 +28,6 @@ public abstract class ListenerManager {
 	protected abstract ListenerFactory factory();
 
 	private void registerWebhook(WebhookClient webhookClient, EventType type) {
-		this.registry.computeIfAbsent(type, k -> factory().create(type)).addWebhook(webhookClient);
+		registry.computeIfAbsent(type, k -> factory().create(type)).addWebhook(webhookClient);
 	}
 }
