@@ -12,6 +12,9 @@ java.toolchain {
 }
 
 tasks {
+	build {
+		dependsOn(spotlessApply)
+	}
 	compileJava {
 		options.encoding = "UTF-8"
 	}
