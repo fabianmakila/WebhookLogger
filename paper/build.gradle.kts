@@ -24,6 +24,12 @@ paper {
 			description = "Allows you to run the reload command"
 		}
 	}
+
+	serverDependencies {
+		register("MiniPlaceholders") {
+			required = false
+		}
+	}
 }
 
 tasks {
