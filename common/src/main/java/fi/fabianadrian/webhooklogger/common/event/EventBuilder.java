@@ -13,18 +13,18 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class EventBuilder {
 	protected final WebhookLogger webhookLogger;
 	protected final PlaceholderConfigSection placeholderConfig;
-	private final EventType eventType;
-	protected TagResolver.Builder resolverBuilder;
+	protected List<TagResolver> resolvers = new ArrayList<>();
 	protected String format;
 
-	public EventBuilder(WebhookLogger webhookLogger, EventType eventType, String format) {
+	public EventBuilder(WebhookLogger webhookLogger, String format) {
 		this.webhookLogger = webhookLogger;
-		this.eventType = eventType;
 		this.format = format;
 
 		placeholderConfig = webhookLogger.mainConfig().placeholders();
@@ -32,9 +32,7 @@ public abstract class EventBuilder {
 		DateTimeFormatter formatter = DateTimeFormatter
 				.ofPattern(placeholderConfig.timestampFormat())
 				.withZone(placeholderConfig.timestampTimezone());
-		resolverBuilder = TagResolver.builder().resolvers(
-				Placeholder.unparsed("timestamp", formatter.format(Instant.now()))
-		);
+		resolvers.add(Placeholder.unparsed("timestamp", formatter.format(Instant.now())));
 	}
 
 	protected EventBuilder audience(Audience audience) {
@@ -44,14 +42,12 @@ public abstract class EventBuilder {
 		UUID uuid = audience.getOrDefault(Identity.UUID, null);
 		String uuidAsString = uuid == null ? "unknown" : uuid.toString();
 
-		resolverBuilder = resolverBuilder.resolvers(
-				Placeholder.unparsed("audience_name", name),
-				Placeholder.component("audience_display_name", displayName),
-				Placeholder.unparsed("audience_uuid", uuidAsString)
-		);
+		resolvers.add(Placeholder.unparsed("audience_name", name));
+		resolvers.add(Placeholder.component("audience_display_name", displayName));
+		resolvers.add(Placeholder.unparsed("audience_uuid", uuidAsString));
 
 		if (webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
+			resolvers.add(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
 		}
 
 		return this;
@@ -59,18 +55,15 @@ public abstract class EventBuilder {
 
 	protected EventBuilder cancelled(boolean cancelled) {
 		String cancelledString = cancelled ? placeholderConfig.cancelled() : "";
-		resolverBuilder = resolverBuilder.resolver(Placeholder.unparsed("cancelled", cancelledString));
+		resolvers.add(Placeholder.unparsed("cancelled", cancelledString));
 		return this;
 	}
 
 	public Component component() {
+		TagResolver resolver = TagResolver.builder().resolvers(resolvers).build();
 		return MiniMessage.miniMessage().deserialize(
 				format,
-				resolverBuilder.build()
+				resolver
 		);
-	}
-
-	public EventType type() {
-		return eventType;
 	}
 }

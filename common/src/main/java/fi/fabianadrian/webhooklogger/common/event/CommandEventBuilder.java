@@ -6,7 +6,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public final class CommandEventBuilder extends EventBuilder {
 	public CommandEventBuilder(WebhookLogger webhookLogger) {
-		super(webhookLogger, EventType.COMMAND, webhookLogger.eventsConfig().command().format());
+		super(webhookLogger, webhookLogger.eventsConfig().command().format());
 	}
 
 	@Override
@@ -23,10 +23,7 @@ public final class CommandEventBuilder extends EventBuilder {
 		if (!command.startsWith("/")) {
 			command = "/" + command;
 		}
-
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.unparsed("command", command)
-		);
+		resolvers.add(Placeholder.unparsed("command", command));
 		return this;
 	}
 }

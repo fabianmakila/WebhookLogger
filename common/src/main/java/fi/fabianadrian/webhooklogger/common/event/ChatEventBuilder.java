@@ -7,7 +7,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public final class ChatEventBuilder extends EventBuilder {
 	public ChatEventBuilder(WebhookLogger webhookLogger) {
-		super(webhookLogger, EventType.CHAT, webhookLogger.eventsConfig().chat().format());
+		super(webhookLogger, webhookLogger.eventsConfig().chat().format());
 	}
 
 	@Override
@@ -21,9 +21,7 @@ public final class ChatEventBuilder extends EventBuilder {
 	}
 
 	public ChatEventBuilder message(Component message) {
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.component("message", message)
-		);
+		resolvers.add(Placeholder.component("message", message));
 		return this;
 	}
 }

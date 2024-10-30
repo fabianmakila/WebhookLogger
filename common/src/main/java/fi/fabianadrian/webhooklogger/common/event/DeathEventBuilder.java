@@ -11,7 +11,7 @@ public final class DeathEventBuilder extends EventBuilder {
 	private final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
 
 	public DeathEventBuilder(WebhookLogger webhookLogger) {
-		super(webhookLogger, EventType.DEATH, webhookLogger.eventsConfig().death().format());
+		super(webhookLogger, webhookLogger.eventsConfig().death().format());
 	}
 
 	@Override
@@ -26,10 +26,7 @@ public final class DeathEventBuilder extends EventBuilder {
 
 	public DeathEventBuilder location(int x, int y, int z) {
 		String locationString = String.format("x%s, y%s, z%s", x, y, z);
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.unparsed("location", locationString)
-		);
-
+		resolvers.add(Placeholder.unparsed("location", locationString));
 		return this;
 	}
 
@@ -40,9 +37,7 @@ public final class DeathEventBuilder extends EventBuilder {
 			messageAsString = serializer.serialize(message);
 		}
 
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.unparsed("message", messageAsString)
-		);
+		resolvers.add(Placeholder.unparsed("message", messageAsString));
 
 		return this;
 	}

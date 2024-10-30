@@ -13,7 +13,7 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 	private final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
 
 	public JoinQuitEventBuilder(WebhookLogger webhookLogger) {
-		super(webhookLogger, EventType.JOINQUIT, webhookLogger.eventsConfig().joinQuit().format());
+		super(webhookLogger, webhookLogger.eventsConfig().joinQuit().format());
 	}
 
 	@Override
@@ -28,10 +28,7 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 
 	public JoinQuitEventBuilder location(int x, int y, int z) {
 		String locationString = String.format("x%s, y%s, z%s", x, y, z);
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.unparsed("location", locationString)
-		);
-
+		resolvers.add(Placeholder.unparsed("location", locationString));
 		return this;
 	}
 
@@ -42,17 +39,13 @@ public final class JoinQuitEventBuilder extends EventBuilder {
 			messageAsString = serializer.serialize(message);
 		}
 
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.unparsed("message", messageAsString)
-		);
+		resolvers.add(Placeholder.unparsed("message", messageAsString));
 
 		return this;
 	}
 
 	public JoinQuitEventBuilder address(InetSocketAddress address) {
-		resolverBuilder = resolverBuilder.resolver(
-				Placeholder.unparsed("address", String.valueOf(address))
-		);
+		resolvers.add(Placeholder.unparsed("address", String.valueOf(address)));
 		return this;
 	}
 }
