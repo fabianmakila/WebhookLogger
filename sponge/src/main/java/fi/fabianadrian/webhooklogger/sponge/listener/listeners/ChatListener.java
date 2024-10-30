@@ -2,7 +2,6 @@ package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.ChatEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.ChatEventBuilder;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;

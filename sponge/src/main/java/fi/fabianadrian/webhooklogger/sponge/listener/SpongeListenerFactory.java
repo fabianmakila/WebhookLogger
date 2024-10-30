@@ -11,7 +11,7 @@ public final class SpongeListenerFactory extends ListenerFactory {
 		super(webhookLogger);
 	}
 
-	protected AbstractListener<?> create(EventType type) {
+	protected AbstractListener create(EventType type) {
 		switch (type) {
 			case CHAT -> {
 				return new ChatListener(webhookLogger);

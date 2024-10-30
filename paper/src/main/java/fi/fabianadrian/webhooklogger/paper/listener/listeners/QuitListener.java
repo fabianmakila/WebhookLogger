@@ -1,26 +1,29 @@
 package fi.fabianadrian.webhooklogger.paper.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.event.QuitEventBuilder;
+import fi.fabianadrian.webhooklogger.common.config.event.QuitEventConfig;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
-import org.bukkit.Location;
+import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public final class QuitListener extends AbstractListener<QuitEventBuilder> implements Listener {
+public final class QuitListener extends AbstractListener implements Listener {
 	public QuitListener(WebhookLogger webhookLogger) {
 		super(webhookLogger);
 	}
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		Location loc = event.getPlayer().getLocation();
+		QuitEventConfig config = webhookLogger.eventsConfig().quit();
 
-		QuitEventBuilder builder = new QuitEventBuilder(webhookLogger)
-				.audience(event.getPlayer())
-				.message(event.quitMessage())
-				.location(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-		queue(builder);
+		PaperPlayer player = new PaperPlayer(event.getPlayer());
+		TagResolver.Builder builder = TagResolver.builder().resolvers(
+				placeholderFactory.player(player),
+				placeholderFactory.message(event.quitMessage())
+		);
+
+		queue(config.format(), builder);
 	}
 }

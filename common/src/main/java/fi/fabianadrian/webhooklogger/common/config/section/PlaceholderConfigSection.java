@@ -27,4 +27,11 @@ public interface PlaceholderConfigSection {
 	@ConfDefault.DefaultString("[Cancelled] ")
 	@ConfComments("The text used in <cancelled> placeholder.")
 	String cancelled();
+
+	@AnnotationBasedSorter.Order(3)
+	@ConfDefault.DefaultString("x<x>, y<y>, z<z>")
+	@ConfComments({
+			"Format for the <location> placeholder."
+	})
+	String locationFormat();
 }

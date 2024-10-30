@@ -1,7 +1,6 @@
 package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.event.JoinEventBuilder;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ServerSideConnectionEvent;

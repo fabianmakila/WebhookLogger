@@ -2,7 +2,6 @@ package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.DeathEventBuilder;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
