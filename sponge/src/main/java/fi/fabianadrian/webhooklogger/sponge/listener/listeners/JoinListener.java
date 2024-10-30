@@ -1,25 +1,28 @@
 package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
+import fi.fabianadrian.webhooklogger.common.config.event.JoinEventConfig;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
+import fi.fabianadrian.webhooklogger.sponge.platform.SpongePlayer;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ServerSideConnectionEvent;
-import org.spongepowered.api.world.Location;
 
-public final class JoinListener extends AbstractListener<JoinEventBuilder> {
+public final class JoinListener extends AbstractListener {
 	public JoinListener(WebhookLogger webhookLogger) {
 		super(webhookLogger);
 	}
 
 	@Listener
 	public void onJoin(ServerSideConnectionEvent.Join event) {
-		Location<?, ?> loc = event.player().location();
+		JoinEventConfig config = webhookLogger.eventsConfig().join();
 
-		JoinEventBuilder builder = new JoinEventBuilder(webhookLogger)
-				.audience(event.player())
-				.message(event.message())
-				.location(loc.blockX(), loc.blockY(), loc.blockZ())
-				.address(event.connection().address());
-		queue(builder);
+		SpongePlayer player = new SpongePlayer(event.player());
+		TagResolver.Builder builder = TagResolver.builder().resolvers(
+				placeholderFactory.player(player),
+				placeholderFactory.message(event.message())
+		);
+
+		queue(config.format(), builder);
 	}
 }

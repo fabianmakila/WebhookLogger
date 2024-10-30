@@ -3,14 +3,16 @@ package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
+import fi.fabianadrian.webhooklogger.sponge.platform.SpongePlayer;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DestructEntityEvent;
 import org.spongepowered.api.event.filter.IsCancelled;
 import org.spongepowered.api.util.Tristate;
-import org.spongepowered.api.world.Location;
 
-public final class DeathListener extends AbstractListener<DeathEventBuilder> {
+public final class DeathListener extends AbstractListener {
 	public DeathListener(WebhookLogger webhookLogger) {
 		super(webhookLogger);
 	}
@@ -27,12 +29,13 @@ public final class DeathListener extends AbstractListener<DeathEventBuilder> {
 			return;
 		}
 
-		Location<?, ?> loc = player.location();
-		DeathEventBuilder builder = new DeathEventBuilder(webhookLogger)
-				.audience(player)
-				.cancelled(event.isCancelled())
-				.message(event.message())
-				.location(loc.blockX(), loc.blockY(), loc.blockZ());
-		queue(builder);
+		SpongePlayer spongePlayer = new SpongePlayer((ServerPlayer) player);
+		TagResolver.Builder builder = TagResolver.builder().resolvers(
+				placeholderFactory.player(spongePlayer),
+				placeholderFactory.cancelled(event.isCancelled()),
+				placeholderFactory.message(event.message())
+		);
+
+		queue(config.format(), builder);
 	}
 }
