@@ -4,7 +4,7 @@ import net.kyori.adventure.audience.ForwardingAudience;
 
 import java.net.InetSocketAddress;
 
-public interface Player extends ForwardingAudience.Single {
+public interface PlatformPlayer extends ForwardingAudience.Single {
 	InetSocketAddress address();
 	Location location();
 }

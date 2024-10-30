@@ -3,7 +3,7 @@ package fi.fabianadrian.webhooklogger.common.event;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.section.PlaceholderConfigSection;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
-import fi.fabianadrian.webhooklogger.common.platform.Player;
+import fi.fabianadrian.webhooklogger.common.platform.PlatformPlayer;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
@@ -43,7 +43,7 @@ public final class PlaceholderFactory {
 		return Placeholder.unparsed("cancelled", cancelledString);
 	}
 
-	public TagResolver player(Player player) {
+	public TagResolver player(PlatformPlayer player) {
 		List<TagResolver> resolvers = new ArrayList<>();
 
 		resolvers.add(audience(player));
@@ -53,13 +53,11 @@ public final class PlaceholderFactory {
 
 		Component location = miniMessage.deserialize(
 				config.locationFormat(),
-				Placeholder.unparsed("x", String.valueOf(player.location().x())),
-				Placeholder.unparsed("y", String.valueOf(player.location().y())),
-				Placeholder.unparsed("z", String.valueOf(player.location().z()))
+				player.location().tagResolver()
 		);
 		resolvers.add(Placeholder.component("location", location));
 
-		return TagResolver.builder().resolvers(resolvers).build();
+		return TagResolver.resolver(resolvers);
 	}
 
 	public TagResolver audience(Audience audience) {
@@ -78,7 +76,7 @@ public final class PlaceholderFactory {
 			resolvers.add(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
 		}
 
-		return TagResolver.builder().resolvers(resolvers).build();
+		return TagResolver.resolver(resolvers);
 	}
 
 	public TagResolver message(Component message) {

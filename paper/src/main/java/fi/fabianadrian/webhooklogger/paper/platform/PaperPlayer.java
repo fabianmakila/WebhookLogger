@@ -1,13 +1,13 @@
 package fi.fabianadrian.webhooklogger.paper.platform;
 
 import fi.fabianadrian.webhooklogger.common.platform.Location;
-import fi.fabianadrian.webhooklogger.common.platform.Player;
+import fi.fabianadrian.webhooklogger.common.platform.PlatformPlayer;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
 
-public final class PaperPlayer implements Player {
+public final class PaperPlayer implements PlatformPlayer {
 	private final org.bukkit.entity.Player player;
 
 	public PaperPlayer(org.bukkit.entity.Player player) {
