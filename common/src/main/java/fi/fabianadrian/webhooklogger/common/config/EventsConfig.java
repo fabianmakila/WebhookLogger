@@ -1,9 +1,6 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
-import fi.fabianadrian.webhooklogger.common.config.event.ChatEventConfig;
-import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
-import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
-import fi.fabianadrian.webhooklogger.common.config.event.JoinQuitEventConfig;
+import fi.fabianadrian.webhooklogger.common.config.event.*;
 import space.arim.dazzleconf.annote.SubSection;
 import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
@@ -22,5 +19,9 @@ public interface EventsConfig {
 
 	@AnnotationBasedSorter.Order(3)
 	@SubSection
-	JoinQuitEventConfig joinQuit();
+	JoinEventConfig join();
+
+	@AnnotationBasedSorter.Order(4)
+	@SubSection
+	QuitEventConfig quit();
 }

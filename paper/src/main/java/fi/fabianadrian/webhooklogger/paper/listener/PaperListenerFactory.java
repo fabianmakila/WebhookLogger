@@ -5,10 +5,7 @@ import fi.fabianadrian.webhooklogger.common.event.EventBuilder;
 import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerFactory;
-import fi.fabianadrian.webhooklogger.paper.listener.listeners.ChatListener;
-import fi.fabianadrian.webhooklogger.paper.listener.listeners.CommandListener;
-import fi.fabianadrian.webhooklogger.paper.listener.listeners.DeathListener;
-import fi.fabianadrian.webhooklogger.paper.listener.listeners.JoinQuitListener;
+import fi.fabianadrian.webhooklogger.paper.listener.listeners.*;
 
 public final class PaperListenerFactory extends ListenerFactory {
 	public PaperListenerFactory(WebhookLogger webhookLogger) {
@@ -27,8 +24,11 @@ public final class PaperListenerFactory extends ListenerFactory {
 			case DEATH -> {
 				return new DeathListener(webhookLogger);
 			}
-			case JOINQUIT -> {
-				return new JoinQuitListener(webhookLogger);
+			case JOIN -> {
+				return new JoinListener(webhookLogger);
+			}
+			case QUIT -> {
+				return new QuitListener(webhookLogger);
 			}
 		}
 		throw new IllegalStateException("Unknown EventType");
