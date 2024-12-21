@@ -1,6 +1,6 @@
 plugins {
 	id("webhooklogger.platform-conventions")
-	alias(libs.plugins.pluginYml.paper)
+	alias(libs.plugins.resourceFactory.paper)
 	alias(libs.plugins.runPaper)
 }
 
@@ -12,12 +12,12 @@ dependencies {
 	implementation(libs.bstats.bukkit)
 }
 
-paper {
+paperPluginYaml {
 	main = "fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper"
 	name = rootProject.name
 	apiVersion = "1.19"
 	authors = listOf("FabianAdrian")
-	website = "https://github.com/fabianmakila/WebhookLogger"
+	website = "https://github.com/fabianmakila/webhooklogger"
 
 	permissions {
 		register("webhooklogger.command.reload") {
@@ -25,9 +25,11 @@ paper {
 		}
 	}
 
-	serverDependencies {
-		register("MiniPlaceholders") {
-			required = false
+	dependencies {
+		server {
+			register("MiniPlaceholders") {
+				required = false
+			}
 		}
 	}
 }
