@@ -1,6 +1,5 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
-import fi.fabianadrian.webhooklogger.common.config.section.PlaceholderConfigSection;
 import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.webhook.MessageStyle;
 import space.arim.dazzleconf.annote.ConfComments;
@@ -8,6 +7,7 @@ import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.annote.SubSection;
 import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +68,37 @@ public interface MainConfig {
 	@AnnotationBasedSorter.Order(4)
 	@ConfDefault.DefaultString("DEFAULT")
 	MessageStyle messageStyle();
+
+	@SubSection
+	interface PlaceholderConfigSection {
+
+		@AnnotationBasedSorter.Order(0)
+		@ConfDefault.DefaultString("HH:mm:ss")
+		@ConfComments({
+				"Format for the <timestamp> placeholder."
+		})
+		String timestampFormat();
+
+		@AnnotationBasedSorter.Order(1)
+		@ConfDefault.DefaultString("default")
+		@ConfComments({
+				"The timezone used in <timestamp> placeholder.",
+				"Set to 'default' to use the server timezone."
+		})
+		ZoneId timestampTimezone();
+
+		@AnnotationBasedSorter.Order(2)
+		@ConfDefault.DefaultString("[Cancelled] ")
+		@ConfComments("The text used in <cancelled> placeholder.")
+		String cancelled();
+
+		@AnnotationBasedSorter.Order(3)
+		@ConfDefault.DefaultString("x<x>, y<y>, z<z>")
+		@ConfComments({
+				"Format for the <location> placeholder."
+		})
+		String locationFormat();
+	}
 
 	interface Webhook {
 		@AnnotationBasedSorter.Order(0)

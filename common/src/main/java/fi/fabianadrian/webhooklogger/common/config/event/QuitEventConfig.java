@@ -6,10 +6,10 @@ import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
 
 public interface QuitEventConfig {
 	@AnnotationBasedSorter.Order(0)
-	@ConfDefault.DefaultString("[<timestamp>] <audience_name> left the game")
+	@ConfDefault.DefaultString("[<timestamp>] <name> left the game")
 	@ConfComments({
 			"The webhook format for when a player leaves the server. Available placeholders:",
-			"<audience_name>, <audience_display_name>, <message>, <timestamp>"
+			"<name>, <display_name>, <message>, <timestamp>"
 	})
 	String format();
 }
