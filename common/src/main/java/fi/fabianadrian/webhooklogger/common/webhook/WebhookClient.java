@@ -24,7 +24,7 @@ public final class WebhookClient {
 	private final String url;
 	private final Serializer serializer;
 	private final ScheduledFuture<?> scheduledSendMessageTask;
-	private MessageStyle messageStyle = MessageStyle.DEFAULT;
+	private MessageStyle messageStyle = MessageStyle.NORMAL;
 
 	public WebhookClient(WebhookLogger webhookLogger, MainConfig.WebhookConfig webhookConfig) {
 		this.webhookLogger = webhookLogger;
@@ -75,7 +75,7 @@ public final class WebhookClient {
 		}
 
 		String webhookContent = String.join("\n", messages);
-		if (this.messageStyle == MessageStyle.ANSI) {
+		if (this.messageStyle == MessageStyle.CODE_BLOCK) {
 			webhookContent = "```ansi\n" + webhookContent + "```";
 		}
 

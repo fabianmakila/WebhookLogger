@@ -1,5 +1,5 @@
 package fi.fabianadrian.webhooklogger.common.webhook;
 
 public enum MessageStyle {
-	DEFAULT, ANSI
+	NORMAL, CODE_BLOCK
 }
