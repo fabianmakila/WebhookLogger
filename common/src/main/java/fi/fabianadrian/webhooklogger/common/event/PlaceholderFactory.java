@@ -1,7 +1,7 @@
 package fi.fabianadrian.webhooklogger.common.event;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.config.section.PlaceholderConfigSection;
+import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.platform.PlatformPlayer;
 import io.github.miniplaceholders.api.MiniPlaceholders;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public final class PlaceholderFactory {
 	private final WebhookLogger webhookLogger;
-	private final PlaceholderConfigSection config;
+	private final MainConfig.PlaceholderConfig config;
 	private final PlainTextComponentSerializer plainTextSerializer = PlainTextComponentSerializer.plainText();
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 

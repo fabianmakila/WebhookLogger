@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public interface MainConfig {
-	static List<Webhook> defaultWebhooks() {
-		return List.of(new Webhook() {
+	static List<WebhookConfig> defaultWebhooks() {
+		return List.of(new WebhookConfig() {
 			@Override
 			public String url() {
 				return "";
@@ -41,7 +41,7 @@ public interface MainConfig {
 			"You should only configure 1 webhook per Discord channel to avoid rate limits.",
 			"Available events: CHAT, COMMAND, DEATH and JOINQUIT"
 	})
-	List<@SubSection Webhook> webhooks();
+	List<@SubSection WebhookConfig> webhooks();
 
 	@AnnotationBasedSorter.Order(1)
 	@ConfComments({
@@ -63,14 +63,14 @@ public interface MainConfig {
 	@AnnotationBasedSorter.Order(3)
 	@ConfComments("Configuration options for various placeholders.")
 	@SubSection
-	PlaceholderConfigSection placeholders();
+	MainConfig.PlaceholderConfig placeholders();
 
 	@AnnotationBasedSorter.Order(4)
 	@ConfDefault.DefaultString("DEFAULT")
 	MessageStyle messageStyle();
 
 	@SubSection
-	interface PlaceholderConfigSection {
+	interface PlaceholderConfig {
 
 		@AnnotationBasedSorter.Order(0)
 		@ConfDefault.DefaultString("HH:mm:ss")
@@ -100,7 +100,7 @@ public interface MainConfig {
 		String locationFormat();
 	}
 
-	interface Webhook {
+	interface WebhookConfig {
 		@AnnotationBasedSorter.Order(0)
 		String url();
 
