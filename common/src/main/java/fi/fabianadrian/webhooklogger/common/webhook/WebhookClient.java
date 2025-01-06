@@ -76,7 +76,7 @@ public final class WebhookClient {
 
 		String webhookContent = String.join("\n", messages);
 		if (this.messageStyle == MessageStyle.CODE_BLOCK) {
-			webhookContent = "```ansi\n" + webhookContent + "```";
+			webhookContent = "```ansi\n" + webhookContent + "\n```";
 		}
 
 		// Construct webhook
