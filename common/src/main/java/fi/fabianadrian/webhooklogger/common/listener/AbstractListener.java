@@ -1,6 +1,5 @@
 package fi.fabianadrian.webhooklogger.common.listener;
 
-import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.event.PlaceholderFactory;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookClient;
@@ -11,14 +10,13 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class AbstractListener {
 	protected final WebhookLogger webhookLogger;
 	protected final PlaceholderFactory placeholderFactory;
 	private final Map<Pattern, String> replacements;
-	List<WebhookClient> clients = new ArrayList<>();
+	private final List<WebhookClient> clients = new ArrayList<>();
 
 	public AbstractListener(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
@@ -37,14 +35,6 @@ public abstract class AbstractListener {
 				.build();
 
 		Component component = MiniMessage.miniMessage().deserialize(format, resolver);
-
-		String discordSerialized = DiscordSerializer.INSTANCE.serialize(component);
-		for (Map.Entry<Pattern, String> entry : replacements.entrySet()) {
-			Matcher matcher = entry.getKey().matcher(discordSerialized);
-			discordSerialized = matcher.replaceAll(entry.getValue());
-		}
-
-		String finalDiscordSerialized = discordSerialized;
-		clients.forEach(client -> client.queue(finalDiscordSerialized));
+		clients.forEach(client -> client.queue(component));
 	}
 }

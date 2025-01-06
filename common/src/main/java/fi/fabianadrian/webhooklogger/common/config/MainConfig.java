@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.common.config;
 
 import fi.fabianadrian.webhooklogger.common.config.section.PlaceholderConfigSection;
 import fi.fabianadrian.webhooklogger.common.event.EventType;
+import fi.fabianadrian.webhooklogger.common.webhook.MessageStyle;
 import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.annote.SubSection;
@@ -63,6 +64,10 @@ public interface MainConfig {
 	@ConfComments("Configuration options for various placeholders.")
 	@SubSection
 	PlaceholderConfigSection placeholders();
+
+	@AnnotationBasedSorter.Order(4)
+	@ConfDefault.DefaultString("DEFAULT")
+	MessageStyle messageStyle();
 
 	interface Webhook {
 		@AnnotationBasedSorter.Order(0)

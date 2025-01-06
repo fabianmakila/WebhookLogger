@@ -26,6 +26,7 @@ public final class WebhookManager {
 
 		config = webhookLogger.mainConfig();
 
+		this.clients.clear();
 		parseWebhooks();
 
 		if (clients.isEmpty()) {
@@ -54,7 +55,7 @@ public final class WebhookManager {
 				return;
 			}
 
-			WebhookClient client = new WebhookClient(logger, webhook.url());
+			WebhookClient client = new WebhookClient(this.webhookLogger, webhook.url());
 			clients.add(client);
 			webhookLogger.listenerManager().registerWebhookForEvents(client, webhook.events());
 		});
