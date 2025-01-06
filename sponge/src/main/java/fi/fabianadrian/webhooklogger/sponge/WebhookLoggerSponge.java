@@ -24,10 +24,10 @@ import java.nio.file.Path;
 
 @Plugin("webhooklogger")
 public final class WebhookLoggerSponge implements Platform {
-	private WebhookLogger webhookLogger;
 	private final PluginContainer container;
 	private final Path configDir;
 	private final Logger logger;
+	private WebhookLogger webhookLogger;
 	private CommandManager<Audience> commandManager;
 	private SpongeListenerManager listenerManager;
 
@@ -56,10 +56,6 @@ public final class WebhookLoggerSponge implements Platform {
 	@Listener
 	public void onServerStopping(final StoppingEngineEvent<Server> event) {
 		webhookLogger.shutdown();
-	}
-
-	public WebhookLogger webhookLogger() {
-		return webhookLogger;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ tasks {
 sponge {
 	injectRepositories(false)
 
-	apiVersion("10.0.0")
+	apiVersion("12.0.0")
 	loader {
 		name(PluginLoaders.JAVA_PLAIN)
 		version("1.0")

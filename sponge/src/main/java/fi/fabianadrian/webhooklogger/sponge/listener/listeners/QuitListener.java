@@ -20,7 +20,7 @@ public final class QuitListener extends AbstractListener {
 	}
 
 	@Listener
-	public void onQuit(ServerSideConnectionEvent.Disconnect event) {
+	public void onQuit(ServerSideConnectionEvent.Leave event) {
 		if (super.webhooks.isEmpty()) {
 			return;
 		}
