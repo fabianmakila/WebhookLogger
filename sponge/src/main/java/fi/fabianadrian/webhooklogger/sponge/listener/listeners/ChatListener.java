@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.ChatEventConfig;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.sponge.platform.SpongePlayer;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -14,15 +15,23 @@ import org.spongepowered.api.util.Tristate;
 import java.util.Optional;
 
 public final class ChatListener extends AbstractListener {
-
 	public ChatListener(WebhookLogger webhookLogger) {
 		super(webhookLogger);
+	}
+
+	@Override
+	public EventType type() {
+		return EventType.CHAT;
 	}
 
 	@Listener
 	@IsCancelled(Tristate.UNDEFINED)
 	public void onChat(PlayerChatEvent.Submit event) {
-		ChatEventConfig config = webhookLogger.eventsConfig().chat();
+		if (super.webhooks.isEmpty()) {
+			return;
+		}
+
+		ChatEventConfig config = super.webhookLogger.eventsConfig().chat();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
@@ -35,9 +44,9 @@ public final class ChatListener extends AbstractListener {
 
 		SpongePlayer player = new SpongePlayer(playerOptional.get());
 		TagResolver.Builder builder = TagResolver.builder().resolvers(
-				placeholderFactory.player(player),
-				placeholderFactory.cancelled(event.isCancelled()),
-				placeholderFactory.message(event.message())
+				super.placeholderFactory.player(player),
+				super.placeholderFactory.cancelled(event.isCancelled()),
+				super.placeholderFactory.message(event.message())
 		);
 
 		queue(config.format(), builder);

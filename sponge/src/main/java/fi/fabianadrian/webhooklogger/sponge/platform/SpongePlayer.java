@@ -17,20 +17,20 @@ public final class SpongePlayer implements PlatformPlayer {
 
 	@Override
 	public InetSocketAddress address() {
-		return player.connection().address();
+		return this.player.connection().address();
 	}
 
 	@Override
 	public Location location() {
 		return new Location(
-				player.location().blockX(),
-				player.location().blockY(),
-				player.location().blockZ()
+				this.player.location().blockX(),
+				this.player.location().blockY(),
+				this.player.location().blockZ()
 		);
 	}
 
 	@Override
 	public @NotNull Audience audience() {
-		return player;
+		return this.player;
 	}
 }

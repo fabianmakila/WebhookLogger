@@ -26,13 +26,13 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	@Override
 	public void onEnable() {
 		createCommandManager();
-		webhookLogger = new WebhookLogger(this);
-		listenerRegistry = new PaperListenerManager(this);
-		webhookLogger.reload();
+		this.webhookLogger = new WebhookLogger(this);
+		this.listenerRegistry = new PaperListenerManager(this);
+		this.webhookLogger.reload();
 
 		PluginManager manager = getServer().getPluginManager();
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
-			webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
+			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
 
 		// bStats
@@ -41,11 +41,11 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	@Override
 	public void onDisable() {
-		webhookLogger.shutdown();
+		this.webhookLogger.shutdown();
 	}
 
 	public WebhookLogger webhookLogger() {
-		return webhookLogger;
+		return this.webhookLogger;
 	}
 
 	@Override
@@ -60,12 +60,12 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	@Override
 	public CommandManager<Audience> commandManager() {
-		return commandManager;
+		return this.commandManager;
 	}
 
 	@Override
 	public ListenerManager listenerManager() {
-		return listenerRegistry;
+		return this.listenerRegistry;
 	}
 
 	private void createCommandManager() {
@@ -73,6 +73,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 				commandSender -> commandSender,
 				audience -> (CommandSender) audience
 		);
-		commandManager = new LegacyPaperCommandManager<>(this, ExecutionCoordinator.simpleCoordinator(), mapper);
+		this.commandManager = new LegacyPaperCommandManager<>(this, ExecutionCoordinator.simpleCoordinator(), mapper);
 	}
 }

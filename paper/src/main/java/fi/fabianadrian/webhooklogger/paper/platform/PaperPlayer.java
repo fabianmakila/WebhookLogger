@@ -3,12 +3,13 @@ package fi.fabianadrian.webhooklogger.paper.platform;
 import fi.fabianadrian.webhooklogger.common.platform.Location;
 import fi.fabianadrian.webhooklogger.common.platform.PlatformPlayer;
 import net.kyori.adventure.audience.Audience;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
 
 public final class PaperPlayer implements PlatformPlayer {
-	private final org.bukkit.entity.Player player;
+	private final Player player;
 
 	public PaperPlayer(org.bukkit.entity.Player player) {
 		this.player = player;
@@ -16,12 +17,12 @@ public final class PaperPlayer implements PlatformPlayer {
 
 	@Override
 	public InetSocketAddress address() {
-		return player.getAddress();
+		return this.player.getAddress();
 	}
 
 	@Override
 	public Location location() {
-		org.bukkit.Location location = player.getLocation();
+		org.bukkit.Location location = this.player.getLocation();
 		return new Location(
 				location.getBlockX(),
 				location.getBlockY(),
@@ -31,6 +32,6 @@ public final class PaperPlayer implements PlatformPlayer {
 
 	@Override
 	public @NotNull Audience audience() {
-		return player;
+		return this.player;
 	}
 }

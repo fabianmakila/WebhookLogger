@@ -35,64 +35,63 @@ public final class WebhookLogger {
 
 		new TranslationManager(platform.logger());
 
-		configManager = new ConfigManager(platform.configPath(), platform.logger());
+		this.configManager = new ConfigManager(platform.configPath(), platform.logger());
 
-		commandManager = platform.commandManager();
+		this.commandManager = platform.commandManager();
 		setupCommandManager();
 		registerCommands();
 
-		webhookManager = new WebhookManager(this);
+		this.webhookManager = new WebhookManager(this);
 	}
 
 	public boolean reload() {
-		boolean success = configManager.reload();
-		platform.listenerManager().unregisterAll();
+		boolean success = this.configManager.reload();
 
-		webhookManager.reload();
-		platform.listenerManager().registerAll();
+		this.platform.listenerManager().clearRegisteredWebhooks();
+		this.webhookManager.reload();
 
 		return success;
 	}
 
 	public void shutdown() {
-		scheduler.shutdown();
+		this.scheduler.shutdown();
 	}
 
 	public MainConfig mainConfig() {
-		return configManager.mainConfig();
+		return this.configManager.mainConfig();
 	}
 
 	public EventsConfig eventsConfig() {
-		return configManager.eventsConfig();
+		return this.configManager.eventsConfig();
 	}
 
 	public Logger logger() {
-		return platform.logger();
+		return this.platform.logger();
 	}
 
 	public ScheduledExecutorService scheduler() {
-		return scheduler;
+		return this.scheduler;
 	}
 
 	public DependencyManager dependencyManager() {
-		return dependencyManager;
+		return this.dependencyManager;
 	}
 
 	public CommandManager<Audience> commandManager() {
-		return commandManager;
+		return this.commandManager;
 	}
 
 	public ListenerManager listenerManager() {
-		return platform.listenerManager();
+		return this.platform.listenerManager();
 	}
 
 	private void setupCommandManager() {
-		commandManager.registerCommandPreProcessor(new WebhookLoggerCommandPreprocessor(this));
-		commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
+		this.commandManager.registerCommandPreProcessor(new WebhookLoggerCommandPreprocessor(this));
+		this.commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
 		MinecraftExceptionHandler.createNative()
 				.defaultHandlers()
 				.captionFormatter(new CaptionFormatter())
-				.registerTo(commandManager);
+				.registerTo(this.commandManager);
 	}
 
 	private void registerCommands() {

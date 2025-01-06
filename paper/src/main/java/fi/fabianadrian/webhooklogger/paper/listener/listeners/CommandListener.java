@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.paper.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -16,9 +17,18 @@ public final class CommandListener extends AbstractListener implements Listener 
 		super(webhookLogger);
 	}
 
+	@Override
+	public EventType type() {
+		return EventType.COMMAND;
+	}
+
 	@EventHandler
 	public void onServerCommand(ServerCommandEvent event) {
-		CommandEventConfig config = webhookLogger.eventsConfig().command();
+		if (super.webhooks.isEmpty()) {
+			return;
+		}
+
+		CommandEventConfig config = super.webhookLogger.eventsConfig().command();
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
@@ -32,9 +42,9 @@ public final class CommandListener extends AbstractListener implements Listener 
 		}
 
 		TagResolver.Builder builder = TagResolver.builder().resolvers(
-				placeholderFactory.audience(event.getSender()),
-				placeholderFactory.cancelled(event.isCancelled()),
-				placeholderFactory.command(event.getCommand())
+				super.placeholderFactory.audience(event.getSender()),
+				super.placeholderFactory.cancelled(event.isCancelled()),
+				super.placeholderFactory.command(event.getCommand())
 		);
 
 		queue(config.format(), builder);
@@ -42,16 +52,20 @@ public final class CommandListener extends AbstractListener implements Listener 
 
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		CommandEventConfig config = webhookLogger.eventsConfig().command();
+		if (super.webhooks.isEmpty()) {
+			return;
+		}
+
+		CommandEventConfig config = super.webhookLogger.eventsConfig().command();
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
 		}
 
 		PaperPlayer player = new PaperPlayer(event.getPlayer());
 		TagResolver.Builder builder = TagResolver.builder().resolvers(
-				placeholderFactory.player(player),
-				placeholderFactory.cancelled(event.isCancelled()),
-				placeholderFactory.command(event.getMessage())
+				super.placeholderFactory.player(player),
+				super.placeholderFactory.cancelled(event.isCancelled()),
+				super.placeholderFactory.command(event.getMessage())
 		);
 
 		queue(config.format(), builder);

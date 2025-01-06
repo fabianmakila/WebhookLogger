@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.QuitEventConfig;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.sponge.platform.SpongePlayer;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -13,14 +14,23 @@ public final class QuitListener extends AbstractListener {
 		super(webhookLogger);
 	}
 
+	@Override
+	public EventType type() {
+		return EventType.QUIT;
+	}
+
 	@Listener
 	public void onQuit(ServerSideConnectionEvent.Disconnect event) {
-		QuitEventConfig config = webhookLogger.eventsConfig().quit();
+		if (super.webhooks.isEmpty()) {
+			return;
+		}
+
+		QuitEventConfig config = super.webhookLogger.eventsConfig().quit();
 
 		SpongePlayer player = new SpongePlayer(event.player());
 		TagResolver.Builder builder = TagResolver.builder().resolvers(
-				placeholderFactory.player(player),
-				placeholderFactory.message(event.message())
+				super.placeholderFactory.player(player),
+				super.placeholderFactory.message(event.message())
 		);
 
 		queue(config.format(), builder);

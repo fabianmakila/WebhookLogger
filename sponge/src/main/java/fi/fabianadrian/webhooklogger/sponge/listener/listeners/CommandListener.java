@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.sponge.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CommandEventConfig;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.sponge.platform.SpongePlayer;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -20,10 +21,19 @@ public final class CommandListener extends AbstractListener {
 		super(webhookLogger);
 	}
 
+	@Override
+	public EventType type() {
+		return EventType.COMMAND;
+	}
+
 	@Listener
 	@IsCancelled(Tristate.UNDEFINED)
 	public void onCommand(ExecuteCommandEvent.Pre event) {
-		CommandEventConfig config = webhookLogger.eventsConfig().command();
+		if (super.webhooks.isEmpty()) {
+			return;
+		}
+
+		CommandEventConfig config = super.webhookLogger.eventsConfig().command();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
@@ -38,9 +48,9 @@ public final class CommandListener extends AbstractListener {
 		SpongePlayer player = new SpongePlayer((ServerPlayer) playerOptional.get());
 
 		TagResolver.Builder builder = TagResolver.builder().resolvers(
-				placeholderFactory.player(player),
-				placeholderFactory.cancelled(event.isCancelled()),
-				placeholderFactory.command(event.command())
+				super.placeholderFactory.player(player),
+				super.placeholderFactory.cancelled(event.isCancelled()),
+				super.placeholderFactory.command(event.command())
 		);
 
 		queue(config.format(), builder);

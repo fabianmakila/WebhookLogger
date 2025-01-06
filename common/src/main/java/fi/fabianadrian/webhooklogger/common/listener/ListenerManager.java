@@ -16,17 +16,15 @@ public abstract class ListenerManager {
 		this.webhookLogger = webhookLogger;
 	}
 
+	public void clearRegisteredWebhooks() {
+		this.registry.values().forEach(AbstractListener::clearWebhooks);
+	}
+
 	public void registerWebhookForEvents(WebhookClient client, List<EventType> events) {
 		events.forEach(event -> registerWebhook(client, event));
 	}
 
-	public abstract void registerAll();
-
-	public abstract void unregisterAll();
-
-	protected abstract ListenerFactory factory();
-
 	private void registerWebhook(WebhookClient webhookClient, EventType type) {
-		registry.computeIfAbsent(type, k -> factory().create(type)).addWebhook(webhookClient);
+		this.registry.get(type).registerWebhook(webhookClient);
 	}
 }

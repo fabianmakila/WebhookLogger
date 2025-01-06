@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.paper.listener.listeners;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -14,9 +15,18 @@ public final class DeathListener extends AbstractListener implements Listener {
 		super(webhookLogger);
 	}
 
+	@Override
+	public EventType type() {
+		return EventType.DEATH;
+	}
+
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
-		DeathEventConfig config = webhookLogger.eventsConfig().death();
+		if (super.webhooks.isEmpty()) {
+			return;
+		}
+
+		DeathEventConfig config = super.webhookLogger.eventsConfig().death();
 
 		if (!config.logCancelled() && event.isCancelled()) {
 			return;
@@ -24,9 +34,9 @@ public final class DeathListener extends AbstractListener implements Listener {
 
 		PaperPlayer player = new PaperPlayer(event.getEntity());
 		TagResolver.Builder builder = TagResolver.builder().resolvers(
-				placeholderFactory.player(player),
-				placeholderFactory.cancelled(event.isCancelled()),
-				placeholderFactory.message(event.deathMessage())
+				super.placeholderFactory.player(player),
+				super.placeholderFactory.cancelled(event.isCancelled()),
+				super.placeholderFactory.message(event.deathMessage())
 		);
 
 		queue(config.format(), builder);

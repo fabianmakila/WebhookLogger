@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,7 @@ public final class WebhookClient {
 	private final WebhookLogger webhookLogger;
 	private final String url;
 	private final Serializer serializer;
+	private final ScheduledFuture<?> scheduledSendMessageTask;
 
 	public WebhookClient(WebhookLogger webhookLogger, String url) {
 		this.webhookLogger = webhookLogger;
@@ -27,6 +30,13 @@ public final class WebhookClient {
 		this.serializer = new SerializerFactory().serializer(webhookLogger.mainConfig().messageStyle());
 
 		this.client = WebHookClient.fromURL(url);
+
+		this.scheduledSendMessageTask = webhookLogger.scheduler().scheduleAtFixedRate(
+				this::sendAll,
+				0,
+				webhookLogger.mainConfig().sendRate(),
+				TimeUnit.SECONDS
+		);
 	}
 
 	public void queue(Component component) {
@@ -37,10 +47,16 @@ public final class WebhookClient {
 			serialized = matcher.replaceAll(entry.getValue());
 		}
 
-		messageQueue.add(serialized);
+		this.messageQueue.add(serialized);
 	}
 
-	public void sendAll() {
+	public void shutdown() {
+		if (this.scheduledSendMessageTask != null) {
+			this.scheduledSendMessageTask.cancel(false);
+		}
+	}
+
+	private void sendAll() {
 		// Copy messageBuffer
 		List<String> messages = List.copyOf(this.messageQueue);
 
@@ -60,7 +76,7 @@ public final class WebhookClient {
 			switch (response.statusCode()) {
 				case 204 -> this.messageQueue.removeAll(messages);
 				case 429 ->
-						this.webhookLogger.logger().warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", url);
+						this.webhookLogger.logger().warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", this.url);
 				default ->
 						this.webhookLogger.logger().warn("Failed to send a webhook to {}. Got status code {}", this.url, response.statusCode());
 			}

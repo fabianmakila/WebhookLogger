@@ -1,6 +1,7 @@
 package fi.fabianadrian.webhooklogger.common.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
+import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.event.PlaceholderFactory;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookClient;
 import net.kyori.adventure.text.Component;
@@ -9,32 +10,33 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public abstract class AbstractListener {
 	protected final WebhookLogger webhookLogger;
 	protected final PlaceholderFactory placeholderFactory;
-	private final Map<Pattern, String> replacements;
-	private final List<WebhookClient> clients = new ArrayList<>();
+	protected final List<WebhookClient> webhooks = new ArrayList<>();
 
 	public AbstractListener(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
 		this.placeholderFactory = new PlaceholderFactory(webhookLogger);
-		replacements = webhookLogger.mainConfig().textReplacements();
 	}
 
-	public void addWebhook(WebhookClient client) {
-		clients.add(client);
+	public void registerWebhook(WebhookClient webhook) {
+		webhooks.add(webhook);
 	}
 
-	//TODO Fix ugly
+	public void clearWebhooks() {
+		this.webhooks.clear();
+	}
+
+	public abstract EventType type();
+
 	protected void queue(String format, TagResolver.Builder builder) {
 		TagResolver resolver = builder
-				.resolver(placeholderFactory.timestamp())
+				.resolver(this.placeholderFactory.timestamp())
 				.build();
 
 		Component component = MiniMessage.miniMessage().deserialize(format, resolver);
-		clients.forEach(client -> client.queue(component));
+		this.webhooks.forEach(client -> client.queue(component));
 	}
 }
