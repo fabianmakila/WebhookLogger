@@ -8,7 +8,7 @@ bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
 bstats-sponge = { module = "org.bstats:bstats-sponge", version.ref = "bstats" }
 
 # Platforms
-platform-paper = { module = "io.papermc.paper:paper-api", version = "1.21.3-R0.1-SNAPSHOT" }
+platform-paper = { module = "io.papermc.paper:paper-api", version = "1.21.4-R0.1-SNAPSHOT" }
 platform-sponge = { module = "org.spongepowered:spongeapi", version = "10.0.0" }
 
 # Webhook clients
