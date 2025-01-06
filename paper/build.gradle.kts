@@ -17,7 +17,7 @@ dependencies {
 paperPluginYaml {
 	main = "fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper"
 	name = rootProject.name
-	apiVersion = "1.19"
+	apiVersion = "1.21.4"
 	authors = listOf("FabianAdrian")
 	website = "https://github.com/fabianmakila/webhooklogger"
 
@@ -41,6 +41,6 @@ tasks {
 		downloadPlugins {
 			modrinth("miniplaceholders", "J2guR3GH")
 		}
-		minecraftVersion("1.19.4")
+		minecraftVersion("1.21.4")
 	}
 }
