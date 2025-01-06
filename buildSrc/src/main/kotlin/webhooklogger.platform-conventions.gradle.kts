@@ -6,6 +6,10 @@ plugins {
 	id("com.gradleup.shadow")
 }
 
+dependencies {
+	implementation(project(":common"))
+}
+
 tasks {
 	build {
 		dependsOn(shadowJar)

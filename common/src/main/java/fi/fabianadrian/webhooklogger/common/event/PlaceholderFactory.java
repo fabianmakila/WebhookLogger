@@ -12,18 +12,18 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.translation.GlobalTranslator;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public final class PlaceholderFactory {
 	private final WebhookLogger webhookLogger;
 	private final MainConfig.PlaceholderConfig config;
-	private final PlainTextComponentSerializer plainTextSerializer = PlainTextComponentSerializer.plainText();
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
 	public PlaceholderFactory(WebhookLogger webhookLogger) {
@@ -85,7 +85,7 @@ public final class PlaceholderFactory {
 		}
 
 		if (message instanceof TranslatableComponent) {
-			message = Component.text(plainTextSerializer.serialize(message));
+			message = GlobalTranslator.render(message, Locale.ENGLISH);
 		}
 
 		return Placeholder.component("message", message);

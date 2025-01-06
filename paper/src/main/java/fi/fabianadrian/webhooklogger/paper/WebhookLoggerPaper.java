@@ -21,14 +21,15 @@ import java.nio.file.Path;
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
 	private LegacyPaperCommandManager<Audience> commandManager;
-	private PaperListenerManager listenerRegistry;
+	private PaperListenerManager listenerManager;
 
 	@Override
 	public void onEnable() {
 		createCommandManager();
+		this.listenerManager = new PaperListenerManager(this);
+
 		this.webhookLogger = new WebhookLogger(this);
-		this.listenerRegistry = new PaperListenerManager(this);
-		this.webhookLogger.reload();
+		this.webhookLogger.startup();
 
 		PluginManager manager = getServer().getPluginManager();
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
@@ -65,7 +66,7 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	@Override
 	public ListenerManager listenerManager() {
-		return this.listenerRegistry;
+		return this.listenerManager;
 	}
 
 	private void createCommandManager() {

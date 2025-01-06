@@ -34,14 +34,18 @@ public final class WebhookLogger {
 		this.platform = platform;
 
 		new TranslationManager(platform.logger());
-
 		this.configManager = new ConfigManager(platform.configPath(), platform.logger());
+		this.webhookManager = new WebhookManager(this);
 
 		this.commandManager = platform.commandManager();
 		setupCommandManager();
 		registerCommands();
+	}
 
-		this.webhookManager = new WebhookManager(this);
+	public void startup() {
+		this.configManager.reload();
+		this.platform.listenerManager().registerListeners();
+		this.webhookManager.reload();
 	}
 
 	public boolean reload() {
@@ -55,6 +59,7 @@ public final class WebhookLogger {
 
 	public void shutdown() {
 		this.scheduler.shutdown();
+		this.platform.listenerManager().clearRegisteredWebhooks();
 	}
 
 	public MainConfig mainConfig() {

@@ -42,11 +42,11 @@ public final class WebhookLoggerSponge implements Platform {
 
 	@Listener
 	public void onServerStart(final StartedEngineEvent<Server> event) {
+		this.listenerManager = new SpongeListenerManager(this, this.container);
 		createCommandManager();
 
-		webhookLogger = new WebhookLogger(this);
-		listenerManager = new SpongeListenerManager(webhookLogger, container);
-		webhookLogger.reload();
+		this.webhookLogger = new WebhookLogger(this);
+		this.webhookLogger.startup();
 
 		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
 			webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
@@ -76,6 +76,10 @@ public final class WebhookLoggerSponge implements Platform {
 	@Override
 	public ListenerManager listenerManager() {
 		return listenerManager;
+	}
+
+	public WebhookLogger webhookLogger() {
+		return this.webhookLogger;
 	}
 
 	private void createCommandManager() {
