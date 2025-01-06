@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
 	// Webhook clients
-	implementation(libs.client.discord)
+	implementation(libs.jdwebhooks)
 	implementation(libs.mcdiscordserializer) {
 		exclude("net.kyori")
 	}
