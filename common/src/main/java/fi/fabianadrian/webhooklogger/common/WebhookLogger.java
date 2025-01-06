@@ -17,6 +17,7 @@ import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
 import org.slf4j.Logger;
+import org.spongepowered.configurate.ConfigurateException;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -34,7 +35,7 @@ public final class WebhookLogger {
 		this.platform = platform;
 
 		new TranslationManager(platform.logger());
-		this.configManager = new ConfigManager(platform.configPath(), platform.logger());
+		this.configManager = new ConfigManager(platform.configPath());
 		this.webhookManager = new WebhookManager(this);
 
 		this.commandManager = platform.commandManager();
@@ -42,19 +43,17 @@ public final class WebhookLogger {
 		registerCommands();
 	}
 
-	public void startup() {
+	public void startup() throws ConfigurateException {
 		this.configManager.reload();
 		this.platform.listenerManager().registerListeners();
 		this.webhookManager.reload();
 	}
 
-	public boolean reload() {
-		boolean success = this.configManager.reload();
+	public void reload() throws ConfigurateException {
+		this.configManager.reload();
 
 		this.platform.listenerManager().clearRegisteredWebhooks();
 		this.webhookManager.reload();
-
-		return success;
 	}
 
 	public void shutdown() {

@@ -1,6 +1,7 @@
 package fi.fabianadrian.webhooklogger.common.webhook;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
+import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.webhook.serializer.Serializer;
 import fi.fabianadrian.webhooklogger.common.webhook.serializer.SerializerFactory;
 import io.github._4drian3d.jdwebhooks.WebHook;
@@ -23,18 +24,26 @@ public final class WebhookClient {
 	private final String url;
 	private final Serializer serializer;
 	private final ScheduledFuture<?> scheduledSendMessageTask;
+	private MessageStyle messageStyle = MessageStyle.DEFAULT;
 
-	public WebhookClient(WebhookLogger webhookLogger, String url) {
+	public WebhookClient(WebhookLogger webhookLogger, MainConfig.WebhookConfig webhookConfig) {
 		this.webhookLogger = webhookLogger;
-		this.url = url;
-		this.serializer = new SerializerFactory().serializer(webhookLogger.mainConfig().messageStyle());
+		this.url = webhookConfig.url();
+		this.client = WebHookClient.fromURL(this.url);
 
-		this.client = WebHookClient.fromURL(url);
+		if (webhookConfig.messageStyle() != null) {
+			this.messageStyle = webhookConfig.messageStyle();
+		}
+		this.serializer = new SerializerFactory().serializer(this.messageStyle);
 
+		int sendRate = 5;
+		if (webhookConfig.sendRate() != null) {
+			sendRate = webhookConfig.sendRate();
+		}
 		this.scheduledSendMessageTask = webhookLogger.scheduler().scheduleAtFixedRate(
 				this::sendAll,
 				0,
-				webhookLogger.mainConfig().sendRate(),
+				sendRate,
 				TimeUnit.SECONDS
 		);
 	}
@@ -66,7 +75,7 @@ public final class WebhookClient {
 		}
 
 		String webhookContent = String.join("\n", messages);
-		if (this.webhookLogger.mainConfig().messageStyle() == MessageStyle.ANSI) {
+		if (this.messageStyle == MessageStyle.ANSI) {
 			webhookContent = "```ansi\n" + webhookContent + "```";
 		}
 

@@ -1,15 +1,17 @@
 package fi.fabianadrian.webhooklogger.common.config.event;
 
-import space.arim.dazzleconf.annote.ConfComments;
-import space.arim.dazzleconf.annote.ConfDefault;
-import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 
-public interface DeathEventConfig extends CancellableEventConfig {
-	@AnnotationBasedSorter.Order(0)
-	@ConfDefault.DefaultString("<cancelled>[<timestamp>] <message> (<location>)")
-	@ConfComments({
-			"The webhook format for when a player dies. Available placeholders:",
-			"<name>, <display_name>, <message>, <timestamp>, <cancelled>, <location>"
-	})
-	String format();
+@ConfigSerializable
+public class DeathEventConfig extends CancellableEventConfig {
+	@Comment("""
+			The webhook format for when a player dies. Available placeholders:
+			<name>, <display_name>, <message>, <timestamp>, <cancelled>, <location>
+			""")
+	private String format = "<cancelled>[<timestamp>] <message> (<location>)";
+
+	public String format() {
+		return this.format;
+	}
 }

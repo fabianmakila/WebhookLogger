@@ -1,27 +1,33 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
 import fi.fabianadrian.webhooklogger.common.config.event.*;
-import space.arim.dazzleconf.annote.SubSection;
-import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
-public interface EventsConfig {
-	@AnnotationBasedSorter.Order(0)
-	@SubSection
-	ChatEventConfig chat();
+@ConfigSerializable
+public class EventsConfig {
+	private ChatEventConfig chat = new ChatEventConfig();
+	private CommandEventConfig command = new CommandEventConfig();
+	private DeathEventConfig death = new DeathEventConfig();
+	private JoinEventConfig join = new JoinEventConfig();
+	private QuitEventConfig quit = new QuitEventConfig();
 
-	@AnnotationBasedSorter.Order(1)
-	@SubSection
-	CommandEventConfig command();
+	public ChatEventConfig chat() {
+		return chat;
+	}
 
-	@AnnotationBasedSorter.Order(2)
-	@SubSection
-	DeathEventConfig death();
+	public CommandEventConfig command() {
+		return command;
+	}
 
-	@AnnotationBasedSorter.Order(3)
-	@SubSection
-	JoinEventConfig join();
+	public DeathEventConfig death() {
+		return death;
+	}
 
-	@AnnotationBasedSorter.Order(4)
-	@SubSection
-	QuitEventConfig quit();
+	public JoinEventConfig join() {
+		return join;
+	}
+
+	public QuitEventConfig quit() {
+		return quit;
+	}
 }

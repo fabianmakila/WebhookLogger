@@ -1,23 +1,21 @@
 package fi.fabianadrian.webhooklogger.common.config.serializer;
 
-import space.arim.dazzleconf.error.BadValueException;
-import space.arim.dazzleconf.serialiser.Decomposer;
-import space.arim.dazzleconf.serialiser.FlexibleType;
-import space.arim.dazzleconf.serialiser.ValueSerialiser;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
+import java.lang.reflect.Type;
 import java.time.ZoneId;
 
-public final class ZoneIdSerializer implements ValueSerialiser<ZoneId> {
-	@Override
-	public Class<ZoneId> getTargetClass() {
-		return ZoneId.class;
-	}
+public final class ZoneIdSerializer implements TypeSerializer<ZoneId> {
+	public static final ZoneIdSerializer INSTANCE = new ZoneIdSerializer();
 
 	@Override
-	public ZoneId deserialise(FlexibleType flexibleType) throws BadValueException {
-		String string = flexibleType.getString();
+	public ZoneId deserialize(Type type, ConfigurationNode node) throws SerializationException {
+		String string = node.getString();
 
-		if ("default".equalsIgnoreCase(string) || string.isBlank()) {
+		if (string == null || "default".equalsIgnoreCase(string) || string.isBlank()) {
 			return ZoneId.systemDefault();
 		}
 
@@ -25,7 +23,15 @@ public final class ZoneIdSerializer implements ValueSerialiser<ZoneId> {
 	}
 
 	@Override
-	public Object serialise(ZoneId zoneId, Decomposer decomposer) {
-		return zoneId.getId();
+	public void serialize(Type type, @Nullable ZoneId zoneId, ConfigurationNode node) throws SerializationException {
+		if (zoneId == null) {
+			node.raw(null);
+			return;
+		}
+		if (ZoneId.systemDefault().equals(zoneId)) {
+			node.set("default");
+		} else {
+			node.set(zoneId.getId());
+		}
 	}
 }

@@ -25,6 +25,7 @@ dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", versio
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
 snakeyaml = { module = "org.yaml:snakeyaml", version = "2.3" }
 mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.3.0" }
+configurate = { module = "org.spongepowered:configurate-yaml", version = "4.1.2" }
 
 # Cloud
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-minecraft" }

@@ -17,6 +17,7 @@ import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
 import org.spongepowered.api.event.lifecycle.StoppingEngineEvent;
+import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.builtin.jvm.Plugin;
 
@@ -46,7 +47,12 @@ public final class WebhookLoggerSponge implements Platform {
 		createCommandManager();
 
 		this.webhookLogger = new WebhookLogger(this);
-		this.webhookLogger.startup();
+		try {
+			this.webhookLogger.startup();
+		} catch (ConfigurateException e) {
+			this.logger.error("Couldn't load configuration", e);
+			return;
+		}
 
 		if (Sponge.pluginManager().plugin("miniplaceholders").isPresent()) {
 			webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);

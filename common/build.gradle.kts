@@ -5,11 +5,6 @@ plugins {
 dependencies {
 	// Webhook clients
 	implementation(libs.client.discord)
-
-	// External libraries
-	implementation(libs.dazzleconf) {
-		exclude("org.yaml")
-	}
 	implementation(libs.mcdiscordserializer) {
 		exclude("net.kyori")
 	}
@@ -21,7 +16,7 @@ dependencies {
 	compileOnly(libs.adventure.text.minimessage)
 	compileOnly(libs.adventure.text.serializer.ansi)
 	compileOnly(libs.slf4j)
-	compileOnly(libs.snakeyaml)
+	compileOnly(libs.configurate)
 
 	compileOnly(libs.miniplaceholders)
 }

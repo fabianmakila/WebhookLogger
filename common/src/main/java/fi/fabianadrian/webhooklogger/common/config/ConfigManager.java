@@ -1,60 +1,55 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
-import org.slf4j.Logger;
-import space.arim.dazzleconf.helper.ConfigurationHelper;
+import fi.fabianadrian.webhooklogger.common.config.serializer.PatternSerializer;
+import fi.fabianadrian.webhooklogger.common.config.serializer.ZoneIdSerializer;
+import org.spongepowered.configurate.ConfigurateException;
 
 import java.nio.file.Path;
+import java.time.ZoneId;
+import java.util.regex.Pattern;
 
 public final class ConfigManager {
-	private final Logger logger;
-	private final ConfigurationHelper<MainConfig> mainConfigHelper;
-	private final ConfigurationHelper<EventsConfig> eventsConfigHelper;
+	private final ConfigLoader<MainConfig> mainConfigLoader;
+	private final ConfigLoader<EventsConfig> eventsConfigLoader;
+	private MainConfig mainConfig;
+	private EventsConfig eventsConfig;
 
-	private volatile MainConfig mainConfigData;
-	private volatile EventsConfig eventsConfigData;
+	public ConfigManager(Path configPath) {
+		this.mainConfigLoader = new ConfigLoader<>(
+				MainConfig.class,
+				configPath.resolve("config.yml"),
+				options -> options.header("WebhookLogger Main Configuration")
+						.serializers(builder -> builder
+								.register(Pattern.class, PatternSerializer.INSTANCE)
+								.register(ZoneId.class, ZoneIdSerializer.INSTANCE)
+						)
+		);
+		this.eventsConfigLoader = new ConfigLoader<>(
+				EventsConfig.class,
+				configPath.resolve("events.yml"),
+				options -> options.header("WebhookLogger Events Configuration")
+		);
+	}
 
-	public ConfigManager(Path configPath, Logger logger) {
-		this.logger = logger;
+	public void reload() throws ConfigurateException {
+		this.mainConfig = this.mainConfigLoader.load();
+		this.mainConfigLoader.save(this.mainConfig);
 
-		ConfigurationHelperFactory helperFactory = new ConfigurationHelperFactory(configPath);
-		mainConfigHelper = helperFactory.create("config.yml", MainConfig.class);
-		eventsConfigHelper = helperFactory.create("events.yml", EventsConfig.class);
+		this.eventsConfig = this.eventsConfigLoader.load();
+		this.eventsConfigLoader.save(this.eventsConfig);
 	}
 
 	public MainConfig mainConfig() {
-		MainConfig configData = mainConfigData;
-		if (configData == null) {
-			throw new IllegalStateException("Configuration has not been loaded yet");
+		if (this.mainConfig == null) {
+			throw new IllegalStateException("Main configuration isn't loaded");
 		}
-		return configData;
+		return this.mainConfig;
 	}
 
 	public EventsConfig eventsConfig() {
-		EventsConfig configData = eventsConfigData;
-		if (configData == null) {
-			throw new IllegalStateException("Configuration has not been loaded yet");
+		if (this.eventsConfig == null) {
+			throw new IllegalStateException("Events configuration isn't loaded");
 		}
-		return configData;
-	}
-
-	public boolean reload() {
-		boolean success = true;
-		try {
-			mainConfigData = mainConfigHelper.reloadConfigData();
-		} catch (Exception e) {
-			logger.error("Could not load config.yml, falling back to default configuration", e);
-			mainConfigData = mainConfigHelper.getFactory().loadDefaults();
-			success = false;
-		}
-
-		try {
-			eventsConfigData = eventsConfigHelper.reloadConfigData();
-		} catch (Exception e) {
-			logger.error("Could not load events.yml, falling back to default configuration", e);
-			eventsConfigData = eventsConfigHelper.getFactory().loadDefaults();
-			success = false;
-		}
-
-		return success;
+		return this.eventsConfig;
 	}
 }

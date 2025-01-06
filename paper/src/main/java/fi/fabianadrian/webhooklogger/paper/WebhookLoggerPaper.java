@@ -15,6 +15,7 @@ import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.slf4j.Logger;
+import org.spongepowered.configurate.ConfigurateException;
 
 import java.nio.file.Path;
 
@@ -29,7 +30,13 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 		this.listenerManager = new PaperListenerManager(this);
 
 		this.webhookLogger = new WebhookLogger(this);
-		this.webhookLogger.startup();
+		try {
+			this.webhookLogger.startup();
+		} catch (ConfigurateException e) {
+			getSLF4JLogger().error("Couldn't load configuration", e);
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 
 		PluginManager manager = getServer().getPluginManager();
 		if (manager.isPluginEnabled("MiniPlaceholders")) {

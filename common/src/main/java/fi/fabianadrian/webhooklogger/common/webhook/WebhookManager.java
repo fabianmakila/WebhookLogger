@@ -31,7 +31,7 @@ public final class WebhookManager {
 				return;
 			}
 
-			WebhookClient client = new WebhookClient(this.webhookLogger, webhook.url());
+			WebhookClient client = new WebhookClient(this.webhookLogger, webhook);
 			this.clients.add(client);
 			this.webhookLogger.listenerManager().registerWebhookForEvents(client, webhook.events());
 		});

@@ -6,6 +6,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
+import org.spongepowered.configurate.ConfigurateException;
 
 import static net.kyori.adventure.text.Component.translatable;
 
@@ -33,10 +34,12 @@ public final class ReloadCommand extends BaseCommand {
 	}
 
 	private void executeReload(CommandContext<Audience> context) {
-		if (webhookLogger.reload()) {
+		try {
+			this.webhookLogger.reload();
 			context.sender().sendMessage(COMPONENT_SUCCESS);
-		} else {
+		} catch (ConfigurateException e) {
 			context.sender().sendMessage(COMPONENT_FAILURE);
+			super.webhookLogger.logger().error("Could not load configuration", e);
 		}
 	}
 }

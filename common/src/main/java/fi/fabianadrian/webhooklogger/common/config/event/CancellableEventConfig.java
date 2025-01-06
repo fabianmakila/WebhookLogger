@@ -1,12 +1,12 @@
 package fi.fabianadrian.webhooklogger.common.config.event;
 
-import space.arim.dazzleconf.annote.ConfComments;
-import space.arim.dazzleconf.annote.ConfDefault;
-import space.arim.dazzleconf.sorter.AnnotationBasedSorter;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 
-public interface CancellableEventConfig {
-	@AnnotationBasedSorter.Order(1)
-	@ConfDefault.DefaultBoolean(true)
-	@ConfComments("Whether this event should be logged even when cancelled.")
-	boolean logCancelled();
+public class CancellableEventConfig {
+	@Comment("Whether this event should be logged even when cancelled.")
+	private boolean logCancelled = true;
+
+	public boolean logCancelled() {
+		return logCancelled;
+	}
 }
