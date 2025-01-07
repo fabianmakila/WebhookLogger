@@ -38,7 +38,7 @@ public final class WebhookClient {
 		this.serializer = new SerializerFactory().serializer(this.messageStyle);
 
 		if (webhookConfig.minimumQueueSize() != null) {
-			this.minimumQueueSize = webhookConfig.minimumQueueSize();
+			this.minimumQueueSize = Math.max(1, webhookConfig.minimumQueueSize());
 		}
 
 		int sendRate = 5;
