@@ -43,4 +43,12 @@ tasks {
 		}
 		minecraftVersion("1.21.4")
 	}
+	shadowJar {
+		sequenceOf(
+			"org.spongepowered.configurate",
+			"io.leangen.geantyref"
+		).forEach { pkg ->
+			relocate(pkg, "fi.fabianadrian.webhooklogger.dependency.$pkg")
+		}
+	}
 }

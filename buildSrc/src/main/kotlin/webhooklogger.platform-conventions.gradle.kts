@@ -25,10 +25,8 @@ tasks {
 			"io.github._4drian3d.jdwebhooks",
 			"com.google.gson",
 			"org.bstats",
-			"org.spongepowered.configurate",
 			"dev.vankka.mcdiscordreserializer",
 			"org.incendo.cloud",
-			"io.leangen.geantyref"
 		).forEach { pkg ->
 			relocate(pkg, "fi.fabianadrian.webhooklogger.dependency.$pkg")
 		}
