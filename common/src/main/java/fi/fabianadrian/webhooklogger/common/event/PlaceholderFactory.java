@@ -81,7 +81,7 @@ public final class PlaceholderFactory {
 
 	public TagResolver message(Component message) {
 		if (message == null) {
-			return Placeholder.unparsed("placeholder", "");
+			return Placeholder.unparsed("message", "");
 		}
 
 		if (message instanceof TranslatableComponent) {

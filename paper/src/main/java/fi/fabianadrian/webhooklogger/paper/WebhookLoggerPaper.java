@@ -52,10 +52,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 		this.webhookLogger.shutdown();
 	}
 
-	public WebhookLogger webhookLogger() {
-		return this.webhookLogger;
-	}
-
 	@Override
 	public Logger logger() {
 		return getSLF4JLogger();
@@ -74,6 +70,10 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	@Override
 	public ListenerManager listenerManager() {
 		return this.listenerManager;
+	}
+
+	public WebhookLogger webhookLogger() {
+		return this.webhookLogger;
 	}
 
 	private void createCommandManager() {
