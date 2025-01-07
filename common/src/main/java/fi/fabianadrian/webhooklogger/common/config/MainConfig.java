@@ -46,6 +46,7 @@ public class MainConfig {
 		private List<EventType> events = List.of(EventType.CHAT);
 		private Integer sendRate;
 		private MessageStyle messageStyle;
+		private Integer minimumQueueSize;
 
 		public String url() {
 			return this.url;
@@ -61,6 +62,10 @@ public class MainConfig {
 
 		public MessageStyle messageStyle() {
 			return this.messageStyle;
+		}
+
+		public Integer minimumQueueSize() {
+			return this.minimumQueueSize;
 		}
 	}
 

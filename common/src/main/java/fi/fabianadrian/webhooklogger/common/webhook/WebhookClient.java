@@ -25,6 +25,7 @@ public final class WebhookClient {
 	private final Serializer serializer;
 	private final ScheduledFuture<?> scheduledSendMessageTask;
 	private MessageStyle messageStyle = MessageStyle.NORMAL;
+	private int minimumQueueSize = 1;
 
 	public WebhookClient(WebhookLogger webhookLogger, MainConfig.WebhookConfig webhookConfig) {
 		this.webhookLogger = webhookLogger;
@@ -35,6 +36,10 @@ public final class WebhookClient {
 			this.messageStyle = webhookConfig.messageStyle();
 		}
 		this.serializer = new SerializerFactory().serializer(this.messageStyle);
+
+		if (webhookConfig.minimumQueueSize() != null) {
+			this.minimumQueueSize = webhookConfig.minimumQueueSize();
+		}
 
 		int sendRate = 5;
 		if (webhookConfig.sendRate() != null) {
@@ -69,8 +74,7 @@ public final class WebhookClient {
 		// Copy messageBuffer
 		List<String> messages = List.copyOf(this.messageQueue);
 
-		// If empty don't run
-		if (this.messageQueue.isEmpty()) {
+		if (this.messageQueue.size() < this.minimumQueueSize) {
 			return;
 		}
 
