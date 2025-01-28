@@ -35,7 +35,7 @@ public final class WebhookClient {
 		if (webhookConfig.messageStyle() != null) {
 			this.messageStyle = webhookConfig.messageStyle();
 		}
-		this.serializer = new SerializerFactory().serializer(this.messageStyle);
+		this.serializer = new SerializerFactory(webhookLogger).serializer(this.messageStyle);
 
 		if (webhookConfig.minimumQueueSize() != null) {
 			this.minimumQueueSize = Math.max(1, webhookConfig.minimumQueueSize());

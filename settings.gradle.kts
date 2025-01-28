@@ -12,5 +12,11 @@ dependencyResolutionManagement {
 		mavenCentral()
 		maven("https://repo.papermc.io/repository/maven-public/")
 		maven("https://repo.spongepowered.org/repository/maven-public/")
+		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+			name = "sonatype-snapshots"
+			mavenContent {
+				snapshotsOnly()
+			}
+		}
 	}
 }

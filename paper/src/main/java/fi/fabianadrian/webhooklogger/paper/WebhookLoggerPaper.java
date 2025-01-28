@@ -5,7 +5,9 @@ import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerManager;
+import io.papermc.paper.text.PaperComponents;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -70,6 +72,11 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	@Override
 	public ListenerManager listenerManager() {
 		return this.listenerManager;
+	}
+
+	@Override
+	public ComponentFlattener componentFlattener() {
+		return PaperComponents.flattener();
 	}
 
 	public WebhookLogger webhookLogger() {

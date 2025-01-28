@@ -20,7 +20,7 @@ cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version
 
 configurate = { module = "org.spongepowered:configurate-yaml", version = "4.1.2" }
 jdwebhooks = { module = "io.github.4drian3d:jdwebhooks", version = "1.0.1" }
-mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.3.0" }
+mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.4.0-SNAPSHOT" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
 

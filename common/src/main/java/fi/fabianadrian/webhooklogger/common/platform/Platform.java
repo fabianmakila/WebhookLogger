@@ -2,6 +2,7 @@ package fi.fabianadrian.webhooklogger.common.platform;
 
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
 
@@ -15,4 +16,6 @@ public interface Platform {
 	CommandManager<Audience> commandManager();
 
 	ListenerManager listenerManager();
+
+	ComponentFlattener componentFlattener();
 }

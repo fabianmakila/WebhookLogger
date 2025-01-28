@@ -13,6 +13,7 @@ import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
@@ -87,6 +88,10 @@ public final class WebhookLogger {
 
 	public ListenerManager listenerManager() {
 		return this.platform.listenerManager();
+	}
+
+	public ComponentFlattener componentFlattener() {
+		return this.platform.componentFlattener();
 	}
 
 	private void setupCommandManager() {

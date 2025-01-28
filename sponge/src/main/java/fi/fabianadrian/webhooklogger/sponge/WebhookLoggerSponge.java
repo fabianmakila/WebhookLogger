@@ -7,12 +7,14 @@ import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.sponge.listener.SpongeListenerManager;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.bstats.sponge.Metrics;
 import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.adventure.SpongeComponents;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
@@ -82,6 +84,11 @@ public final class WebhookLoggerSponge implements Platform {
 	@Override
 	public ListenerManager listenerManager() {
 		return listenerManager;
+	}
+
+	@Override
+	public ComponentFlattener componentFlattener() {
+		return SpongeComponents.flattener();
 	}
 
 	public WebhookLogger webhookLogger() {

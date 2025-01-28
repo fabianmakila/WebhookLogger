@@ -8,17 +8,14 @@ import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.translation.GlobalTranslator;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 public final class PlaceholderFactory {
@@ -33,13 +30,13 @@ public final class PlaceholderFactory {
 
 	public TagResolver timestamp() {
 		DateTimeFormatter formatter = DateTimeFormatter
-				.ofPattern(config.timestampFormat())
-				.withZone(config.timestampTimezone());
+				.ofPattern(this.config.timestampFormat())
+				.withZone(this.config.timestampTimezone());
 		return Placeholder.unparsed("timestamp", formatter.format(Instant.now()));
 	}
 
 	public TagResolver cancelled(boolean cancelled) {
-		String cancelledString = cancelled ? config.cancelled() : "";
+		String cancelledString = cancelled ? this.config.cancelled() : "";
 		return Placeholder.unparsed("cancelled", cancelledString);
 	}
 
@@ -51,8 +48,8 @@ public final class PlaceholderFactory {
 		String address = String.valueOf(player.address());
 		resolvers.add(Placeholder.unparsed("address", address));
 
-		Component location = miniMessage.deserialize(
-				config.locationFormat(),
+		Component location = this.miniMessage.deserialize(
+				this.config.locationFormat(),
 				player.location().tagResolver()
 		);
 		resolvers.add(Placeholder.component("location", location));
@@ -72,7 +69,7 @@ public final class PlaceholderFactory {
 		String uuid = audience.get(Identity.UUID).map(UUID::toString).orElse("unknown");
 		resolvers.add(Placeholder.unparsed("uuid", uuid));
 
-		if (webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
+		if (this.webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
 			resolvers.add(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
 		}
 
@@ -82,10 +79,6 @@ public final class PlaceholderFactory {
 	public TagResolver message(Component message) {
 		if (message == null) {
 			return Placeholder.unparsed("message", "");
-		}
-
-		if (message instanceof TranslatableComponent) {
-			message = GlobalTranslator.render(message, Locale.ENGLISH);
 		}
 
 		return Placeholder.component("message", message);
