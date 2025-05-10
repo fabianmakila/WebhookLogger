@@ -26,7 +26,7 @@ public final class PaperPlayer implements PlatformPlayer {
 		return new Location(
 				location.getBlockX(),
 				location.getBlockY(),
-				location.getBlockX()
+				location.getBlockZ()
 		);
 	}
 
