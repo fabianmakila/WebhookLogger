@@ -1,7 +1,7 @@
 [versions]
-adventure = "4.18.0"
+adventure = "4.20.0"
 bstats = "3.0.2"
-cloud-minecraft = "2.0.0-beta.10"
+cloud-minecraft = "2.0.0-beta.11"
 
 [libraries]
 platform-paper = { module = "io.papermc.paper:paper-api", version = "1.21.4-R0.1-SNAPSHOT" }
@@ -21,10 +21,10 @@ cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version
 configurate = { module = "org.spongepowered:configurate-yaml", version = "4.1.2" }
 jdwebhooks = { module = "io.github.4drian3d:jdwebhooks", version = "1.0.1" }
 mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.4.0-SNAPSHOT" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.3.0" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
 
 [plugins]
-resourceFactory-paper = { id = "xyz.jpenilla.resource-factory-paper-convention", version = "1.2.0" }
+resourceFactory-paper = { id = "xyz.jpenilla.resource-factory-paper-convention", version = "1.2.1" }
 sponge = { id = "org.spongepowered.gradle.plugin", version = "2.2.0" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.3.0" }
