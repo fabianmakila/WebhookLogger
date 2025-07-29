@@ -8,6 +8,7 @@ import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public final class ChatListener extends AbstractListener implements Listener {
@@ -20,7 +21,7 @@ public final class ChatListener extends AbstractListener implements Listener {
 		return EventType.CHAT;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChat(AsyncChatEvent event) {
 		if (super.webhooks.isEmpty()) {
 			return;

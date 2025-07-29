@@ -8,6 +8,7 @@ import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
@@ -22,7 +23,7 @@ public final class CommandListener extends AbstractListener implements Listener 
 		return EventType.COMMAND;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onServerCommand(ServerCommandEvent event) {
 		if (super.webhooks.isEmpty()) {
 			return;
@@ -50,7 +51,7 @@ public final class CommandListener extends AbstractListener implements Listener 
 		queue(config.format(), builder);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
 		if (super.webhooks.isEmpty()) {
 			return;
