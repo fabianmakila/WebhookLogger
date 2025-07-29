@@ -35,7 +35,7 @@ public final class WebhookLogger {
 	public WebhookLogger(Platform platform) {
 		this.platform = platform;
 
-		new TranslationManager(platform.logger());
+		new TranslationManager();
 		this.configManager = new ConfigManager(platform.configPath());
 		this.webhookManager = new WebhookManager(this);
 
