@@ -5,17 +5,18 @@ import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerManager;
+import fi.fabianadrian.webhooklogger.paper.platform.PaperCommandSender;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.text.PaperComponents;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.paper.LegacyPaperCommandManager;
+import org.incendo.cloud.paper.PaperCommandManager;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
 
@@ -23,7 +24,7 @@ import java.nio.file.Path;
 
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
-	private LegacyPaperCommandManager<Audience> commandManager;
+	private PaperCommandManager<Audience> commandManager;
 	private PaperListenerManager listenerManager;
 
 	@Override
@@ -84,10 +85,13 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	}
 
 	private void createCommandManager() {
-		SenderMapper<CommandSender, Audience> mapper = SenderMapper.create(
-				commandSender -> commandSender,
-				audience -> (CommandSender) audience
+		SenderMapper<CommandSourceStack, Audience> mapper = SenderMapper.create(
+				PaperCommandSender::new,
+				audience -> ((PaperCommandSender) audience).stack()
 		);
-		this.commandManager = new LegacyPaperCommandManager<>(this, ExecutionCoordinator.simpleCoordinator(), mapper);
+
+		this.commandManager = PaperCommandManager.builder(mapper)
+				.executionCoordinator(ExecutionCoordinator.simpleCoordinator())
+				.buildOnEnable(this);
 	}
 }
