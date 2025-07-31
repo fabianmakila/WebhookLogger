@@ -15,9 +15,7 @@ tasks {
 		dependsOn(shadowJar)
 	}
 	shadowJar {
-		minimize()
-
-		destinationDirectory.set(file("${rootProject.rootDir}/dist"))
+		destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 		archiveClassifier.set("")
 		archiveBaseName.set("${rootProject.name}-${project.name.uppercaseFirstChar()}")
 

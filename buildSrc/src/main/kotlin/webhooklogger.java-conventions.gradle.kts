@@ -1,3 +1,5 @@
+import java.nio.charset.StandardCharsets
+
 plugins {
 	java
 	id("com.diffplug.spotless")
@@ -16,7 +18,7 @@ tasks {
 		dependsOn(spotlessApply)
 	}
 	compileJava {
-		options.encoding = "UTF-8"
+		options.encoding = StandardCharsets.UTF_8.name()
 	}
 }
 
@@ -24,7 +26,7 @@ spotless {
 	java {
 		endWithNewline()
 		formatAnnotations()
-		indentWithTabs()
+		leadingSpacesToTabs()
 		removeUnusedImports()
 		trimTrailingWhitespace()
 	}
