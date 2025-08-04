@@ -1,67 +1,85 @@
 package fi.fabianadrian.webhooklogger.common.webhook;
 
+import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
+import dev.vankka.mcdiscordreserializer.discord.DiscordSerializerOptions;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
-import fi.fabianadrian.webhooklogger.common.webhook.serializer.Serializer;
-import fi.fabianadrian.webhooklogger.common.webhook.serializer.SerializerFactory;
 import io.github._4drian3d.jdwebhooks.WebHook;
 import io.github._4drian3d.jdwebhooks.WebHookClient;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.ComponentEncoder;
+import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
+import net.kyori.ansi.ColorLevel;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class WebhookClient {
-	private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
 	private final WebHookClient client;
 	private final WebhookLogger webhookLogger;
-	private final String url;
-	private final Serializer serializer;
 	private final ScheduledFuture<?> scheduledSendMessageTask;
-	private MessageStyle messageStyle = MessageStyle.NORMAL;
-	private int minimumQueueSize = 1;
+	private final MainConfig.WebhookConfig config;
+	private final ComponentEncoder<Component, String> serializer;
+	private final Queue<WebHook> webhookQueue = new ArrayDeque<>();
+	private StringJoiner joiner;
+	private int messagesBuffered = 0;
 
-	public WebhookClient(WebhookLogger webhookLogger, MainConfig.WebhookConfig webhookConfig) {
+	public WebhookClient(WebhookLogger webhookLogger, MainConfig.WebhookConfig config) {
 		this.webhookLogger = webhookLogger;
-		this.url = webhookConfig.url();
-		this.client = WebHookClient.fromURL(this.url);
+		this.config = config;
+		this.client = WebHookClient.fromURL(config.url());
 
-		if (webhookConfig.messageStyle() != null) {
-			this.messageStyle = webhookConfig.messageStyle();
+		switch (config.messageStyle()) {
+			case NORMAL -> {
+				DiscordSerializer discordSerializer = new DiscordSerializer();
+				discordSerializer.setDefaultOptions(DiscordSerializerOptions.defaults().withFlattener(webhookLogger.componentFlattener()));
+				this.serializer = discordSerializer;
+				this.joiner = new StringJoiner("\n");
+			}
+			case CODE_BLOCK -> {
+				this.joiner = new StringJoiner("\n", "```ansi\n", "\n```");
+				this.serializer = ANSIComponentSerializer
+						.builder()
+						.colorLevel(ColorLevel.INDEXED_8)
+						.flattener(webhookLogger.componentFlattener())
+						.build();
+			}
+			default -> throw new IllegalStateException("Unknown message style");
 		}
-		this.serializer = new SerializerFactory(webhookLogger).serializer(this.messageStyle);
 
-		if (webhookConfig.minimumQueueSize() != null) {
-			this.minimumQueueSize = Math.max(1, webhookConfig.minimumQueueSize());
-		}
-
-		int sendRate = 5;
-		if (webhookConfig.sendRate() != null) {
-			sendRate = webhookConfig.sendRate();
-		}
 		this.scheduledSendMessageTask = webhookLogger.scheduler().scheduleAtFixedRate(
-				this::sendAll,
+				() -> {
+					if (this.messagesBuffered < this.config.minimumQueueSize()) {
+						return;
+					}
+					join();
+					send();
+				},
 				0,
-				sendRate,
+				config.sendRate(),
 				TimeUnit.SECONDS
 		);
 	}
 
-	public void queue(Component component) {
-		String serialized = this.serializer.serialize(component);
+	public void add(Component component) {
+		this.webhookLogger.scheduler().schedule(() -> {
+			String serialized = this.serializer.serialize(component);
 
-		for (Map.Entry<Pattern, String> entry : this.webhookLogger.mainConfig().textReplacements().entrySet()) {
-			Matcher matcher = entry.getKey().matcher(serialized);
-			serialized = matcher.replaceAll(entry.getValue());
-		}
+			for (Map.Entry<Pattern, String> entry : this.webhookLogger.mainConfig().textReplacements().entrySet()) {
+				Matcher matcher = entry.getKey().matcher(serialized);
+				serialized = matcher.replaceAll(entry.getValue());
+			}
 
-		this.messageQueue.add(serialized);
+			if (this.joiner.length() + serialized.length() > 2000) {
+				join();
+			}
+
+			this.joiner.add(serialized);
+			this.messagesBuffered++;
+		}, 0, TimeUnit.SECONDS);
 	}
 
 	public void shutdown() {
@@ -70,28 +88,28 @@ public final class WebhookClient {
 		}
 	}
 
-	private void sendAll() {
-		// Copy messageBuffer
-		List<String> messages = List.copyOf(this.messageQueue);
+	private void join() {
+		this.webhookQueue.add(WebHook.builder().content(this.joiner.toString()).build());
+		this.messagesBuffered = 0;
+		switch (config.messageStyle()) {
+			case NORMAL -> this.joiner = new StringJoiner("\n");
+			case CODE_BLOCK -> this.joiner = new StringJoiner("\n", "```ansi\n", "\n```");
+			default -> throw new IllegalStateException("Unknown message style");
+		}
+	}
 
-		if (this.messageQueue.size() < this.minimumQueueSize) {
+	private void send() {
+		WebHook webHook = webhookQueue.peek();
+		if (webHook == null) {
 			return;
 		}
-
-		String webhookContent = String.join("\n", messages);
-		if (this.messageStyle == MessageStyle.CODE_BLOCK) {
-			webhookContent = "```ansi\n" + webhookContent + "\n```";
-		}
-
-		// Construct webhook
-		WebHook webHook = WebHook.builder().content(webhookContent).build();
 		this.client.sendWebHook(webHook).thenAccept(response -> {
 			switch (response.statusCode()) {
-				case 204 -> this.messageQueue.removeAll(messages);
+				case 204 -> webhookQueue.poll();
 				case 429 ->
-						this.webhookLogger.logger().warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", this.url);
+						this.webhookLogger.logger().warn("Failed to send a webhook to {} due to rate limit. Consider increasing the sendRate in the configuration to avoid this", this.config.url());
 				default ->
-						this.webhookLogger.logger().warn("Failed to send a webhook to {}. Got status code {}", this.url, response.statusCode());
+						this.webhookLogger.logger().warn("Failed to send a webhook to {}. Got status code {}", this.config.url(), response.statusCode());
 			}
 		});
 	}

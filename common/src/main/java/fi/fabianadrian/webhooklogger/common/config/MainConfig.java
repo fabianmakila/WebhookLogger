@@ -8,6 +8,7 @@ import org.spongepowered.configurate.objectmapping.meta.Comment;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @ConfigSerializable
@@ -57,15 +58,15 @@ public class MainConfig {
 		}
 
 		public Integer sendRate() {
-			return this.sendRate;
+			return this.sendRate == null ? 5 : Math.max(1, this.sendRate);
 		}
 
 		public MessageStyle messageStyle() {
-			return this.messageStyle;
+			return Objects.requireNonNullElse(this.messageStyle, MessageStyle.NORMAL);
 		}
 
 		public Integer minimumQueueSize() {
-			return this.minimumQueueSize;
+			return this.minimumQueueSize == null ? 1 : Math.max(1, this.minimumQueueSize);
 		}
 	}
 

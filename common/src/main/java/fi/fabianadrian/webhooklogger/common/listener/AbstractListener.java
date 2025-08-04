@@ -37,6 +37,6 @@ public abstract class AbstractListener {
 				.build();
 
 		Component component = MiniMessage.miniMessage().deserialize(format, resolver);
-		this.webhooks.forEach(client -> client.queue(component));
+		this.webhooks.forEach(client -> client.add(component));
 	}
 }
