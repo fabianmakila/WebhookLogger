@@ -39,7 +39,7 @@ paperPluginYaml {
 tasks {
 	runServer {
 		downloadPlugins {
-			modrinth("miniplaceholders", "J2guR3GH")
+			modrinth("miniplaceholders", "7caNTwMh")
 		}
 		minecraftVersion("1.21.4")
 	}

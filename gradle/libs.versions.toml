@@ -19,9 +19,9 @@ cloud-sponge = { module = "org.incendo:cloud-sponge7", version.ref = "cloud-mine
 cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
 configurate = { module = "org.spongepowered:configurate-yaml", version = "4.1.2" }
-jdwebhooks = { module = "io.github.4drian3d:jdwebhooks", version = "1.0.1" }
+jdwebhooks = { module = "io.github.4drian3d:jdwebhooks", version = "1.1.0" }
 mcdiscordserializer = { module = "dev.vankka:mcdiscordreserializer", version = "4.4.0-SNAPSHOT" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.3.0" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "3.0.1" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.11" }
 
 [plugins]

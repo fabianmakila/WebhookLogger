@@ -70,7 +70,7 @@ public final class PlaceholderFactory {
 		resolvers.add(Placeholder.unparsed("uuid", uuid));
 
 		if (this.webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
-			resolvers.add(MiniPlaceholders.getAudienceGlobalPlaceholders(audience));
+			resolvers.add(MiniPlaceholders.audienceGlobalPlaceholders());
 		}
 
 		return TagResolver.resolver(resolvers);
