@@ -48,7 +48,7 @@ public final class CommandListener extends AbstractListener implements Listener 
 				super.placeholderFactory.command(event.getCommand())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), event.getSender(), builder);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -69,6 +69,6 @@ public final class CommandListener extends AbstractListener implements Listener 
 				super.placeholderFactory.command(event.getMessage())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), player, builder);
 	}
 }

@@ -39,6 +39,6 @@ public final class ChatListener extends AbstractListener implements Listener {
 				super.placeholderFactory.message(event.message())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), player, builder);
 	}
 }

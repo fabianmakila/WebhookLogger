@@ -35,6 +35,6 @@ public final class QuitListener extends AbstractListener implements Listener {
 				super.placeholderFactory.message(event.quitMessage())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), player, builder);
 	}
 }

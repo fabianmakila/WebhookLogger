@@ -46,6 +46,6 @@ public final class DeathListener extends AbstractListener {
 				super.placeholderFactory.message(event.message())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), player, builder);
 	}
 }

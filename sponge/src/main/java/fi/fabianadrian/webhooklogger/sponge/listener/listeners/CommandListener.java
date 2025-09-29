@@ -53,6 +53,6 @@ public final class CommandListener extends AbstractListener {
 				super.placeholderFactory.command(event.command())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), player, builder);
 	}
 }

@@ -33,6 +33,6 @@ public final class JoinListener extends AbstractListener {
 				super.placeholderFactory.message(event.message())
 		);
 
-		queue(config.format(), builder);
+		queue(config.format(), player, builder);
 	}
 }
