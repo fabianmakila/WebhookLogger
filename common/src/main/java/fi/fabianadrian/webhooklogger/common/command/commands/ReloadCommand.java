@@ -19,7 +19,7 @@ public final class ReloadCommand extends BaseCommand {
 
 	@Override
 	public void register() {
-		manager.command(rootBuilder()
+		super.manager.command(rootBuilder()
 				.literal("reload")
 				.permission("webhooklogger.command.reload")
 				.handler(this::executeReload)
@@ -28,11 +28,11 @@ public final class ReloadCommand extends BaseCommand {
 
 	private void executeReload(CommandContext<Audience> context) {
 		try {
-			this.webhookLogger.reload();
+			super.webhookLogger.reload();
 			context.sender().sendMessage(COMPONENT_SUCCESS);
 		} catch (ConfigurateException e) {
 			context.sender().sendMessage(COMPONENT_FAILURE);
-			super.webhookLogger.logger().error("Could not load configuration", e);
+			super.webhookLogger.logger().error("Couldn't load configuration", e);
 		}
 	}
 }
