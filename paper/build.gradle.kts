@@ -1,3 +1,5 @@
+import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml.Load
+
 plugins {
 	id("webhooklogger.platform-conventions")
 	alias(libs.plugins.resourceFactory.paper)
@@ -31,6 +33,11 @@ paperPluginYaml {
 		server {
 			register("MiniPlaceholders") {
 				required = false
+				load = Load.BEFORE
+			}
+			register("CarbonChat") {
+				required = false
+				load = Load.BEFORE
 			}
 		}
 	}

@@ -55,5 +55,10 @@ sponge {
 			optional(true)
 			version("2.2.4")
 		}
+		dependency("carbonchat") {
+			loadOrder(PluginDependency.LoadOrder.AFTER)
+			optional(true)
+			version("3.0.0")
+		}
 	}
 }
