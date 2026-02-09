@@ -18,5 +18,6 @@ dependencies {
 	compileOnly(libs.slf4j)
 	compileOnly(libs.configurate)
 
-	compileOnly(libs.miniplaceholders)
+	compileOnly(libs.plugin.miniplaceholders)
+	compileOnly(libs.plugin.carbon)
 }

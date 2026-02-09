@@ -20,6 +20,10 @@ public abstract class ListenerManager {
 		events.forEach(event -> registerWebhook(client, event));
 	}
 
+	public void registerListener(AbstractListener listener) {
+		this.registry.put(listener.type(), listener);
+	}
+
 	private void registerWebhook(WebhookClient webhookClient, EventType type) {
 		this.registry.get(type).registerWebhook(webhookClient);
 	}

@@ -8,10 +8,13 @@ import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
 import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
+import fi.fabianadrian.webhooklogger.common.listener.CarbonListener;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
+import net.draycia.carbon.api.CarbonChat;
+import net.draycia.carbon.api.CarbonChatProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.incendo.cloud.CommandManager;
@@ -47,6 +50,14 @@ public final class WebhookLogger {
 	public void startup() throws ConfigurateException {
 		this.configManager.reload();
 		this.platform.listenerManager().registerListeners();
+
+		try {
+			CarbonChat carbonChat = CarbonChatProvider.carbonChat();
+			CarbonListener listener = new CarbonListener(this, carbonChat);
+			listener.register();
+		} catch (NoClassDefFoundError ignored) {
+		}
+
 		this.webhookManager.reload();
 	}
 

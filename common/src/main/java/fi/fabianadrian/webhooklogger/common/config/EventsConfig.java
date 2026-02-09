@@ -10,24 +10,29 @@ public class EventsConfig {
 	private DeathEventConfig death = new DeathEventConfig();
 	private JoinEventConfig join = new JoinEventConfig();
 	private QuitEventConfig quit = new QuitEventConfig();
+	private CarbonEventConfig carbon = new CarbonEventConfig();
 
 	public ChatEventConfig chat() {
-		return chat;
+		return this.chat;
 	}
 
 	public CommandEventConfig command() {
-		return command;
+		return this.command;
 	}
 
 	public DeathEventConfig death() {
-		return death;
+		return this.death;
 	}
 
 	public JoinEventConfig join() {
-		return join;
+		return this.join;
 	}
 
 	public QuitEventConfig quit() {
-		return quit;
+		return this.quit;
+	}
+
+	public CarbonEventConfig carbon() {
+		return this.carbon;
 	}
 }
