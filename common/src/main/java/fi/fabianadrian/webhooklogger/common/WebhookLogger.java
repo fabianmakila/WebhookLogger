@@ -55,6 +55,7 @@ public final class WebhookLogger {
 			CarbonChat carbonChat = CarbonChatProvider.carbonChat();
 			CarbonListener listener = new CarbonListener(this, carbonChat);
 			listener.register();
+			logger().info("Enabling CarbonChat events");
 		} catch (NoClassDefFoundError ignored) {
 		}
 

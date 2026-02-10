@@ -9,7 +9,7 @@ public final class CarbonPlaceholderFactory {
 		return TagResolver.resolver(
 				Placeholder.unparsed("key", event.chatChannel().key().asMinimalString()),
 				Placeholder.unparsed("name", event.sender().username()),
-				Placeholder.component("displayname", event.sender().displayName()),
+				Placeholder.component("display_name", event.sender().displayName()),
 				Placeholder.component("message", event.message()),
 				Placeholder.component("original_message", event.originalMessage())
 		);

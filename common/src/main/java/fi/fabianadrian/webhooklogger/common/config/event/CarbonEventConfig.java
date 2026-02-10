@@ -7,9 +7,9 @@ import org.spongepowered.configurate.objectmapping.meta.Comment;
 public class CarbonEventConfig extends CancellableEventConfig {
 	@Comment("""
 			The webhook format for carbonchat messages. Available placeholders:
-			<name>, <display_name>, <message>, <timestamp>, <cancelled>
+			<name>, <display_name>, <message>, <timestamp>, <cancelled> <key>
 			""")
-	private String format = "<cancelled>[<timestamp>] <name>: <message>";
+	private String format = "<cancelled>[<timestamp>] [<key>] <name>: <message>";
 
 	public String format() {
 		return this.format;

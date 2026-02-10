@@ -24,7 +24,7 @@ public abstract class AbstractListener {
 	}
 
 	public void registerWebhook(WebhookClient webhook) {
-		webhooks.add(webhook);
+		this.webhooks.add(webhook);
 	}
 
 	public void clearWebhooks() {
