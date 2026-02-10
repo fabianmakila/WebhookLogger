@@ -23,7 +23,8 @@ public final class CarbonListener extends AbstractListener {
 
 
 			TagResolver.Builder builder = TagResolver.builder().resolvers(
-					CARBON_PLACEHOLDER_FACTORY.carbon(event)
+					CARBON_PLACEHOLDER_FACTORY.carbon(event),
+					super.placeholderFactory.cancelled(event.cancelled())
 			);
 			queue(config.format(), event.sender(), builder);
 		});
