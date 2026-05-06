@@ -7,7 +7,6 @@ import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.sponge.listener.SpongeListenerManager;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
-import org.bstats.sponge.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Server;
@@ -31,15 +30,13 @@ public final class WebhookLoggerSponge implements Platform {
 	private final SpongeListenerManager listenerManager;
 
 	@Inject
-	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir, Metrics.Factory metricsFactory) {
+	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir) {
 		this.configDir = configDir;
 		this.logger = LoggerFactory.getLogger("webhooklogger");
 
 		this.webhookLogger = new WebhookLogger(this);
 		this.listenerManager = new SpongeListenerManager(this, container);
 		this.dependencyManager = new SpongeDependencyManager(this.webhookLogger);
-
-		metricsFactory.make(23463);
 	}
 
 	@Listener

@@ -1,5 +1,8 @@
 package fi.fabianadrian.webhooklogger.paper;
 
+import dev.faststats.bukkit.BukkitMetrics;
+import dev.faststats.core.ErrorTracker;
+import dev.faststats.core.Metrics;
 import fi.fabianadrian.webhooklogger.common.DependencyManager;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
@@ -7,7 +10,6 @@ import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerManager;
 import io.papermc.paper.text.PaperComponents;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
@@ -15,9 +17,14 @@ import org.spongepowered.configurate.ConfigurateException;
 import java.nio.file.Path;
 
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
+	public static final ErrorTracker ERROR_TRACKER = ErrorTracker.contextAware();
 	private final PaperListenerManager listenerManager;
 	private final WebhookLogger webhookLogger;
 	private final DependencyManager dependencyManager;
+	private final Metrics metrics = BukkitMetrics.factory()
+			.errorTracker(ERROR_TRACKER)
+			.token("58c707ffefa0c399444b7a74b706dfe9")
+			.create(this);
 
 	public WebhookLoggerPaper() {
 		this.webhookLogger = new WebhookLogger(this);
@@ -27,6 +34,7 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	@Override
 	public void onEnable() {
+		this.metrics.ready();
 		try {
 			this.webhookLogger.startup();
 		} catch (ConfigurateException e) {
@@ -37,14 +45,12 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 		PaperWebhookLoggerCommand webhookLoggerCommand = new PaperWebhookLoggerCommand(this);
 		webhookLoggerCommand.register();
-
-		// bStats
-		new Metrics(this, 18436);
 	}
 
 	@Override
 	public void onDisable() {
 		this.webhookLogger.shutdown();
+		this.metrics.shutdown();
 	}
 
 	@Override

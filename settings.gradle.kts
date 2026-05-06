@@ -19,5 +19,6 @@ dependencyResolutionManagement {
 				snapshotsOnly()
 			}
 		}
+		maven("https://repo.faststats.dev/releases")
 	}
 }

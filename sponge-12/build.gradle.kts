@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-	implementation(libs.bstats.sponge)
+	implementation(libs.faststats.sponge)
 	implementation(libs.slf4j)
 }
 
@@ -16,7 +16,7 @@ tasks {
 		sequenceOf(
 			"io.github._4drian3d.jdwebhooks",
 			"com.google.gson",
-			"org.bstats",
+			"dev.faststats",
 			"dev.vankka",
 			"org.incendo.cloud",
 			"org.slf4j"

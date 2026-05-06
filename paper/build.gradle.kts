@@ -9,7 +9,7 @@ plugins {
 dependencies {
 	compileOnly(libs.platform.paper)
 
-	implementation(libs.bstats.bukkit)
+	implementation(libs.faststats.bukkit)
 	implementation(libs.configurate) {
 		exclude("org.yaml")
 	}

@@ -1,6 +1,6 @@
 [versions]
 adventure = "4.26.1"
-bstats = "3.0.2"
+faststats = "0.22.0"
 
 [libraries]
 platform-paper = { module = "io.papermc.paper:paper-api", version = "26.1.2.build.+" }
@@ -9,8 +9,8 @@ adventure = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 adventure-text-serializer-ansi = { module = "net.kyori:adventure-text-serializer-ansi", version.ref = "adventure" }
 adventure-text-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
-bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
-bstats-sponge = { module = "org.bstats:bstats-sponge", version.ref = "bstats" }
+faststats-bukkit = { module = "dev.faststats.metrics:bukkit", version.ref = "faststats" }
+faststats-sponge = { module = "dev.faststats.metrics:sponge", version.ref = "faststats" }
 
 configurate = { module = "org.spongepowered:configurate-yaml", version = "4.2.0" }
 jdwebhooks = { module = "io.github.4drian3d:jdwebhooks", version = "1.1.0" }
