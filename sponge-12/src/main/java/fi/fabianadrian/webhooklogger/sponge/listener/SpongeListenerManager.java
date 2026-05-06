@@ -8,6 +8,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.EventManager;
 import org.spongepowered.plugin.PluginContainer;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 public final class SpongeListenerManager extends ListenerManager {
@@ -31,7 +32,7 @@ public final class SpongeListenerManager extends ListenerManager {
 				new QuitListener(webhookLogger)
 		).forEach(listener -> {
 			super.registry.put(listener.type(), listener);
-			manager.registerListeners(this.container, listener);
+			manager.registerListeners(this.container, listener, MethodHandles.lookup());
 		});
 	}
 }

@@ -3,7 +3,8 @@ rootProject.name = "WebhookLogger"
 sequenceOf(
 	"common",
 	"paper",
-	"sponge"
+	"sponge-12",
+	"sponge-17"
 ).forEach { include(it) }
 
 dependencyResolutionManagement {
