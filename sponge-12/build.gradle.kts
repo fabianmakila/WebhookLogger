@@ -16,7 +16,12 @@ dependencies {
 tasks {
 	shadowJar {
 		sequenceOf(
-			"org.slf4j",
+			"io.github._4drian3d.jdwebhooks",
+			"com.google.gson",
+			"org.bstats",
+			"dev.vankka",
+			"org.incendo.cloud",
+			"org.slf4j"
 		).forEach { pkg ->
 			relocate(pkg, "fi.fabianadrian.webhooklogger.dependency.$pkg")
 		}
