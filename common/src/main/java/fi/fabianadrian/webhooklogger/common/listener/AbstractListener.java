@@ -6,7 +6,6 @@ import fi.fabianadrian.webhooklogger.common.event.PlaceholderFactory;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookClient;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ public abstract class AbstractListener {
 	protected final WebhookLogger webhookLogger;
 	protected final PlaceholderFactory placeholderFactory;
 	protected final List<WebhookClient> webhooks = new ArrayList<>();
-	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
 	public AbstractListener(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
@@ -38,7 +36,7 @@ public abstract class AbstractListener {
 				.resolver(this.placeholderFactory.timestamp())
 				.build();
 
-		Component component = this.miniMessage.deserialize(format, audience, resolver);
+		Component component = WebhookLogger.MINI_MESSAGE.deserialize(format, audience, resolver);
 		this.webhooks.forEach(client -> client.add(component));
 	}
 }

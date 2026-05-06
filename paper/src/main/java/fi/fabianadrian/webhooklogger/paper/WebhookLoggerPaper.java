@@ -4,19 +4,13 @@ import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
+import fi.fabianadrian.webhooklogger.paper.command.PaperWebhookLoggerCommand;
 import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerManager;
-import fi.fabianadrian.webhooklogger.paper.platform.PaperCommandSender;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.text.PaperComponents;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.SenderMapper;
-import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.paper.PaperCommandManager;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
 
@@ -24,12 +18,10 @@ import java.nio.file.Path;
 
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	private WebhookLogger webhookLogger;
-	private PaperCommandManager<Audience> commandManager;
 	private PaperListenerManager listenerManager;
 
 	@Override
 	public void onEnable() {
-		createCommandManager();
 		this.listenerManager = new PaperListenerManager(this);
 
 		this.webhookLogger = new WebhookLogger(this);
@@ -45,6 +37,9 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 		if (manager.isPluginEnabled("MiniPlaceholders")) {
 			this.webhookLogger.dependencyManager().markAsPresent(Dependency.MINI_PLACEHOLDERS);
 		}
+
+		PaperWebhookLoggerCommand webhookLoggerCommand = new PaperWebhookLoggerCommand(this);
+		webhookLoggerCommand.register();
 
 		// bStats
 		new Metrics(this, 18436);
@@ -66,11 +61,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	}
 
 	@Override
-	public CommandManager<Audience> commandManager() {
-		return this.commandManager;
-	}
-
-	@Override
 	public ListenerManager listenerManager() {
 		return this.listenerManager;
 	}
@@ -82,16 +72,5 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	public WebhookLogger webhookLogger() {
 		return this.webhookLogger;
-	}
-
-	private void createCommandManager() {
-		SenderMapper<CommandSourceStack, Audience> mapper = SenderMapper.create(
-				PaperCommandSender::new,
-				audience -> ((PaperCommandSender) audience).stack()
-		);
-
-		this.commandManager = PaperCommandManager.builder(mapper)
-				.executionCoordinator(ExecutionCoordinator.simpleCoordinator())
-				.buildOnEnable(this);
 	}
 }

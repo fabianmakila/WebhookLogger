@@ -10,7 +10,6 @@ dependencies {
 	compileOnly(libs.platform.sponge)
 
 	implementation(libs.bstats.sponge)
-	implementation(libs.cloud.sponge)
 	implementation(libs.slf4j)
 }
 

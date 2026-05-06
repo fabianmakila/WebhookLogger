@@ -1,9 +1,5 @@
 package fi.fabianadrian.webhooklogger.common;
 
-import fi.fabianadrian.webhooklogger.common.command.BaseCommand;
-import fi.fabianadrian.webhooklogger.common.command.CaptionFormatter;
-import fi.fabianadrian.webhooklogger.common.command.commands.ReloadCommand;
-import fi.fabianadrian.webhooklogger.common.command.processor.WebhookLoggerCommandPreprocessor;
 import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
 import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
@@ -15,21 +11,17 @@ import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
 import net.draycia.carbon.api.CarbonChat;
 import net.draycia.carbon.api.CarbonChatProvider;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
-import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public final class WebhookLogger {
+	public static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 	private final Platform platform;
-	private final CommandManager<Audience> commandManager;
 	private final ConfigManager configManager;
 	private final WebhookManager webhookManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -41,10 +33,6 @@ public final class WebhookLogger {
 		new TranslationManager();
 		this.configManager = new ConfigManager(platform.configPath());
 		this.webhookManager = new WebhookManager(this);
-
-		this.commandManager = platform.commandManager();
-		setupCommandManager();
-		registerCommands();
 	}
 
 	public void startup() throws ConfigurateException {
@@ -94,30 +82,11 @@ public final class WebhookLogger {
 		return this.dependencyManager;
 	}
 
-	public CommandManager<Audience> commandManager() {
-		return this.commandManager;
-	}
-
 	public ListenerManager listenerManager() {
 		return this.platform.listenerManager();
 	}
 
 	public ComponentFlattener componentFlattener() {
 		return this.platform.componentFlattener();
-	}
-
-	private void setupCommandManager() {
-		this.commandManager.registerCommandPreProcessor(new WebhookLoggerCommandPreprocessor(this));
-		this.commandManager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
-		MinecraftExceptionHandler.createNative()
-				.defaultHandlers()
-				.captionFormatter(new CaptionFormatter())
-				.registerTo(this.commandManager);
-	}
-
-	private void registerCommands() {
-		List.of(
-				new ReloadCommand(this)
-		).forEach(BaseCommand::register);
 	}
 }

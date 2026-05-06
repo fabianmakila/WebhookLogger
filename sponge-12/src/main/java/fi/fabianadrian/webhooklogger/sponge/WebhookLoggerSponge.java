@@ -6,10 +6,8 @@ import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.sponge.listener.SpongeListenerManager;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import org.bstats.sponge.Metrics;
-import org.incendo.cloud.CommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Server;
@@ -31,7 +29,6 @@ public final class WebhookLoggerSponge implements Platform {
 	private final Path configDir;
 	private final Logger logger;
 	private WebhookLogger webhookLogger;
-	private CommandManager<Audience> commandManager;
 	private SpongeListenerManager listenerManager;
 
 	@Inject
@@ -74,11 +71,6 @@ public final class WebhookLoggerSponge implements Platform {
 	@Override
 	public Path configPath() {
 		return configDir;
-	}
-
-	@Override
-	public CommandManager<Audience> commandManager() {
-		return commandManager;
 	}
 
 	@Override

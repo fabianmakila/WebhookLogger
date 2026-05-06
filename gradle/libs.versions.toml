@@ -1,7 +1,6 @@
 [versions]
 adventure = "4.26.1"
 bstats = "3.0.2"
-cloud-minecraft = "2.0.0-beta.15"
 
 [libraries]
 platform-paper = { module = "io.papermc.paper:paper-api", version = "26.1.2.build.+" }
@@ -13,10 +12,6 @@ adventure-text-minimessage = { module = "net.kyori:adventure-text-minimessage", 
 
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
 bstats-sponge = { module = "org.bstats:bstats-sponge", version.ref = "bstats" }
-
-cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-minecraft" }
-cloud-sponge = { module = "org.incendo:cloud-sponge7", version.ref = "cloud-minecraft" }
-cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
 configurate = { module = "org.spongepowered:configurate-yaml", version = "4.2.0" }
 jdwebhooks = { module = "io.github.4drian3d:jdwebhooks", version = "1.1.0" }

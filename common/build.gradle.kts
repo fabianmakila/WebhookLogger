@@ -9,8 +9,6 @@ dependencies {
 		exclude("net.kyori")
 	}
 
-	implementation(libs.cloud.minecraftExtras)
-
 	// These are provided by the platforms
 	compileOnly(libs.adventure)
 	compileOnly(libs.adventure.text.minimessage)
