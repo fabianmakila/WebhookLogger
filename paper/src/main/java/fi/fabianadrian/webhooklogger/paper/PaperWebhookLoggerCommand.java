@@ -1,11 +1,10 @@
-package fi.fabianadrian.webhooklogger.paper.command;
+package fi.fabianadrian.webhooklogger.paper;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import fi.fabianadrian.webhooklogger.common.command.WebhookLoggerCommand;
-import fi.fabianadrian.webhooklogger.paper.WebhookLoggerPaper;
+import fi.fabianadrian.webhooklogger.common.WebhookLoggerCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;

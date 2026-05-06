@@ -2,7 +2,6 @@ package fi.fabianadrian.webhooklogger.common.event;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
-import fi.fabianadrian.webhooklogger.common.dependency.Dependency;
 import fi.fabianadrian.webhooklogger.common.platform.PlatformPlayer;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.audience.Audience;
@@ -69,7 +68,7 @@ public final class PlaceholderFactory {
 		String uuid = audience.get(Identity.UUID).map(UUID::toString).orElse("unknown");
 		resolvers.add(Placeholder.unparsed("uuid", uuid));
 
-		if (this.webhookLogger.dependencyManager().isPresent(Dependency.MINI_PLACEHOLDERS)) {
+		if (this.webhookLogger.dependencyManager().isMiniPlaceholders()) {
 			resolvers.add(MiniPlaceholders.audienceGlobalPlaceholders());
 		}
 

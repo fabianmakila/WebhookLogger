@@ -3,14 +3,10 @@ package fi.fabianadrian.webhooklogger.common;
 import fi.fabianadrian.webhooklogger.common.config.ConfigManager;
 import fi.fabianadrian.webhooklogger.common.config.EventsConfig;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
-import fi.fabianadrian.webhooklogger.common.dependency.DependencyManager;
-import fi.fabianadrian.webhooklogger.common.listener.CarbonListener;
 import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.locale.TranslationManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
 import fi.fabianadrian.webhooklogger.common.webhook.WebhookManager;
-import net.draycia.carbon.api.CarbonChat;
-import net.draycia.carbon.api.CarbonChatProvider;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
@@ -25,7 +21,6 @@ public final class WebhookLogger {
 	private final ConfigManager configManager;
 	private final WebhookManager webhookManager;
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-	private final DependencyManager dependencyManager = new DependencyManager();
 
 	public WebhookLogger(Platform platform) {
 		this.platform = platform;
@@ -38,15 +33,7 @@ public final class WebhookLogger {
 	public void startup() throws ConfigurateException {
 		this.configManager.reload();
 		this.platform.listenerManager().registerListeners();
-
-		try {
-			CarbonChat carbonChat = CarbonChatProvider.carbonChat();
-			CarbonListener listener = new CarbonListener(this, carbonChat);
-			listener.register();
-			logger().info("Enabling CarbonChat events");
-		} catch (NoClassDefFoundError ignored) {
-		}
-
+		dependencyManager().register();
 		this.webhookManager.reload();
 	}
 
@@ -79,7 +66,7 @@ public final class WebhookLogger {
 	}
 
 	public DependencyManager dependencyManager() {
-		return this.dependencyManager;
+		return this.platform.dependencyManager();
 	}
 
 	public ListenerManager listenerManager() {

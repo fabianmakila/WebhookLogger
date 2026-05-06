@@ -1,4 +1,4 @@
-package fi.fabianadrian.webhooklogger.common.command;
+package fi.fabianadrian.webhooklogger.common;
 
 import net.kyori.adventure.text.Component;
 
