@@ -4,36 +4,35 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import fi.fabianadrian.webhooklogger.common.WebhookLoggerCommand;
+import fi.fabianadrian.webhooklogger.common.CommandManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.plugin.Plugin;
 import org.spongepowered.configurate.ConfigurateException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.papermc.paper.command.brigadier.Commands.literal;
 
-public final class PaperWebhookLoggerCommand extends WebhookLoggerCommand {
+public final class PaperCommandManager extends CommandManager {
 	private final WebhookLoggerPaper plugin;
-	private final LifecycleEventManager<Plugin> manager;
+	private final List<LiteralCommandNode<CommandSourceStack>> nodes = new ArrayList<>();
 
-	public PaperWebhookLoggerCommand(WebhookLoggerPaper plugin) {
+	public PaperCommandManager(WebhookLoggerPaper plugin) {
 		this.plugin = plugin;
-		this.manager = plugin.getLifecycleManager();
+
+		LiteralArgumentBuilder<CommandSourceStack> rootBuilder = literal("webhooklogger");
+		this.nodes.add(rootBuilder.then(Commands.literal("reload")
+				.requires(stack -> stack.getSender().hasPermission(PERMISSION_RELOAD))
+				.executes(this::executeReload)
+		).build());
 	}
 
 	public void register() {
-		LiteralArgumentBuilder<CommandSourceStack> rootBuilder = literal("webhooklogger")
-				.requires(stack -> stack.getSender().hasPermission(PERMISSION_RELOAD));
-
-		LiteralCommandNode<CommandSourceStack> reloadNode = rootBuilder.then(literal("reload")
-				.executes(this::executeReload)
-		).build();
-
-		this.manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+		this.plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
 			final Commands commands = event.registrar();
-			commands.register(reloadNode);
+			this.nodes.forEach(commands::register);
 		});
 	}
 

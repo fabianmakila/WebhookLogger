@@ -25,11 +25,13 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 			.errorTracker(ERROR_TRACKER)
 			.token("58c707ffefa0c399444b7a74b706dfe9")
 			.create(this);
+	private final PaperCommandManager commandManager;
 
 	public WebhookLoggerPaper() {
 		this.webhookLogger = new WebhookLogger(this);
 		this.dependencyManager = new PaperDependencyManager(this);
 		this.listenerManager = new PaperListenerManager(this);
+		this.commandManager = new PaperCommandManager(this);
 	}
 
 	@Override
@@ -42,9 +44,7 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-
-		PaperWebhookLoggerCommand webhookLoggerCommand = new PaperWebhookLoggerCommand(this);
-		webhookLoggerCommand.register();
+		this.commandManager.register();
 	}
 
 	@Override
