@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.adventure.SpongeComponents;
+import org.spongepowered.api.command.Command;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.lifecycle.RegisterCommandEvent;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
 import org.spongepowered.api.event.lifecycle.StoppingEngineEvent;
 import org.spongepowered.configurate.ConfigurateException;
@@ -28,11 +30,13 @@ public final class WebhookLoggerSponge implements Platform {
 	private final WebhookLogger webhookLogger;
 	private final SpongeListenerManager listenerManager;
 	private final DependencyManager dependencyManager;
+	private final PluginContainer container;
 
 	@Inject
 	public WebhookLoggerSponge(PluginContainer container, @ConfigDir(sharedRoot = false) Path configDir) {
 		this.configDir = configDir;
 		this.logger = LoggerFactory.getLogger("webhooklogger");
+		this.container = container;
 
 		this.webhookLogger = new WebhookLogger(this);
 		this.listenerManager = new SpongeListenerManager(this, container);
@@ -53,6 +57,11 @@ public final class WebhookLoggerSponge implements Platform {
 	@Listener
 	public void onServerStopping(final StoppingEngineEvent<Server> event) {
 		webhookLogger.shutdown();
+	}
+
+	@Listener
+	public void onRegisterCommands(final RegisterCommandEvent<Command.Parameterized> event) {
+		event.register(this.container, new SpongeWebhookLoggerCommand(this).command(), "webhooklogger");
 	}
 
 	@Override
