@@ -1,10 +1,10 @@
-package fi.fabianadrian.webhooklogger.paper.listener.listeners;
+package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.JoinEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,16 +17,12 @@ public final class JoinListener extends AbstractListener implements Listener {
 	}
 
 	@Override
-	public EventType type() {
-		return EventType.JOIN;
+	public Key key() {
+		return Key.key("webhooklogger", "join");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onJoin(PlayerJoinEvent event) {
-		if (super.webhooks.isEmpty()) {
-			return;
-		}
-
 		JoinEventConfig config = super.webhookLogger.eventsConfig().join();
 
 		PaperPlayer player = new PaperPlayer(event.getPlayer());
@@ -35,6 +31,6 @@ public final class JoinListener extends AbstractListener implements Listener {
 				super.placeholderFactory.message(event.joinMessage())
 		);
 
-		queue(config.format(), player, builder);
+		post(config.format(), player, builder);
 	}
 }

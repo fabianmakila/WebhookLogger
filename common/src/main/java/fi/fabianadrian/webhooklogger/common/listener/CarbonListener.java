@@ -3,9 +3,9 @@ package fi.fabianadrian.webhooklogger.common.listener;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.CarbonEventConfig;
 import fi.fabianadrian.webhooklogger.common.event.CarbonPlaceholderFactory;
-import fi.fabianadrian.webhooklogger.common.event.EventType;
 import net.draycia.carbon.api.CarbonChat;
 import net.draycia.carbon.api.event.events.CarbonChatEvent;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 public final class CarbonListener extends AbstractListener {
@@ -25,16 +25,12 @@ public final class CarbonListener extends AbstractListener {
 					CARBON_PLACEHOLDER_FACTORY.carbon(event),
 					super.placeholderFactory.cancelled(event.cancelled())
 			);
-			queue(config.format(), event.sender(), builder);
+			post(config.format(), event.sender(), builder);
 		});
 	}
 
-	public void register() {
-		super.webhookLogger.listenerManager().registerListener(this);
-	}
-
 	@Override
-	public EventType type() {
-		return EventType.CARBON;
+	public Key key() {
+		return Key.key("carbon", "chat");
 	}
 }

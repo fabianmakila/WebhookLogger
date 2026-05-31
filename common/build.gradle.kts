@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+	implementation(project(":api"))
 	// Webhook clients
 	implementation(libs.jdwebhooks)
 	implementation(libs.mcdiscordserializer) {

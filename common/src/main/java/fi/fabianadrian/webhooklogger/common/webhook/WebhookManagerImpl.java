@@ -1,15 +1,18 @@
 package fi.fabianadrian.webhooklogger.common.webhook;
 
+import fi.fabianadrian.webhooklogger.api.WebhookManager;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class WebhookManager {
+public final class WebhookManagerImpl implements WebhookManager {
 	private final WebhookLogger webhookLogger;
 	private final List<WebhookClient> clients = new ArrayList<>();
 
-	public WebhookManager(WebhookLogger webhookLogger) {
+	public WebhookManagerImpl(WebhookLogger webhookLogger) {
 		this.webhookLogger = webhookLogger;
 	}
 
@@ -33,7 +36,11 @@ public final class WebhookManager {
 
 			WebhookClient client = new WebhookClient(this.webhookLogger, webhook);
 			this.clients.add(client);
-			this.webhookLogger.listenerManager().registerWebhookForEvents(client, webhook.events());
 		});
+	}
+
+	@Override
+	public void post(Key key, Component component) {
+		this.clients.forEach(client -> client.post(key, component));
 	}
 }

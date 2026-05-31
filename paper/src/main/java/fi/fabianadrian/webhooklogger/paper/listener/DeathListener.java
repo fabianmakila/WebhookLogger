@@ -1,10 +1,10 @@
-package fi.fabianadrian.webhooklogger.paper.listener.listeners;
+package fi.fabianadrian.webhooklogger.paper.listener;
 
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.event.DeathEventConfig;
-import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.listener.AbstractListener;
 import fi.fabianadrian.webhooklogger.paper.platform.PaperPlayer;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,16 +17,12 @@ public final class DeathListener extends AbstractListener implements Listener {
 	}
 
 	@Override
-	public EventType type() {
-		return EventType.DEATH;
+	public Key key() {
+		return Key.key("webhooklogger", "death");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDeath(PlayerDeathEvent event) {
-		if (super.webhooks.isEmpty()) {
-			return;
-		}
-
 		DeathEventConfig config = super.webhookLogger.eventsConfig().death();
 
 		if (!config.logCancelled() && event.isCancelled()) {
@@ -40,6 +36,6 @@ public final class DeathListener extends AbstractListener implements Listener {
 				super.placeholderFactory.message(event.deathMessage())
 		);
 
-		queue(config.format(), player, builder);
+		post(config.format(), player, builder);
 	}
 }

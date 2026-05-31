@@ -1,6 +1,7 @@
 rootProject.name = "WebhookLogger"
 
 sequenceOf(
+	"api",
 	"common",
 	"paper",
 	"sponge-12",

@@ -27,8 +27,7 @@ public abstract class DependencyManager {
 
 	protected void registerCarbon() {
 		CarbonChat carbonChat = CarbonChatProvider.carbonChat();
-		CarbonListener listener = new CarbonListener(this.webhookLogger, carbonChat);
-		listener.register();
+		new CarbonListener(this.webhookLogger, carbonChat);
 		this.logger.info("Enabling CarbonChat events");
 	}
 }

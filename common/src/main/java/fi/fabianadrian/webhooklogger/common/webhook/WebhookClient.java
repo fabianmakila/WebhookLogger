@@ -6,6 +6,7 @@ import fi.fabianadrian.webhooklogger.common.WebhookLogger;
 import fi.fabianadrian.webhooklogger.common.config.MainConfig;
 import io.github._4drian3d.jdwebhooks.WebHook;
 import io.github._4drian3d.jdwebhooks.WebHookClient;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.ComponentEncoder;
 import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
@@ -66,7 +67,10 @@ public final class WebhookClient {
 		);
 	}
 
-	public void add(Component component) {
+	public void post(Key key, Component component) {
+		if (!this.config.events().contains(key)) {
+			return;
+		}
 		this.webhookLogger.scheduler().schedule(() -> {
 			String serialized = this.serializer.serialize(component);
 

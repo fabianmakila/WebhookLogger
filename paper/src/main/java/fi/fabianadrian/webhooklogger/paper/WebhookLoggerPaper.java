@@ -5,20 +5,20 @@ import dev.faststats.core.ErrorTracker;
 import dev.faststats.core.Metrics;
 import fi.fabianadrian.webhooklogger.common.DependencyManager;
 import fi.fabianadrian.webhooklogger.common.WebhookLogger;
-import fi.fabianadrian.webhooklogger.common.listener.ListenerManager;
 import fi.fabianadrian.webhooklogger.common.platform.Platform;
-import fi.fabianadrian.webhooklogger.paper.listener.PaperListenerManager;
+import fi.fabianadrian.webhooklogger.paper.listener.*;
 import io.papermc.paper.text.PaperComponents;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.nio.file.Path;
+import java.util.List;
 
 public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	public static final ErrorTracker ERROR_TRACKER = ErrorTracker.contextAware();
-	private final PaperListenerManager listenerManager;
 	private final WebhookLogger webhookLogger;
 	private final DependencyManager dependencyManager;
 	private final Metrics metrics = BukkitMetrics.factory()
@@ -30,8 +30,8 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	public WebhookLoggerPaper() {
 		this.webhookLogger = new WebhookLogger(this);
 		this.dependencyManager = new PaperDependencyManager(this);
-		this.listenerManager = new PaperListenerManager(this);
 		this.commandManager = new PaperCommandManager(this);
+		registerListeners();
 	}
 
 	@Override
@@ -64,11 +64,6 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 	}
 
 	@Override
-	public ListenerManager listenerManager() {
-		return this.listenerManager;
-	}
-
-	@Override
 	public ComponentFlattener componentFlattener() {
 		return PaperComponents.flattener();
 	}
@@ -80,5 +75,16 @@ public final class WebhookLoggerPaper extends JavaPlugin implements Platform {
 
 	public WebhookLogger webhookLogger() {
 		return this.webhookLogger;
+	}
+
+	private void registerListeners() {
+		PluginManager pluginManager = getServer().getPluginManager();
+		List.of(
+				new ChatListener(webhookLogger),
+				new CommandListener(webhookLogger),
+				new DeathListener(webhookLogger),
+				new JoinListener(webhookLogger),
+				new QuitListener(webhookLogger)
+		).forEach(listener -> pluginManager.registerEvents(listener, this));
 	}
 }

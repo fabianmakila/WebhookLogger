@@ -1,7 +1,7 @@
 package fi.fabianadrian.webhooklogger.common.config;
 
-import fi.fabianadrian.webhooklogger.common.event.EventType;
 import fi.fabianadrian.webhooklogger.common.webhook.MessageStyle;
+import net.kyori.adventure.key.Key;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 
@@ -44,7 +44,7 @@ public class MainConfig {
 	@ConfigSerializable
 	public static class WebhookConfig {
 		private String url = "";
-		private List<EventType> events = List.of(EventType.CHAT);
+		private List<Key> events = List.of(Key.key("webhooklogger", "chat"));
 		private Integer sendRate;
 		private MessageStyle messageStyle;
 		private Integer minimumQueueSize;
@@ -53,7 +53,7 @@ public class MainConfig {
 			return this.url;
 		}
 
-		public List<EventType> events() {
+		public List<Key> events() {
 			return this.events;
 		}
 
